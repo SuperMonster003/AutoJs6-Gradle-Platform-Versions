@@ -1,0 +1,25 @@
+{
+  "changelog_label_hint": "Note",
+  "changelog_label_feature": "Fonctionnalité",
+  "changelog_label_fix": "Correctif",
+  "changelog_label_improvement": "Amélioration",
+  "changelog_label_dependency": "Dépendance",
+  "$data": {
+    "v1.0.0": {
+      "released_date": "2026/08/18",
+      "feature": [
+        "Plugin Gradle Settings `org.autojs.build.platform-versions`, qui détermine automatiquement les versions d'AGP et du plugin Gradle Kotlin",
+        "Détection de l'hôte de build, prenant en charge Android Studio/IntelliJ IDEA/Temurin JDK ainsi que la simple ligne de commande",
+        "Décision de la version d'AGP, par recherche de la version de l'IDE courant dans la table de correspondance avec repli sur l'entrée immédiatement inférieure",
+        "Repli en cas de table de correspondance en retard : lorsque l'IDE courant est plus récent que toutes les entrées de la table, la sélection auto prend le relais, sans rétrogradation silencieuse vers un AGP trop ancien",
+        "Version d'AGP plafonnée par la table de compatibilité Gradle, ce qui garantit que la version retenue est toujours chargeable par le Gradle courant",
+        "Décision de la version du plugin Gradle Kotlin, alignée sur la version la plus récente prise en charge par le Gradle courant",
+        "Données de compatibilité distribuées avec le plugin, le répertoire `gradle/data` du projet consommateur pouvant remplacer tout fichier de données de même nom",
+        "Porte de sortie `OVERRIDDEN_*` dans `version.properties`, permettant de figer directement les versions et de contourner la décision automatique",
+        "Résultat de la décision exposé via `PlatformVersionsExtension`, utilisable dans les déclarations de classpath du buildscript",
+        "Projet consommateur minimal `sample`, servant à vérifier le résultat des décisions dans trois scénarios typiques",
+        "Ressources multilingues pour README et CHANGELOG : espagnol/français/russe/arabe/japonais/coréen/anglais/chinois simplifié/chinois traditionnel de Hong Kong/chinois traditionnel de Taïwan"
+      ]
+    }
+  }
+}

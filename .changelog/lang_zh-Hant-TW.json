@@ -1,0 +1,25 @@
+{
+  "changelog_label_hint": "提示",
+  "changelog_label_feature": "新增",
+  "changelog_label_fix": "修復",
+  "changelog_label_improvement": "優化",
+  "changelog_label_dependency": "相依性",
+  "$data": {
+    "v1.0.0": {
+      "released_date": "2026/08/18",
+      "feature": [
+        "Gradle Settings 插件 `org.autojs.build.platform-versions`，用於自動決定 AGP 與 Kotlin Gradle 插件版本",
+        "建置主機識別，支援 Android Studio、IntelliJ IDEA、Temurin JDK 以及裸命令列環境",
+        "AGP 版本決策，依當前 IDE 版本在對應表中就近向下比對",
+        "對應表落後回退，當前 IDE 比表中全部項目都新時改用 auto 選擇，不再靜默降級到過舊的 AGP",
+        "AGP 版本依 Gradle 相容表設定上限，確保選出的版本當前 Gradle 一定能載入",
+        "Kotlin Gradle 插件版本決策，跟隨當前 Gradle 支援的最新版本",
+        "相容性資料隨插件一同散布，使用端專案的 `gradle/data` 目錄可覆寫同名資料檔案",
+        "`version.properties` 中的 `OVERRIDDEN_*` 逃生門，可直接指定版本以跳過自動決策",
+        "決策結果透過 `PlatformVersionsExtension` 公開，可用於 buildscript 的 classpath 宣告",
+        "最小使用端專案 `sample`，用於驗證三種典型情境下的決策結果",
+        "README 與 CHANGELOG 的多語言資源：西班牙文、法文、俄文、阿拉伯文、日文、韓文、英文、簡體中文、香港繁體、台灣繁體"
+      ]
+    }
+  }
+}

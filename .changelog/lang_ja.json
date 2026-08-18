@@ -1,0 +1,25 @@
+{
+  "changelog_label_hint": "ヒント",
+  "changelog_label_feature": "機能",
+  "changelog_label_fix": "修正",
+  "changelog_label_improvement": "改善",
+  "changelog_label_dependency": "依存関係",
+  "$data": {
+    "v1.0.0": {
+      "released_date": "2026/08/18",
+      "feature": [
+        "AGP と Kotlin Gradle プラグインのバージョンを自動決定する Gradle Settings プラグイン `org.autojs.build.platform-versions`",
+        "ビルドホストの識別。Android Studio、IntelliJ IDEA、Temurin JDK および素のコマンドライン環境に対応",
+        "AGP バージョンの決定。現在の IDE バージョンをもとにマッピング表で直近の下位一致を探索",
+        "マッピング表が古い場合のフォールバック。現在の IDE が表のすべての項目より新しいときは auto 選択に切り替え、古すぎる AGP へ暗黙にダウングレードしない",
+        "AGP バージョンに Gradle 互換表による上限を適用し、選ばれたバージョンを現在の Gradle が必ずロードできることを保証",
+        "Kotlin Gradle プラグインバージョンの決定。現在の Gradle が対応する最新バージョンに追従",
+        "互換性データをプラグインに同梱して配布。利用側プロジェクトの `gradle/data` ディレクトリで同名のデータファイルを上書き可能",
+        "`version.properties` の `OVERRIDDEN_*` という避難口。バージョンを直接指定して自動決定をスキップ可能",
+        "決定結果を `PlatformVersionsExtension` 経由で公開。buildscript の classpath 宣言に利用可能",
+        "最小の利用側プロジェクト `sample`。3 つの典型的なシナリオでの決定結果を検証",
+        "README と CHANGELOG の多言語リソース: スペイン語、フランス語、ロシア語、アラビア語、日本語、韓国語、英語、簡体中国語、繁体中国語 (香港)、繁体中国語 (台湾)"
+      ]
+    }
+  }
+}

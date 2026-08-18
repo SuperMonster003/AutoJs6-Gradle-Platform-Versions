@@ -1,0 +1,25 @@
+{
+  "changelog_label_hint": "힌트",
+  "changelog_label_feature": "기능",
+  "changelog_label_fix": "수정",
+  "changelog_label_improvement": "개선",
+  "changelog_label_dependency": "의존성",
+  "$data": {
+    "v1.0.0": {
+      "released_date": "2026/08/18",
+      "feature": [
+        "AGP와 Kotlin Gradle 플러그인 버전을 자동으로 결정하는 Gradle Settings 플러그인 `org.autojs.build.platform-versions`",
+        "빌드 호스트 식별, Android Studio/IntelliJ IDEA/Temurin JDK 및 순수 명령줄 환경 지원",
+        "AGP 버전 결정, 현재 IDE 버전을 기준으로 매핑 표에서 가장 가까운 하위 항목 선택",
+        "매핑 표 지연 시 대체 처리, 현재 IDE가 표의 모든 항목보다 새로우면 auto 선택으로 전환하여 지나치게 낮은 AGP로 조용히 내려가지 않음",
+        "AGP 버전에 Gradle 호환 표 기반 상한 적용, 선택된 버전을 현재 Gradle이 반드시 로드할 수 있도록 보장",
+        "Kotlin Gradle 플러그인 버전 결정, 현재 Gradle이 지원하는 최신 버전을 따름",
+        "호환성 데이터를 플러그인과 함께 배포, 소비 측 프로젝트의 `gradle/data` 디렉터리로 같은 이름의 데이터 파일을 덮어쓸 수 있음",
+        "`version.properties`의 `OVERRIDDEN_*` 비상구, 버전을 직접 지정하여 자동 결정을 건너뛸 수 있음",
+        "결정 결과를 `PlatformVersionsExtension`으로 노출, buildscript의 classpath 선언에 사용 가능",
+        "최소 소비 측 프로젝트 `sample`, 세 가지 대표 시나리오에서 결정 결과를 검증",
+        "README와 CHANGELOG의 다국어 리소스: 스페인어/프랑스어/러시아어/아랍어/일본어/한국어/영어/중국어 간체/홍콩 번체/대만 번체"
+      ]
+    }
+  }
+}

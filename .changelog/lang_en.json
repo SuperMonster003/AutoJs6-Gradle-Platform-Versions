@@ -1,0 +1,25 @@
+{
+  "changelog_label_hint": "Hint",
+  "changelog_label_feature": "Feature",
+  "changelog_label_fix": "Fix",
+  "changelog_label_improvement": "Improvement",
+  "changelog_label_dependency": "Dependency",
+  "$data": {
+    "v1.0.0": {
+      "released_date": "2026/08/18",
+      "feature": [
+        "Gradle Settings plugin `org.autojs.build.platform-versions`, which decides the AGP and Kotlin Gradle plugin versions automatically",
+        "Build host detection, covering Android Studio/IntelliJ IDEA/Temurin JDK and the bare command line",
+        "AGP version decision, matching the current IDE version against the mapping table and rounding down to the nearest entry",
+        "Stale mapping table fallback, switching to auto selection when the current IDE is newer than every entry in the table, instead of silently downgrading to an outdated AGP",
+        "AGP version capped against the Gradle compatibility table, so the chosen version is always loadable by the current Gradle",
+        "Kotlin Gradle plugin version decision, following the newest version the current Gradle supports",
+        "Compatibility data shipped with the plugin, with a `gradle/data` directory in the consumer project able to override any data file of the same name",
+        "`OVERRIDDEN_*` escape hatch in `version.properties`, for pinning versions directly and skipping the automatic decision",
+        "Decision results exposed through `PlatformVersionsExtension`, ready for buildscript classpath declarations",
+        "Minimal consumer project `sample`, for verifying the decision results in three typical scenarios",
+        "Multilingual resources for README and CHANGELOG: Spanish/French/Russian/Arabic/Japanese/Korean/English/Simplified Chinese/Traditional Chinese (Hong Kong)/Traditional Chinese (Taiwan)"
+      ]
+    }
+  }
+}
