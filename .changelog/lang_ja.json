@@ -5,6 +5,13 @@
   "changelog_label_improvement": "改善",
   "changelog_label_dependency": "依存関係",
   "$data": {
+    "v1.4.1": {
+      "released_date": "2026/08/18",
+      "improvement": [
+        "マッピング表が古くなっている場合に、説明用の注記をコンソールへ出力しないようにした。バージョン行の末尾に付く [auto-specified] だけで由来は分かるうえ、注記はそれが説明する概要よりも長かった",
+        "あわせて notes の API を削除。PlatformVersionsExtension.notes と Formatted の notes 引数はなくなったため、このプロパティを読んでいた利用側のスクリプトは修正が必要である"
+      ]
+    },
     "v1.4.0": {
       "released_date": "2026/08/18",
       "fix": [

@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.0"
+        id("org.autojs.build.platform-versions") version "1.4.1"
     }
 }
 
@@ -150,6 +150,13 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `優化` 對應表落後時不再向主控台輸出解釋性註記。版本行末尾的 [auto-specified] 後綴已足以說明來由，而該註記比它所解釋的摘要還長
+* `優化` 隨之移除 notes 相關介面：PlatformVersionsExtension.notes 與 Formatted 的 notes 參數不再存在，讀取過該屬性的取用端指令碼需一併調整
+
 # v1.4.0
 
 ###### 2026/08/18
@@ -170,16 +177,6 @@ gradle/data/android-studio-agp-compat.properties
 * `優化` README 徽章同步上述版本，並新增 AGP 徽章
 * `優化` 遷移指令碼支援 kotlin(...) 語法糖與 kotlin-android/kotlin-kapt/kotlin-parcelize 等舊式簡稱，簡稱會展開為完整的插件 id
 * `優化` 遷移指令碼會跳過兩類無法遷移的儲存庫：以 apply(from=) 引入且引用 AGP 型別的指令碼片段，以及啟用了相依性驗證的儲存庫
-
-# v1.2.0
-
-###### 2026/08/18
-
-* `新增` 模組指令碼改造指令碼 `.python/migrate_modules.py`，把未指定版本的插件套用改為帶版本的形式，版本取自系統屬性
-* `新增` 決策出的 KSP 版本新增以 `gradle.ksp.version` 系統屬性發布，與 AGP 及 Kotlin 的命名對齊
-* `修復` 模組改造指令碼的回復未能還原原始檔案，且會遺留備份檔案
-* `優化` settings 遷移指令碼會先檢查模組指令碼是否就緒，未就緒時給出提示而不改寫，避免留下無法建置的中間狀態
-* `優化` settings 遷移指令碼改為將插件併入既有的 plugins 區塊並移到 `includeBuild` 之前，而非新增一個區塊
 
 ##### 更多發行歷史可參閱
 

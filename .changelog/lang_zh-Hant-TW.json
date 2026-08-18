@@ -5,6 +5,13 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.4.1": {
+      "released_date": "2026/08/18",
+      "improvement": [
+        "對應表落後時不再向主控台輸出解釋性註記。版本行末尾的 [auto-specified] 後綴已足以說明來由，而該註記比它所解釋的摘要還長",
+        "隨之移除 notes 相關介面：PlatformVersionsExtension.notes 與 Formatted 的 notes 參數不再存在，讀取過該屬性的取用端指令碼需一併調整"
+      ]
+    },
     "v1.4.0": {
       "released_date": "2026/08/18",
       "fix": [

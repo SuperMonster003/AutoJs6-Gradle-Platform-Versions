@@ -5,6 +5,13 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.4.1": {
+      "released_date": "2026/08/18",
+      "improvement": [
+        "No explanatory note is printed to the console when the mapping table has fallen behind. The [auto-specified] suffix at the end of the version line already says how the version was reached, and the note ran longer than the summary it explained",
+        "The notes API is removed along with it: PlatformVersionsExtension.notes and the notes parameter of Formatted are gone, so a consuming script that read that property needs adjusting"
+      ]
+    },
     "v1.4.0": {
       "released_date": "2026/08/18",
       "fix": [

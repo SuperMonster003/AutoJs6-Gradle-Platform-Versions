@@ -4,7 +4,7 @@ import org.autojs.build.platform.VersionComparator.sortByVersionName
 import org.gradle.util.GradleVersion
 
 /** A decided version plus the hint suffix explaining how it was reached. */
-data class Decision(val version: String?, val hintSuffix: String, val notices: List<String> = emptyList())
+data class Decision(val version: String?, val hintSuffix: String)
 
 /**
  * Decides which AGP and Kotlin Gradle plugin versions to put on the buildscript classpath.
@@ -41,7 +41,6 @@ class VersionDecider(
             true -> Identifier.NEAREST_LOWER_MATCHED_SUFFIX
             else -> ""
         }
-        val notices = mutableListOf<String>()
 
         val maxSupportedAgpVersion = maxSupportedAgpVersion()
             ?: return Decision(matchedValue, hintSuffix)
@@ -71,28 +70,26 @@ class VersionDecider(
                 ceiling != null && VersionComparator.compareVersionStrings(maxSupportedAgpVersion, ceiling) > 0 -> ceiling
                 else -> maxSupportedAgpVersion
             }
-            notices += "Note: ${platform.fullName} ${platform.version} is newer than " +
-                    "all agpVersionMap entries, AGP falls back to auto selection."
-            return Decision(capped, Identifier.AUTO_SPECIFIED_SUFFIX, notices)
+            // The [auto-specified] suffix on the version line is report enough. A console
+            // note spelling the same thing out ran longer than the summary it explained.
+            // zh-CN: 版本行上的 [auto-specified] 后缀已足以说明来由. 再用一条控制台注记复述,
+            // 反而比它所解释的摘要还长.
+            return Decision(capped, Identifier.AUTO_SPECIFIED_SUFFIX)
         }
 
-        matchedValue ?: return Decision(
-            maxSupportedAgpVersion,
-            hintSuffix + Identifier.AUTO_SPECIFIED_SUFFIX,
-            notices,
-        )
+        matchedValue ?: return Decision(maxSupportedAgpVersion, hintSuffix + Identifier.AUTO_SPECIFIED_SUFFIX)
 
         if (!matchedValue.contains("\\d+\\.\\d+\\.\\d+".toRegex())) {
             hintSuffix += Identifier.AUTO_SPECIFIED_SUFFIX
-            return Decision(getAgpReleasedVersion(matchedValue) ?: "$matchedValue.0", hintSuffix, notices)
+            return Decision(getAgpReleasedVersion(matchedValue) ?: "$matchedValue.0", hintSuffix)
         }
 
         if (VersionComparator.compareVersionStrings(matchedValue, maxSupportedAgpVersion) > 0) {
             hintSuffix += Identifier.DOWNGRADED_SUFFIX
-            return Decision(maxSupportedAgpVersion, hintSuffix, notices)
+            return Decision(maxSupportedAgpVersion, hintSuffix)
         }
 
-        return Decision(matchedValue, hintSuffix, notices)
+        return Decision(matchedValue, hintSuffix)
     }
 
     /**

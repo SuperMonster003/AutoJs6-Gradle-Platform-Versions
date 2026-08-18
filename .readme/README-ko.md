@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.0"
+        id("org.autojs.build.platform-versions") version "1.4.1"
     }
 }
 
@@ -150,6 +150,13 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `개선` 매핑 표가 뒤처진 경우 콘솔에 설명용 참고 사항을 더 이상 출력하지 않음. 버전 줄 끝의 [auto-specified] 접미사만으로도 경위를 알 수 있으며, 그 참고 사항은 설명 대상인 요약보다 길었음
+* `개선` 이에 따라 notes API를 제거함. PlatformVersionsExtension.notes와 Formatted의 notes 매개변수가 사라졌으므로, 해당 속성을 읽던 소비 측 스크립트는 함께 조정해야 함
+
 # v1.4.0
 
 ###### 2026/08/18
@@ -170,16 +177,6 @@ gradle/data/android-studio-agp-compat.properties
 * `개선` README 배지를 위 버전에 맞추고 AGP 배지를 새로 추가
 * `개선` 마이그레이션 스크립트가 kotlin(...) 문법 설탕과 kotlin-android/kotlin-kapt/kotlin-parcelize 같은 옛 방식의 짧은 이름을 지원하며, 짧은 이름은 완전한 플러그인 id로 확장됨
 * `개선` 마이그레이션 스크립트가 마이그레이션할 수 없는 두 종류의 저장소를 건너뜀: apply(from=) 방식으로 가져온 스크립트 조각이 AGP 타입을 참조하는 저장소와, 의존성 검증이 켜져 있는 저장소
-
-# v1.2.0
-
-###### 2026/08/18
-
-* `기능` 모듈 스크립트 개조 스크립트 `.python/migrate_modules.py`, 버전이 없는 플러그인 적용을 버전이 있는 형태로 바꾸며 버전은 system property에서 가져옴
-* `기능` 결정된 KSP 버전을 `gradle.ksp.version` system property로도 게시, AGP 및 Kotlin의 명명과 맞춤
-* `수정` 모듈 개조 스크립트의 롤백이 원본 파일을 복원하지 못하고 백업 파일을 남기던 문제
-* `개선` settings 마이그레이션 스크립트가 모듈 스크립트의 준비 여부를 먼저 확인하고, 준비되지 않았으면 안내만 하고 수정하지 않아 빌드할 수 없는 중간 상태를 남기지 않음
-* `개선` settings 마이그레이션 스크립트가 플러그인을 기존 plugins block에 합치고 `includeBuild` 앞으로 옮기도록 변경, 새 블록을 추가하지 않음
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

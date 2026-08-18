@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.0"
+        id("org.autojs.build.platform-versions") version "1.4.1"
     }
 }
 
@@ -150,6 +150,13 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `优化` 映射表滞后时不再向控制台输出解释性注记. 版本行末尾的 [auto-specified] 后缀已足以说明来由, 而该注记比它所解释的摘要还长
+* `优化` 随之移除 notes 相关接口: PlatformVersionsExtension.notes 与 Formatted 的 notes 参数不再存在, 读取过该属性的消费端脚本需一并调整
+
 # v1.4.0
 
 ###### 2026/08/18
@@ -170,16 +177,6 @@ gradle/data/android-studio-agp-compat.properties
 * `优化` README 徽章同步上述版本, 并新增 AGP 徽章
 * `优化` 迁移脚本支持 kotlin(...) 语法糖与 kotlin-android/kotlin-kapt/kotlin-parcelize 等旧式短名, 短名会展开为完整插件 id
 * `优化` 迁移脚本跳过两类无法迁移的仓库: 使用 apply(from=) 引入且引用 AGP 类型的脚本片段, 以及启用了依赖校验的仓库
-
-# v1.2.0
-
-###### 2026/08/18
-
-* `新增` 模块脚本改造脚本 `.python/migrate_modules.py`, 把无版本的插件应用改为带版本形式, 版本取自系统属性
-* `新增` 决策出的 KSP 版本新增以 `gradle.ksp.version` 系统属性发布, 与 AGP 和 Kotlin 的命名对齐
-* `修复` 模块改造脚本的回滚未能还原原始文件, 且会遗留备份文件
-* `优化` settings 迁移脚本会先检查模块脚本是否就绪, 未就绪时给出提示而不改写, 避免留下无法构建的中间状态
-* `优化` settings 迁移脚本改为把插件并入已有的 plugins 块并移到 `includeBuild` 之前, 而非新增一个块
 
 ##### 更多发行历史可参阅
 

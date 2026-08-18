@@ -46,7 +46,7 @@ class VersionDeciderTest {
     fun `scenario B - a covered IDE version follows the map`() {
         val decision = decider(idea("2026.1.2")).decideAgpVersion()
         assertEquals("9.0.1", decision.version)
-        assertTrue(decision.notices.isEmpty()) { "an up-to-date map should not raise a notice" }
+        assertEquals("", decision.hintSuffix) { "an up-to-date map should be followed verbatim" }
     }
 
     @Test
@@ -63,7 +63,6 @@ class VersionDeciderTest {
         // rather than 9.0.1, the newest entry the stale map happens to know.
         assertEquals(decider(idea("2027.1")).maxSupportedAgpVersion(), decision.version)
         assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix)
-        assertTrue(decision.notices.single().contains("newer than all agpVersionMap entries"))
     }
 
     @Test
@@ -75,7 +74,7 @@ class VersionDeciderTest {
 
         val decision = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
         assertEquals("9.2.1", decision.version) { "one line of headroom above 9.1 is the 9.2 line" }
-        assertTrue(decision.notices.isNotEmpty())
+        assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix) { "a stale map means auto selection" }
     }
 
     @Test
@@ -109,7 +108,9 @@ class VersionDeciderTest {
         listOf("2026.2", "2026.2.1").forEach { version ->
             val decision = decider(idea(version)).decideAgpVersion()
             assertEquals("9.0.1", decision.version) { "unexpected AGP for IDEA $version" }
-            assertTrue(decision.notices.isNotEmpty()) { "IDEA $version should report the fallback" }
+            assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix) {
+                "IDEA $version should report the fallback"
+            }
         }
     }
 
@@ -121,7 +122,7 @@ class VersionDeciderTest {
         // Gradle 9.3.0 caps AGP at the 9.0 line, which still carries the built-in Kotlin
         // support that AGP 8.12.0 lacks, so the build no longer breaks.
         assertEquals("9.0.1", decision.version) { "should not silently downgrade to 8.12.0" }
-        assertTrue(decision.notices.isNotEmpty())
+        assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix) { "the fallback is reported as auto" }
     }
 
     @Test
@@ -131,7 +132,6 @@ class VersionDeciderTest {
         // AGP 9.1 would need Gradle 9.3.1, leaving 9.0.1 as the newest usable release.
         assertEquals("9.0.1", decision.version)
         assertTrue(decision.hintSuffix.contains(Identifier.AUTO))
-        assertTrue(decision.notices.isEmpty())
     }
 
     @Test
@@ -174,7 +174,7 @@ class VersionDeciderTest {
         val platform = idea(Consts.DEFAULT_VERSION)
         val decision = decider(platform).decideAgpVersion()
         assertEquals("9.0.1", decision.version)
-        assertTrue(decision.notices.isEmpty()) { "an unknown version must not be reported as stale" }
+        assertTrue(decision.hintSuffix.contains(Identifier.AUTO))
     }
 
     @Test

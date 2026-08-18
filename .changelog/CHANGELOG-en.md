@@ -23,6 +23,13 @@ CHANGELOG.md is currently available in the following languages:
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `Improvement` No explanatory note is printed to the console when the mapping table has fallen behind. The [auto-specified] suffix at the end of the version line already says how the version was reached, and the note ran longer than the summary it explained
+* `Improvement` The notes API is removed along with it: PlatformVersionsExtension.notes and the notes parameter of Formatted are gone, so a consuming script that read that property needs adjusting
+
 # v1.4.0
 
 ###### 2026/08/18

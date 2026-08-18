@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.0"
+        id("org.autojs.build.platform-versions") version "1.4.1"
     }
 }
 
@@ -150,6 +150,13 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `改善` マッピング表が古くなっている場合に、説明用の注記をコンソールへ出力しないようにした。バージョン行の末尾に付く [auto-specified] だけで由来は分かるうえ、注記はそれが説明する概要よりも長かった
+* `改善` あわせて notes の API を削除。PlatformVersionsExtension.notes と Formatted の notes 引数はなくなったため、このプロパティを読んでいた利用側のスクリプトは修正が必要である
+
 # v1.4.0
 
 ###### 2026/08/18
@@ -170,16 +177,6 @@ gradle/data/android-studio-agp-compat.properties
 * `改善` README のバッジを上記のバージョンに合わせ、AGP のバッジを追加
 * `改善` 移行スクリプトが kotlin(...) の糖衣構文と、kotlin-android/kotlin-kapt/kotlin-parcelize といった旧来の短縮名に対応。短縮名は完全なプラグイン id へ展開される
 * `改善` 移行スクリプトは移行できない 2 種類のリポジトリをスキップするようにした。apply(from=) で読み込むスクリプト片が AGP の型を参照しているものと、依存関係の検証を有効にしているもの
-
-# v1.2.0
-
-###### 2026/08/18
-
-* `機能` モジュールスクリプトの改修スクリプト `.python/migrate_modules.py`。バージョン指定のないプラグイン適用をバージョン付きの形式へ書き換え、バージョンはシステムプロパティから取得
-* `機能` 決定された KSP バージョンを `gradle.ksp.version` システムプロパティとしても公開。AGP や Kotlin の命名と揃えた
-* `修正` モジュール改修スクリプトのロールバックが元のファイルを復元できず、バックアップファイルも残していた
-* `改善` settings 移行スクリプトはモジュールスクリプトが準備できているかを先に確認し、未準備の場合は書き換えず案内のみを表示。ビルドできない中間状態を残さないようにした
-* `改善` settings 移行スクリプトはプラグインを既存の plugins ブロックへまとめ、`includeBuild` の前へ移動するように変更。新しいブロックは追加しない
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

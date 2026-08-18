@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.0"
+        id("org.autojs.build.platform-versions") version "1.4.1"
     }
 }
 
@@ -150,6 +150,13 @@ Si el proyecto consumidor coloca un archivo con el mismo nombre en su propio dir
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `Mejora` Ya no se imprime en la consola ninguna nota explicativa cuando la tabla de correspondencias se ha quedado atrás. El sufijo [auto-specified] al final de la línea de versión ya indica cómo se llegó a ella, y la nota resultaba más larga que el resumen que explicaba
+* `Mejora` Con ello se elimina la API de notas: PlatformVersionsExtension.notes y el parámetro notes de Formatted dejan de existir, de modo que un script consumidor que leyera esa propiedad debe ajustarse
+
 # v1.4.0
 
 ###### 2026/08/18
@@ -170,16 +177,6 @@ Si el proyecto consumidor coloca un archivo con el mismo nombre en su propio dir
 * `Mejora` Insignias del README ajustadas a las versiones anteriores, con la incorporación de una insignia de AGP
 * `Mejora` El script de migración admite el azúcar sintáctico kotlin(...) y los nombres cortos antiguos como kotlin-android/kotlin-kapt/kotlin-parcelize, que se expanden al id completo del plugin
 * `Mejora` El script de migración omite dos clases de repositorio que no se pueden migrar: aquellos cuyos fragmentos de script incorporados mediante apply(from=) hacen referencia a tipos de AGP, y aquellos que tienen activada la verificación de dependencias
-
-# v1.2.0
-
-###### 2026/08/18
-
-* `Función` Script de conversión de los scripts de módulo `.python/migrate_modules.py`, que reescribe las aplicaciones de plugins sin versión a la forma con versión, tomando la versión de una propiedad del sistema
-* `Función` La versión de KSP decidida se publica ahora también como la propiedad del sistema `gradle.ksp.version`, en consonancia con la nomenclatura usada para AGP y Kotlin
-* `Corrección` La reversión del script de conversión de módulos no restauraba los archivos originales y dejaba atrás las copias de seguridad
-* `Mejora` El script de migración de settings comprueba primero si los scripts de módulo están preparados y, cuando no lo están, avisa en lugar de reescribir, para no dejar un estado intermedio que no se pueda compilar
-* `Mejora` El script de migración de settings pasa a integrar el plugin en el bloque plugins existente y lo mueve delante de `includeBuild`, en vez de añadir un bloque nuevo
 
 ##### Para consultar un historial más completo, véase
 

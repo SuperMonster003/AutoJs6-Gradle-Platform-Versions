@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.0"
+        id("org.autojs.build.platform-versions") version "1.4.1"
     }
 }
 
@@ -150,6 +150,13 @@ If a consumer project places a file of the same name under its own `gradle/data`
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `Improvement` No explanatory note is printed to the console when the mapping table has fallen behind. The [auto-specified] suffix at the end of the version line already says how the version was reached, and the note ran longer than the summary it explained
+* `Improvement` The notes API is removed along with it: PlatformVersionsExtension.notes and the notes parameter of Formatted are gone, so a consuming script that read that property needs adjusting
+
 # v1.4.0
 
 ###### 2026/08/18
@@ -170,16 +177,6 @@ If a consumer project places a file of the same name under its own `gradle/data`
 * `Improvement` README badges brought in line with the versions above, with an AGP badge added
 * `Improvement` The migration script now handles the kotlin(...) shorthand as well as legacy short names such as kotlin-android/kotlin-kapt/kotlin-parcelize, the short names being expanded into full plugin ids
 * `Improvement` The migration script skips two kinds of repository that cannot be migrated: those whose script fragments pulled in through apply(from=) reference AGP types, and those with dependency verification enabled
-
-# v1.2.0
-
-###### 2026/08/18
-
-* `Feature` Module script migration script `.python/migrate_modules.py`, which rewrites versionless plugin applications into the versioned form, with the version taken from a system property
-* `Feature` The decided KSP version is now published as the `gradle.ksp.version` system property as well, in line with the naming used for AGP and Kotlin
-* `Fix` Rollback in the module migration script failed to restore the original files and left the backups behind
-* `Improvement` The settings migration script now checks first whether the module scripts are ready, and reports instead of rewriting when they are not, so that no unbuildable intermediate state is left behind
-* `Improvement` The settings migration script now merges the plugin into the existing plugins block and moves it ahead of `includeBuild`, instead of adding a new block
 
 ##### For more release history, see
 

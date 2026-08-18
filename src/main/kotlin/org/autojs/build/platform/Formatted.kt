@@ -16,14 +16,12 @@ class Formatted(
     private val contents: Collection<String> = emptyList(),
     subtitle: String? = null,
     footers: Collection<String> = emptyList(),
-    notes: Collection<String> = emptyList(),
 ) {
 
     private val lines: List<String> = run {
         val elements = mutableListOf<String>()
         subtitle?.let { elements.add(it) }
         elements.addAll(contents)
-        elements.addAll(notes)
         val maxLength = elements.plus(title).plus(footers).maxOf { it.length }
 
         listOfNotNull(
@@ -34,10 +32,6 @@ class Formatted(
             *contents.toTypedArray(),
             "-".repeat(maxLength).takeUnless { footers.isEmpty() },
             *footers.toTypedArray(),
-            // Notes sit below the footers, past a rule of their own, so a decision that
-            // needs explaining does not break up the list of decisions.
-            "-".repeat(maxLength).takeUnless { notes.isEmpty() },
-            *notes.toTypedArray(),
             "=".repeat(maxLength),
             "",
         )

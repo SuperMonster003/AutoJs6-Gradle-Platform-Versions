@@ -23,6 +23,13 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.4.1
+
+###### 2026/08/18
+
+* `Amélioration` Plus aucune note explicative n'est affichée dans la console lorsque la table de correspondance a pris du retard. Le suffixe [auto-specified] en fin de ligne de version indique déjà comment la version a été obtenue, et la note était plus longue que le résumé qu'elle expliquait
+* `Amélioration` L'API notes disparaît par la même occasion : PlatformVersionsExtension.notes et le paramètre notes de Formatted n'existent plus, un script consommateur qui lisait cette propriété doit donc être adapté
+
 # v1.4.0
 
 ###### 2026/08/18

@@ -5,6 +5,13 @@
   "changelog_label_improvement": "Amélioration",
   "changelog_label_dependency": "Dépendance",
   "$data": {
+    "v1.4.1": {
+      "released_date": "2026/08/18",
+      "improvement": [
+        "Plus aucune note explicative n'est affichée dans la console lorsque la table de correspondance a pris du retard. Le suffixe [auto-specified] en fin de ligne de version indique déjà comment la version a été obtenue, et la note était plus longue que le résumé qu'elle expliquait",
+        "L'API notes disparaît par la même occasion : PlatformVersionsExtension.notes et le paramètre notes de Formatted n'existent plus, un script consommateur qui lisait cette propriété doit donc être adapté"
+      ]
+    },
     "v1.4.0": {
       "released_date": "2026/08/18",
       "fix": [
