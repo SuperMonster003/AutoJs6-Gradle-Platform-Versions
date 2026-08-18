@@ -105,7 +105,7 @@ Gradle 8 迟早废弃, 与其维护双版本兼容, 不如收敛到 Gradle 9 单
 - [x] M8.4 迁移脚本新增两类跳过判定: AGP 类型脚本片段, 依赖校验。
 - [x] M8.5 已迁移仓库全部验证通过, 并抽样完成真实编译 (产出 APK)。
 
-**结果: 40 个仓库迁移完成, 17 个保留原机制。**
+**首轮结果: 40 个仓库迁移完成, 17 个保留原机制。**
 
 保留原因分两类:
 
@@ -113,6 +113,32 @@ Gradle 8 迟早废弃, 与其维护双版本兼容, 不如收敛到 Gradle 9 单
 2. **启用依赖校验 (1 个)**: AutoJs6-Plugin-Python-Runtime 的 `gradle/verification-metadata.xml` 按校验和锁定全部依赖, 新插件不在其中。是否信任本地发布的未签名产物属于该仓库的安全决策, 记入白名单后即可迁移。
 
 `Utils.kt` 的 A/B 变体差异未造成任何问题: 两个变体只在 AGP 低于 9 时行为不同, 而迁移后决策恒为 AGP 9.x。
+
+### M9 — 收尾余下仓库
+
+- [x] M9.1 修复 IDEA 下 AGP 版本溢出: 映射表补回 2026.2 条目, 并给 stale-map 回退加上界。
+- [x] M9.2 Python-Runtime 移除依赖校验并完成迁移。
+- [ ] M9.3 16 个仓库的 AGP 脚本片段改写为 convention 插件。
+
+#### AGP 版本溢出
+
+移除 9 以前的条目后, IntelliJ 映射表只剩 2026.1.2 一条, 导致更新的 IDE 被判为映射表滞后而回退到 auto 选择。auto 只受 Gradle 约束, 在 Gradle 9.6.1 上取到 AGP 9.2.1, 被 IDE 以 `Latest supported version is AGP 9.1.0` 拒绝。
+
+两处修改: 映射表补上 `2026.2` 条目并写入 IDE 自报的上限; stale-map 回退的结果被限制在最新已知条目之上一个小版本线内 (映射表滞后到下一线都不可用时该限制让位)。
+
+教训: **映射表的最新条目必须写出最新 IDE 的真实上限**, 而不只是保留最旧的受支持版本 —— 越过表尾即进入只受 Gradle 约束的 auto 选择。
+
+#### 脚本片段改写方案 (已验证)
+
+`apply(from = ...)` 片段自带 buildscript 的做法**不可行**: 会得到 `ApplicationExtensionImpl cannot be cast to ApplicationExtension`, 因为两个 classloader 各持一份 AGP 类。
+
+可行方案是改为 build-logic 的 convention 插件:
+
+1. `build-logic/convention/build.gradle.kts` 加 `compileOnly("com.android.tools.build:gradle:${System.getProperty("gradle.agp.version")}")` — 用 compileOnly, 运行时复用模块已加载的 AGP;
+2. 插件类在 `project.plugins.withId("com.android.application") { }` 回调内配置 `android {}`;
+3. 模块脚本以 `id("...")` 应用, 删除原 `apply(from = ...)`。
+
+片段共 3 个变体 (227 / 227 / 345 行), 其中一个变体覆盖 13 个 Worktree, 改写后可批量复制。
 
 ## 四. 迁移期间发现的上游缺陷
 
