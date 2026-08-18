@@ -59,10 +59,17 @@ BOOTSTRAP_TEMPLATE = """pluginManagement {{
         id("{plugin_id}") version "{plugin_version}"{extra_plugins}
     }}
 }}
+"""
 
-plugins {{
+# Gradle allows one plugins block per script, so the plugin joins the existing one
+# rather than getting a block of its own. It has to be applied before includeBuild,
+# which is why that block moves up when it sits below.
+ROOT_PLUGINS_TEMPLATE = """plugins {{
     id("{plugin_id}")
 }}
+"""
+
+ROOT_PLUGIN_ENTRY = """    id("{plugin_id}")
 """
 
 EXTRA_PLUGIN_TEMPLATE = """
@@ -71,6 +78,15 @@ EXTRA_PLUGIN_TEMPLATE = """
 # A repository whose settings script puts AGP on its own buildscript classpath cannot be
 # migrated by this tool; see the note on BOOTSTRAP_TEMPLATE.
 AGP_CLASSPATH_MARKER = "com.android.tools.build:gradle"
+
+# Plugins that module scripts currently apply without a version, relying on that
+# classpath. Kept in step with migrate_modules.py.
+VERSIONED_PLUGIN_IDS = {
+    "com.android.application",
+    "com.android.library",
+    "com.google.devtools.ksp",
+    "org.jetbrains.kotlin.android",
+}
 
 PLUGIN_GROUP = "org.autojs.build"
 PLUGIN_ARTIFACT = "autojs6-gradle-platform-versions"
@@ -196,6 +212,25 @@ def needs_agp_classpath(text: str) -> bool:
     return AGP_CLASSPATH_MARKER in text
 
 
+def has_unversioned_modules(repo_root: Path) -> bool:
+    """Tells whether any module still applies a versioned plugin without a version.
+
+    Such a repository is not ready for this step: its modules would lose the classpath
+    that currently supplies those plugins. migrate_modules.py handles them first.
+    """
+    for script in sorted(repo_root.rglob("build.gradle.kts")):
+        if script.parent == repo_root:
+            continue
+        relative = script.relative_to(repo_root)
+        if any(part in {"build-logic", "build", ".gradle", "buildSrc"} for part in relative.parts):
+            continue
+        for line in script.read_text(encoding="utf-8").splitlines():
+            match = re.match(r'^\s*id\("([^"]+)"\)\s*$', line)
+            if match and match.group(1) in VERSIONED_PLUGIN_IDS:
+                return True
+    return False
+
+
 def migrate_text(text: str, plugin_version: str, repo_root: Path):
     """Returns the migrated settings text, or None when nothing needs doing."""
     if PLUGIN_ID in text:
@@ -211,11 +246,24 @@ def migrate_text(text: str, plugin_version: str, repo_root: Path):
     # application there still needs its version supplied by the bootstrap.
     outside = "".join(lines[:start] + lines[end:])
     bootstrap = build_bootstrap(repo_root, plugin_version, outside)
-
-    # The root plugins block stays as it is; the bootstrap supplies the versions it needs.
     remaining = lines[:start] + lines[end:]
 
-    # The bootstrap has to precede includeBuild: the included build reads the properties
+    # The root plugins block is lifted out and re-inserted with the bootstrap, since the
+    # plugin has to be applied before includeBuild and only one such block is allowed.
+    root_plugins_span = locate_top_level_block(remaining, r"^plugins\s*\{")
+    if root_plugins_span is None:
+        root_plugins = [ROOT_PLUGINS_TEMPLATE.format(plugin_id=PLUGIN_ID), "\n"]
+    else:
+        plugins_start, plugins_end = root_plugins_span
+        block = remaining[plugins_start:plugins_end]
+        # Insert the plugin id just after the opening brace, keeping the rest verbatim.
+        block = block[:1] + [ROOT_PLUGIN_ENTRY.format(plugin_id=PLUGIN_ID)] + block[1:]
+        root_plugins = block + ["\n"]
+        remaining = remaining[:plugins_start] + remaining[plugins_end:]
+        while plugins_start < len(remaining) and remaining[plugins_start].strip() == "":
+            remaining.pop(plugins_start)
+
+    # Both blocks have to precede includeBuild: the included build reads the properties
     # the plugin publishes, and settings plugins are applied before it is evaluated.
     insert_at = next(
         (i for i, line in enumerate(remaining) if re.match(r"^includeBuild\s*\(", line)),
@@ -224,7 +272,7 @@ def migrate_text(text: str, plugin_version: str, repo_root: Path):
     if insert_at is None:
         insert_at = min(start, len(remaining))
 
-    return "".join(remaining[:insert_at] + [bootstrap, "\n"] + remaining[insert_at:])
+    return "".join(remaining[:insert_at] + [bootstrap, "\n"] + root_plugins + remaining[insert_at:])
 
 
 def read_plugin_version(root: Path) -> str:
@@ -241,8 +289,8 @@ def command_list(settings_files):
         text = settings.read_text(encoding="utf-8")
         if PLUGIN_ID in text:
             state = "migrated"
-        elif needs_agp_classpath(text):
-            state = f"{len(text.splitlines())} lines, needs module-side change first"
+        elif needs_agp_classpath(text) and has_unversioned_modules(settings.parent):
+            state = f"{len(text.splitlines())} lines, run migrate_modules.py first"
         else:
             state = f"{len(text.splitlines())} lines, ready"
         print(f"  {settings.parent.name:55} {state}")
@@ -253,7 +301,7 @@ def command_migrate(settings_files, plugin_version: str, apply: bool, force: boo
     for settings in settings_files:
         text = settings.read_text(encoding="utf-8")
 
-        if needs_agp_classpath(text) and not force:
+        if needs_agp_classpath(text) and has_unversioned_modules(settings.parent) and not force:
             blocked.append(settings.parent.name)
             continue
 
@@ -279,27 +327,19 @@ def command_migrate(settings_files, plugin_version: str, apply: bool, force: boo
     if blocked:
         print(
             f"\n{len(blocked)} repositories declare AGP on the settings buildscript classpath "
-            "and need a module-side change first:"
+            "and still have unversioned module scripts:"
         )
         for name in blocked:
             print(f"  {name}")
         print(
             "\nNo settings plugin can feed that classpath: it resolves before any settings\n"
             "plugin is applied, only one buildscript block is allowed per script, and it\n"
-            "cannot be extended afterwards.\n"
+            "cannot be extended afterwards. The modules have to name their versions instead,\n"
+            "reading them from the system properties this plugin publishes.\n"
             "\n"
-            "The way through is the plugins DSL, which has been verified to work: the plugin\n"
-            "publishes the decided versions as system properties, and each module applies the\n"
-            "Android and Kotlin plugins with a version instead of relying on the classpath.\n"
-            "\n"
-            "  // module build.gradle.kts\n"
-            '  plugins {\n'
-            '      id("com.android.application") version System.getProperty("gradle.agp.version")\n'
-            '      id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")\n'
-            "  }\n"
-            "\n"
-            "Once the modules of a repository read that way, re-run with --force to rewrite\n"
-            "its settings script."
+            "Run migrate_modules.py for these repositories first, then this script again.\n"
+            "Note that the pair has to land together: in between, the module scripts ask for\n"
+            "a version the old settings script does not publish, and the build fails."
         )
 
     if changed and not apply:
