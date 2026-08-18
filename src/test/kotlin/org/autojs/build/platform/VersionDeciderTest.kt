@@ -14,7 +14,6 @@ class VersionDeciderTest {
     private val dataSource = DataSource(localDataDir = null)
 
     private val ideaAgpVersionMap = mapOf(
-        "2026.2.1" to "9.1.1",
         "2026.1.2" to "9.0.1",
         "2026.1" to "8.13.2",
         "2025.2.2" to "8.12.0",
@@ -61,10 +60,23 @@ class VersionDeciderTest {
     fun `scenario A - an IDE newer than the whole map falls back to auto selection`() {
         val decision = decider(idea("2027.1")).decideAgpVersion()
         // Auto selection means the newest released AGP the running Gradle can load,
-        // rather than 9.1.1, the newest entry the stale map happens to know.
+        // rather than 9.0.1, the newest entry the stale map happens to know.
         assertEquals(decider(idea("2027.1")).maxSupportedAgpVersion(), decision.version)
         assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix)
         assertTrue(decision.notices.single().contains("newer than all agpVersionMap entries"))
+    }
+
+    @Test
+    fun `IDEA 2026 2 falls back to auto selection and still lands on the 9 0 line`() {
+        // The map deliberately stops at 2026.1.2, because as of 2026.2 the JetBrains
+        // Android plugin supports AGP 9.0.x rather than 9.1. Both 2026.2 and 2026.2.1
+        // therefore take the stale-map path, and auto selection caps them at 9.0.1
+        // anyway, so the outcome matches what the map used to state explicitly.
+        listOf("2026.2", "2026.2.1").forEach { version ->
+            val decision = decider(idea(version)).decideAgpVersion()
+            assertEquals("9.0.1", decision.version) { "unexpected AGP for IDEA $version" }
+            assertTrue(decision.notices.isNotEmpty()) { "IDEA $version should report the fallback" }
+        }
     }
 
     @Test
@@ -90,8 +102,8 @@ class VersionDeciderTest {
 
     @Test
     fun `caps AGP against the running Gradle version`() {
-        // Gradle 8.9 predates AGP 9.x, so a map promising 9.1.1 must be capped.
-        val decision = decider(idea("2026.2.1"), gradleVersion = "8.9").decideAgpVersion()
+        // Gradle 8.9 predates AGP 9.x, so a map promising 9.0.1 must be capped.
+        val decision = decider(idea("2026.1.2"), gradleVersion = "8.9").decideAgpVersion()
         assertEquals("8.7.3", decision.version)
         assertTrue(decision.hintSuffix.contains(Identifier.DOWNGRADED))
     }
@@ -123,8 +135,8 @@ class VersionDeciderTest {
 
     @Test
     fun `decides Kotlin from the running Gradle version`() {
-        val onGradle93 = decider(idea("2026.2.1")).decideKotlinVersion().version
-        val onGradle89 = decider(idea("2026.2.1"), gradleVersion = "8.9").decideKotlinVersion().version
+        val onGradle93 = decider(idea("2026.1.2")).decideKotlinVersion().version
+        val onGradle89 = decider(idea("2026.1.2"), gradleVersion = "8.9").decideKotlinVersion().version
         assertTrue(onGradle93 != null && onGradle89 != null)
         assertTrue(VersionComparator.compareVersionStrings(onGradle93!!, onGradle89!!) > 0) {
             "a newer Gradle should allow a newer Kotlin: $onGradle93 vs $onGradle89"

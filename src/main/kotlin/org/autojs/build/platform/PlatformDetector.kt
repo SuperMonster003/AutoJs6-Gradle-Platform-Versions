@@ -18,9 +18,17 @@ class PlatformDetector(
     private val versionProps: Map<String, String>,
 ) {
 
-    /** @Reference AGP Upgrade Assistant integrated within JetBrains IntelliJ IDEA. */
+    /**
+     * @Reference AGP Upgrade Assistant integrated within JetBrains IntelliJ IDEA.
+     *
+     * Tops out at the 9.0 line on purpose: as of 2026.2 the JetBrains Android plugin
+     * supports AGP 9.0.x, not 9.1. Both 2026.2 and 2026.2.1 therefore land on the
+     * 2026.1.2 entry and get AGP 9.0.1.
+     *
+     * zh-CN: 上限刻意停在 9.0 线: 截至 2026.2, JetBrains 的 Android 插件支持 AGP 9.0.x 而非 9.1.
+     * 因此 2026.2 与 2026.2.1 都会落到 2026.1.2 条目, 得到 AGP 9.0.1.
+     */
     private val intelliJIdeaAgpVersionMap = mapOf(
-        "2026.2.1" to "9.1.1",
         "2026.1.2" to "9.0.1",
         "2026.1" to "8.13.2",
         "2025.2.2" to "8.12.0",

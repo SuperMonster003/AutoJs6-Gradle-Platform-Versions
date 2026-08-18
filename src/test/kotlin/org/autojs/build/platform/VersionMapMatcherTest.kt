@@ -10,7 +10,6 @@ class VersionMapMatcherTest {
 
     /** The IntelliJ IDEA map as maintained in AutoJs6 settings.gradle.kts. */
     private val ideaAgpVersionMap = mapOf(
-        "2026.2.1" to "9.1.1",
         "2026.1.2" to "9.0.1",
         "2026.1" to "8.13.2",
         "2025.2.2" to "8.12.0",
@@ -36,7 +35,7 @@ class VersionMapMatcherTest {
     @Test
     fun `matches the newest key when the platform is newer than the whole map`() {
         // This is the silent-downgrade path the stale-map check exists to catch.
-        assertEquals("2026.2.1", VersionMapMatcher.findBestMatchingMapKey(ideaAgpVersionMap, "2027.1"))
+        assertEquals("2026.1.2", VersionMapMatcher.findBestMatchingMapKey(ideaAgpVersionMap, "2027.1"))
     }
 
     @Test
@@ -57,9 +56,16 @@ class VersionMapMatcherTest {
 
     @Test
     fun `does not report staleness when the map covers the platform`() {
-        assertFalse(VersionMapMatcher.isPlatformNewerThanVersionMap(ideaAgpVersionMap, "2026.2.1"))
         assertFalse(VersionMapMatcher.isPlatformNewerThanVersionMap(ideaAgpVersionMap, "2026.1.2"))
         assertFalse(VersionMapMatcher.isPlatformNewerThanVersionMap(ideaAgpVersionMap, "2024.1"))
+    }
+
+    @Test
+    fun `reports staleness for IDEA 2026 2 now that the map tops out at 2026 1 2`() {
+        // Removing the 2026.2.1 entry means 2026.2 and 2026.2.1 both look stale and
+        // fall back to auto selection, which the compatibility table caps at AGP 9.0.1.
+        assertTrue(VersionMapMatcher.isPlatformNewerThanVersionMap(ideaAgpVersionMap, "2026.2"))
+        assertTrue(VersionMapMatcher.isPlatformNewerThanVersionMap(ideaAgpVersionMap, "2026.2.1"))
     }
 
     @Test
