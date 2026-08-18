@@ -47,16 +47,53 @@ MODULE_SCRIPT_NAME = "build.gradle.kts"
 # companion script so both operate on the same set.
 MECHANISM_MARKER = "agpVersionMap"
 
+KOTLIN_VERSION_PROPERTY = "gradle.kotlin.version"
+
 # Plugin id to the system property carrying its version.
 VERSIONED_PLUGINS = {
     "com.android.application": "gradle.agp.version",
     "com.android.library": "gradle.agp.version",
     "com.google.devtools.ksp": "gradle.ksp.version",
-    "org.jetbrains.kotlin.android": "gradle.kotlin.version",
+    "org.jetbrains.kotlin.android": KOTLIN_VERSION_PROPERTY,
+    "org.jetbrains.kotlin.kapt": KOTLIN_VERSION_PROPERTY,
+    "org.jetbrains.kotlin.plugin.parcelize": KOTLIN_VERSION_PROPERTY,
+}
+
+# Short aliases that only resolve while the Kotlin plugin sits on the classpath. They
+# have no coordinates of their own, so a version cannot be attached: the id has to be
+# spelled out in full instead.
+PLUGIN_ID_ALIASES = {
+    "kotlin-android": "org.jetbrains.kotlin.android",
+    "kotlin-kapt": "org.jetbrains.kotlin.kapt",
+    "kotlin-parcelize": "org.jetbrains.kotlin.plugin.parcelize",
 }
 
 # Directories that never hold a consuming module script.
 EXCLUDED_DIRS = {"build-logic", "build", ".gradle", "buildSrc"}
+
+
+def is_blocked(repo_root: Path):
+    """Returns why a repository cannot complete the migration, or None.
+
+    Rewriting only the modules of such a repository would leave it unbuildable, since
+    the settings step that supplies the versions can never follow.
+    """
+    if (repo_root / "gradle" / "verification-metadata.xml").is_file():
+        return "dependency verification"
+
+    for script in sorted(repo_root.rglob("*.gradle.kts")):
+        relative = script.relative_to(repo_root)
+        if any(part in EXCLUDED_DIRS for part in relative.parts):
+            continue
+        if script.name in {SETTINGS_NAME, MODULE_SCRIPT_NAME}:
+            continue
+        try:
+            text = script.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        if re.search(r"import com\.android\.|\bandroid\s*\{|ApplicationExtension|LibraryExtension", text):
+            return f"AGP-typed fragment: {relative}"
+    return None
 
 
 def find_repositories(workspace: Path):
@@ -105,18 +142,31 @@ def rewrite_plugins_block(lines, span):
 
     for index in range(start, end):
         line = rewritten[index]
-        match = re.match(r'^(\s*)id\("([^"]+)"\)\s*$', line.rstrip("\n"))
-        if match is None:
-            continue
-        indent, plugin_id = match.groups()
-        property_name = VERSIONED_PLUGINS.get(plugin_id)
-        if property_name is None:
-            continue
+        stripped = line.rstrip("\n")
         newline = "\n" if line.endswith("\n") else ""
-        rewritten[index] = (
-            f'{indent}id("{plugin_id}") version System.getProperty("{property_name}"){newline}'
-        )
-        changed.append(plugin_id)
+
+        match = re.match(r'^(\s*)id\("([^"]+)"\)\s*$', stripped)
+        if match is not None:
+            indent, plugin_id = match.groups()
+            canonical_id = PLUGIN_ID_ALIASES.get(plugin_id, plugin_id)
+            property_name = VERSIONED_PLUGINS.get(canonical_id)
+            if property_name is None:
+                continue
+            rewritten[index] = (
+                f'{indent}id("{canonical_id}") version System.getProperty("{property_name}"){newline}'
+            )
+            changed.append(plugin_id if canonical_id == plugin_id else f"{plugin_id} -> {canonical_id}")
+            continue
+
+        # kotlin("...") resolves against the Kotlin plugin on the classpath, which the
+        # settings migration takes away, so it needs a version of its own.
+        match = re.match(r'^(\s*)kotlin\("([^"]+)"\)\s*$', stripped)
+        if match is not None:
+            indent, suffix = match.groups()
+            rewritten[index] = (
+                f'{indent}kotlin("{suffix}") version System.getProperty("{KOTLIN_VERSION_PROPERTY}"){newline}'
+            )
+            changed.append(f'kotlin("{suffix}")')
 
     return rewritten, changed
 
@@ -140,6 +190,11 @@ def migrate_script(script: Path):
 def command_list(repos):
     print(f"{len(repos)} repositories in scope:")
     for repo in repos:
+        reason = is_blocked(repo)
+        if reason is not None:
+            print(f"  {repo.name:50} blocked ({reason})")
+            continue
+
         plugin_ids = set()
         pending = 0
         for script in find_module_scripts(repo):
@@ -155,8 +210,13 @@ def command_list(repos):
 
 
 def command_migrate(repos, apply: bool):
-    touched_repos, touched_scripts = 0, 0
+    touched_repos, touched_scripts, blocked = 0, 0, []
     for repo in repos:
+        reason = is_blocked(repo)
+        if reason is not None:
+            blocked.append((repo.name, reason))
+            continue
+
         pending = []
         for script in find_module_scripts(repo):
             migrated, changed = migrate_script(script)
@@ -180,6 +240,15 @@ def command_migrate(repos, apply: bool):
 
     verb = "Updated" if apply else "Would update"
     print(f"\n{verb} {touched_scripts} module scripts across {touched_repos} repositories.")
+
+    if blocked:
+        print(f"\n{len(blocked)} repositories cannot complete the migration and were left alone:")
+        for name, reason in blocked:
+            print(f"  {name} ({reason})")
+        print(
+            "\nThe settings step could never follow for these, so rewriting their modules\n"
+            "would only leave them unbuildable. migrate_downstream.py explains each case."
+        )
     if touched_scripts and not apply:
         print("Re-run with --apply to write the changes.")
     if touched_scripts and apply:

@@ -89,6 +89,11 @@ VERSIONED_PLUGIN_IDS = {
     "com.android.library",
     "com.google.devtools.ksp",
     "org.jetbrains.kotlin.android",
+    "org.jetbrains.kotlin.kapt",
+    "org.jetbrains.kotlin.plugin.parcelize",
+    "kotlin-android",
+    "kotlin-kapt",
+    "kotlin-parcelize",
 }
 
 PLUGIN_GROUP = "org.autojs.build"
@@ -215,6 +220,31 @@ def needs_agp_classpath(text: str) -> bool:
     return AGP_CLASSPATH_MARKER in text
 
 
+def has_agp_typed_fragments(repo_root: Path):
+    """Returns the applied script fragments that reference AGP types.
+
+    A fragment pulled in with apply(from = ...) compiles against its own classpath,
+    which neither the module's plugins DSL nor its buildscript block extends. Such a
+    fragment stops compiling the moment the settings buildscript classpath goes away,
+    and no amount of rewriting the settings script fixes it: the fragment itself has
+    to become a convention plugin, or move inline into the module script.
+    """
+    found = []
+    for script in sorted(repo_root.rglob("*.gradle.kts")):
+        relative = script.relative_to(repo_root)
+        if any(part in {"build", ".gradle", "build-logic", "buildSrc"} for part in relative.parts):
+            continue
+        if script.name in {SETTINGS_NAME, "build.gradle.kts"}:
+            continue
+        try:
+            text = script.read_text(encoding="utf-8")
+        except OSError:
+            continue
+        if re.search(r"import com\.android\.|\bandroid\s*\{|ApplicationExtension|LibraryExtension", text):
+            found.append(str(relative))
+    return found
+
+
 def has_unversioned_modules(repo_root: Path) -> bool:
     """Tells whether any module still applies a versioned plugin without a version.
 
@@ -300,9 +330,21 @@ def command_list(settings_files):
 
 
 def command_migrate(settings_files, plugin_version: str, apply: bool, force: bool):
-    changed, skipped, blocked = 0, 0, []
+    changed, skipped, blocked, fragmented, verified = 0, 0, [], [], []
     for settings in settings_files:
         text = settings.read_text(encoding="utf-8")
+
+        # Dependency verification pins every artifact by checksum, and the plugin is not
+        # in that file. Adding it is a call about trusting an unsigned local artifact, so
+        # it stays with whoever maintains the repository.
+        if (settings.parent / "gradle" / "verification-metadata.xml").is_file() and not force:
+            verified.append(settings.parent.name)
+            continue
+
+        fragments = has_agp_typed_fragments(settings.parent)
+        if fragments and not force:
+            fragmented.append((settings.parent.name, fragments))
+            continue
 
         if needs_agp_classpath(text) and has_unversioned_modules(settings.parent) and not force:
             blocked.append(settings.parent.name)
@@ -343,6 +385,34 @@ def command_migrate(settings_files, plugin_version: str, apply: bool, force: boo
             "Run migrate_modules.py for these repositories first, then this script again.\n"
             "Note that the pair has to land together: in between, the module scripts ask for\n"
             "a version the old settings script does not publish, and the build fails."
+        )
+
+    if fragmented:
+        print(
+            f"\n{len(fragmented)} repositories apply script fragments that reference AGP types "
+            "and cannot be migrated:"
+        )
+        for name, fragments in fragmented:
+            print(f"  {name}: {', '.join(fragments)}")
+        print(
+            "\nA fragment pulled in with apply(from = ...) compiles against its own classpath,\n"
+            "which neither the module's plugins DSL nor its buildscript block extends. Once the\n"
+            "settings buildscript classpath is gone the fragment stops compiling, and rewriting\n"
+            "the settings script cannot help.\n"
+            "\n"
+            "Each such fragment has to become a convention plugin in build-logic, or move inline\n"
+            "into the module script that applies it. Until then these repositories keep the\n"
+            "inlined mechanism."
+        )
+
+    if verified:
+        print(f"\n{len(verified)} repositories use dependency verification and were left alone:")
+        for name in verified:
+            print(f"  {name}")
+        print(
+            "\nEvery artifact is pinned by checksum in gradle/verification-metadata.xml, and\n"
+            "the plugin is not among them. Trusting a locally published, unsigned artifact is\n"
+            "a call for whoever maintains the repository; once it is recorded there, re-run."
         )
 
     if changed and not apply:
