@@ -245,13 +245,17 @@ def has_agp_typed_fragments(repo_root: Path):
     return found
 
 
-def has_unversioned_modules(repo_root: Path) -> bool:
-    """Tells whether any module still applies a versioned plugin without a version.
+def lacks_plugin_declarations(repo_root: Path) -> bool:
+    """Tells whether the root script still lacks the plugin version declarations.
 
-    Such a repository is not ready for this step: its modules would lose the classpath
-    that currently supplies those plugins. migrate_modules.py handles them first.
+    Such a repository is not ready for this step: its modules apply the Android
+    plugins without a version, and this step takes away the classpath currently
+    supplying them. migrate_modules.py declares the versions first.
     """
-    for script in sorted(repo_root.rglob("build.gradle.kts")):
+    # Groovy module scripts declare plugins the same way, so both dialects are checked.
+    scripts = [s for name in ("build.gradle.kts", "build.gradle") for s in repo_root.rglob(name)]
+    applies_versioned_plugin = False
+    for script in sorted(scripts):
         if script.parent == repo_root:
             continue
         relative = script.relative_to(repo_root)
@@ -260,8 +264,18 @@ def has_unversioned_modules(repo_root: Path) -> bool:
         for line in script.read_text(encoding="utf-8").splitlines():
             match = re.match(r'^\s*id\("([^"]+)"\)\s*$', line)
             if match and match.group(1) in VERSIONED_PLUGIN_IDS:
-                return True
-    return False
+                applies_versioned_plugin = True
+                break
+        if applies_versioned_plugin:
+            break
+
+    if not applies_versioned_plugin:
+        return False
+
+    root_script = repo_root / "build.gradle.kts"
+    if not root_script.is_file():
+        return True
+    return 'version System.getProperty("gradle.agp.version")' not in root_script.read_text(encoding="utf-8")
 
 
 def migrate_text(text: str, plugin_version: str, repo_root: Path):
@@ -322,7 +336,7 @@ def command_list(settings_files):
         text = settings.read_text(encoding="utf-8")
         if PLUGIN_ID in text:
             state = "migrated"
-        elif needs_agp_classpath(text) and has_unversioned_modules(settings.parent):
+        elif needs_agp_classpath(text) and lacks_plugin_declarations(settings.parent):
             state = f"{len(text.splitlines())} lines, run migrate_modules.py first"
         else:
             state = f"{len(text.splitlines())} lines, ready"
@@ -346,7 +360,7 @@ def command_migrate(settings_files, plugin_version: str, apply: bool, force: boo
             fragmented.append((settings.parent.name, fragments))
             continue
 
-        if needs_agp_classpath(text) and has_unversioned_modules(settings.parent) and not force:
+        if needs_agp_classpath(text) and lacks_plugin_declarations(settings.parent) and not force:
             blocked.append(settings.parent.name)
             continue
 

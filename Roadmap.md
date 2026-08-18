@@ -118,7 +118,29 @@ Gradle 8 迟早废弃, 与其维护双版本兼容, 不如收敛到 Gradle 9 单
 
 - [x] M9.1 修复 IDEA 下 AGP 版本溢出: 映射表补回 2026.2 条目, 并给 stale-map 回退加上界。
 - [x] M9.2 Python-Runtime 移除依赖校验并完成迁移。
-- [ ] M9.3 16 个仓库的 AGP 脚本片段改写为 convention 插件。
+- [x] M9.3 迁移方案改为根声明模式, 全部已迁移仓库统一重跑。
+- [x] M9.4 AutoJs6 与 AutoJs6-Plugin-NodeJs-Runtime 的脚本片段改写为 convention 插件。
+- [ ] M9.5 14 个 Worktree 的脚本片段改写 (各自位于独立分支, 需逐仓处理)。
+
+#### 迁移方案改为根声明模式
+
+原方案逐个模块脚本添加版本, 有两个缺陷:
+
+1. **Groovy 模块无法带版本**: Gradle 的 `plugins {}` 块在 Groovy 中只接受字符串字面量, `System.getProperty(...)` 是方法调用, 直接编译失败。16 个仓库各有 3 个 Groovy 模块。
+2. 主项目有 39 个模块脚本, 版本散落各处。
+
+新方案在根 `build.gradle.kts` 声明一次:
+
+```kotlin
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version") apply false
+    id("com.android.library") version System.getProperty("gradle.agp.version") apply false
+}
+```
+
+模块脚本**完全不动**, 两种 DSL 均可无版本应用。版本只出现一处, convention 插件照常工作。
+
+全部 43 个已迁移仓库均按此模式重跑并验证通过, 其中主项目 (39 模块 + KSP + parcelize + Groovy + convention 插件改写) 完整编译产出 APK。
 
 #### AGP 版本溢出
 
@@ -138,7 +160,11 @@ Gradle 8 迟早废弃, 与其维护双版本兼容, 不如收敛到 Gradle 9 单
 2. 插件类在 `project.plugins.withId("com.android.application") { }` 回调内配置 `android {}`;
 3. 模块脚本以 `id("...")` 应用, 删除原 `apply(from = ...)`。
 
-片段共 3 个变体 (227 / 227 / 345 行), 其中一个变体覆盖 13 个 Worktree, 改写后可批量复制。
+片段共 3 个变体 (227 / 227 / 345 行), 其中一个变体覆盖 13 个 Worktree。
+
+**但改写成果无法直接复制到 Worktree**: 它们各自位于独立开发分支 (`codex/ai-public-chat` 等), `app/build.gradle.kts` 等文件与主项目 HEAD 差异显著, 覆盖会破坏在研工作。这 14 个仓库需在各自分支上逐一改写, 或等其分支合并回主项目后再迁移。
+
+若 convention 插件所在的 build-logic 在配置阶段早于 settings 插件求值 (`gradle.agp.version` 尚未发布), 则不能用 `compileOnly` 依赖 AGP, 改以反射访问 android 扩展 —— 这与各仓库 `Utils.kt` 既有的 AGP 探测方式一致。AutoJs6-Plugin-NodeJs-Runtime 即按此改写: 32 行片段变为 `org.autojs.build.node-runtime-kit` 插件, 迁移后 settings 由 763 行降至 38 行, `:app:assembleDebug` 通过且 4 个 BuildConfig 字段照常生成。
 
 ## 四. 迁移期间发现的上游缺陷
 

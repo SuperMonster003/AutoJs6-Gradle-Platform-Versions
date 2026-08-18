@@ -33,6 +33,6 @@ object Identifier {
     const val TOML_SPECIFIED_SUFFIX = " [$TOML-$SPECIFIED]"
 
     /** Marks an R8 that AGP already bundles, so it is reported but not put on the classpath. */
-    const val AGP_BUNDLED_SUFFIX = " [using AGP-bundled R8]"
+    const val AGP_BUNDLED_SUFFIX = " [agp-bundled]"
 
 }
