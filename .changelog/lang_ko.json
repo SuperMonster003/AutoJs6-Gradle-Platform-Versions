@@ -5,6 +5,20 @@
   "changelog_label_improvement": "개선",
   "changelog_label_dependency": "의존성",
   "$data": {
+    "v1.3.0": {
+      "released_date": "2026/08/18",
+      "hint": [
+        "이번부터 Gradle 8은 지원하지 않음. AGP 9.0이 Gradle 9을 요구하는 첫 버전이므로 지원 범위는 AGP 9.0부터 시작함"
+      ],
+      "improvement": [
+        "호환성 데이터 표에서 9 이전 항목을 제거하고, IntelliJ IDEA 매핑 표는 AGP 9을 제공하는 항목만 남김",
+        "현재 Gradle이 모든 호환 항목보다 오래된 경우 더 이상 가장 낮은 항목으로 내려가지 않고 명확하게 오류를 보고하도록 변경, 로드할 수 없는 버전이 classpath에 올라가지 않도록 함",
+        "최소 지원 버전 상향: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0",
+        "README 배지를 위 버전에 맞추고 AGP 배지를 새로 추가",
+        "마이그레이션 스크립트가 kotlin(...) 문법 설탕과 kotlin-android/kotlin-kapt/kotlin-parcelize 같은 옛 방식의 짧은 이름을 지원하며, 짧은 이름은 완전한 플러그인 id로 확장됨",
+        "마이그레이션 스크립트가 마이그레이션할 수 없는 두 종류의 저장소를 건너뜀: apply(from=) 방식으로 가져온 스크립트 조각이 AGP 타입을 참조하는 저장소와, 의존성 검증이 켜져 있는 저장소"
+      ]
+    },
     "v1.2.0": {
       "released_date": "2026/08/18",
       "feature": [

@@ -7,9 +7,10 @@
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/SuperMonster003/AutoJs6-Gradle-Platform-Versions?label=Release"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=A24232&label=Issues"/></a>
     <br>
-    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-8.2+-02303A"/></a>
-    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2023.3+-B64FC8"/></a>
-    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2023.3+-EE4677"/></a>
+    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-9.1.0+-02303A"/></a>
+    <a href="https://developer.android.com/build/releases/gradle-plugin"><img alt="AGP" src="https://img.shields.io/badge/AGP-9.0+-3DDC84"/></a>
+    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2025.2.3+-B64FC8"/></a>
+    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2026.1.2+-EE4677"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=534BAE&label=License"/></a>
   </p>
 </div>
@@ -76,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.2.0"
+        id("org.autojs.build.platform-versions") version "1.3.0"
     }
 }
 
@@ -149,6 +150,18 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.3.0
+
+###### 2026/08/18
+
+* `提示` 本次不再支援 Gradle 8. AGP 9.0 是首個要求 Gradle 9 的版本, 因此支援範圍自 AGP 9.0 起
+* `優化` 兼容數據表剔除 9 以前的條目, IntelliJ IDEA 映射表僅保留給出 AGP 9 的條目
+* `優化` 當前 Gradle 舊於全部兼容條目時不再回落到最低條目, 改為明確報錯, 避免把無法載入的版本放到 classpath 上
+* `優化` 最低支援版本上調: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
+* `優化` README 徽章同步上述版本, 並新增 AGP 徽章
+* `優化` 遷移腳本支援 kotlin(...) 語法糖與 kotlin-android/kotlin-kapt/kotlin-parcelize 等舊式短名, 短名會展開為完整插件 id
+* `優化` 遷移腳本跳過兩類無法遷移的倉庫: 使用 apply(from=) 引入且引用 AGP 類型的腳本片段, 以及啟用了依賴校驗的倉庫
+
 # v1.2.0
 
 ###### 2026/08/18
@@ -170,22 +183,6 @@ gradle/data/android-studio-agp-compat.properties
 * `新增` 下游倉庫批量遷移腳本 `.python/migrate_downstream.py`, 支援預覽/應用/回滾, 逐倉保留備份
 * `修復` `getMaxSupportedJavaVersion` 此前誤傳 AGP 版本, 導致工具鏈上限被壓低; 現改為傳入 Gradle 版本
 * `優化` 移除 IntelliJ IDEA 映射表中 2026.2.1 的條目, 使 2026.2 與 2026.2.1 均得到 AGP 9.0.1, 與 IDE 實際支援範圍一致
-
-# v1.0.0
-
-###### 2026/08/18
-
-* `新增` Gradle Settings 插件 `org.autojs.build.platform-versions`, 用於自動決定 AGP 與 Kotlin Gradle 插件版本
-* `新增` 構建宿主識別, 支援 Android Studio/IntelliJ IDEA/Temurin JDK 以及裸命令行環境
-* `新增` AGP 版本決策, 按當前 IDE 版本在映射表中就近向下匹配
-* `新增` 映射表滯後回退, 當前 IDE 比表中全部條目都新時改用 auto 選擇, 不再靜默降級到過舊的 AGP
-* `新增` AGP 版本按 Gradle 兼容表封頂, 保證選出的版本當前 Gradle 一定能載入
-* `新增` Kotlin Gradle 插件版本決策, 跟隨當前 Gradle 支援的最新版本
-* `新增` 兼容數據隨插件分發, 消費端項目的 `gradle/data` 目錄可覆蓋同名數據文件
-* `新增` `version.properties` 中 `OVERRIDDEN_*` 逃生門, 可直接指定版本以跳過自動決策
-* `新增` 決策結果通過 `PlatformVersionsExtension` 暴露, 可用於 buildscript 的 classpath 聲明
-* `新增` 最小消費端工程 `sample`, 用於驗證三種典型場景下的決策結果
-* `新增` README 與 CHANGELOG 的多語言資源: 西班牙語/法語/俄語/阿拉伯語/日語/韓語/英語/簡體中文/香港繁體/台灣繁體
 
 ##### 更多發行歷史可參閱
 

@@ -5,6 +5,20 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.3.0": {
+      "released_date": "2026/08/18",
+      "hint": [
+        "本次不再支援 Gradle 8。AGP 9.0 是首個要求 Gradle 9 的版本，因此支援範圍自 AGP 9.0 起"
+      ],
+      "improvement": [
+        "相容性資料表剔除 9 以前的項目，IntelliJ IDEA 對應表僅保留給出 AGP 9 的項目",
+        "當前 Gradle 舊於全部相容項目時不再回退到最低項目，改為明確報錯，避免把無法載入的版本放到 classpath 上",
+        "最低支援版本上調：Gradle 9.1.0、Android Studio 2025.2.3、IntelliJ IDEA 2026.1.2、AGP 9.0",
+        "README 徽章同步上述版本，並新增 AGP 徽章",
+        "遷移指令碼支援 kotlin(...) 語法糖與 kotlin-android/kotlin-kapt/kotlin-parcelize 等舊式簡稱，簡稱會展開為完整的插件 id",
+        "遷移指令碼會跳過兩類無法遷移的儲存庫：以 apply(from=) 引入且引用 AGP 型別的指令碼片段，以及啟用了相依性驗證的儲存庫"
+      ]
+    },
     "v1.2.0": {
       "released_date": "2026/08/18",
       "feature": [

@@ -84,6 +84,36 @@
 - [x] M6.4 第二步脚本自动检测模块状态, 未完成第一步时拒绝执行。
 - [x] M6.5 试点仓库端到端实测: 两步迁移后成功产出 APK, 随后完整回滚。
 
+### M7 — 只支持 Gradle 9
+
+Gradle 8 迟早废弃, 与其维护双版本兼容, 不如收敛到 Gradle 9 单线。AGP 9.0 是首个要求 Gradle 9 的 AGP, 因此 "只支持 Gradle 9" 等价于 "只支持 AGP 9 及以上"。
+
+- [x] M7.1 兼容数据表剔除 9 以前的条目: `agp-gradle-compat` / `gradle-kotlin-compat` / `android-studio-agp-compat` / `agp-releases`。
+- [x] M7.2 IntelliJ IDEA 映射表仅保留给出 AGP 9 的条目; Temurin 映射表清空 (其条目全部指向 8.x 线)。
+- [x] M7.3 `maxSupportedAgpVersion` 在当前 Gradle 旧于全部条目时返回 null, 不再回落到最低条目。
+- [x] M7.4 最低版本上调: Gradle 9.1.0 / Android Studio 2025.2.3 / IntelliJ IDEA 2026.1.2 / AGP 9.0; Java 保持 17 (Gradle 9 的实际要求)。
+- [x] M7.5 README 徽章同步, 并新增 AGP 徽章。
+- [x] M7.6 单元测试更新并补充 Gradle 8 边界用例; sample 三场景与最低版本守卫实测通过。
+
+`kotlin-r8-compat` 与 `ksp-agp-compat` 两表未做删减: 前者按 Kotlin 版本线索引 R8 版本, 后者给出 KSP 所需的最低 AGP, 其中 8.x 取值对 AGP 9 仍然有效。
+
+### M8 — 全量批量迁移
+
+- [x] M8.1 对 57 个仓库执行两步迁移, 逐仓验证配置阶段通过。
+- [x] M8.2 迁移脚本补充 `kotlin(...)` 语法糖支持。
+- [x] M8.3 迁移脚本补充旧式短名支持, 并展开为完整插件 id。
+- [x] M8.4 迁移脚本新增两类跳过判定: AGP 类型脚本片段, 依赖校验。
+- [x] M8.5 已迁移仓库全部验证通过, 并抽样完成真实编译 (产出 APK)。
+
+**结果: 40 个仓库迁移完成, 17 个保留原机制。**
+
+保留原因分两类:
+
+1. **脚本片段引用 AGP 类型 (16 个)**: 主项目 AutoJs6, NodeJs 插件项目, 以及 14 个主项目 Worktree。它们用 `apply(from = ...)` 引入 `node-android-config.gradle.kts` 一类片段, 片段内 `import com.android.build.api.dsl.*` 并配置 `android {}`。这类片段拥有独立的编译类路径, 模块的 plugins DSL 与 buildscript 块均不覆盖它, 迁移后必然编译失败。已实测确认无法通过调整 settings 或模块脚本解决 —— 出路是把片段改写为 build-logic 中的 convention 插件, 或内联进模块脚本。
+2. **启用依赖校验 (1 个)**: AutoJs6-Plugin-Python-Runtime 的 `gradle/verification-metadata.xml` 按校验和锁定全部依赖, 新插件不在其中。是否信任本地发布的未签名产物属于该仓库的安全决策, 记入白名单后即可迁移。
+
+`Utils.kt` 的 A/B 变体差异未造成任何问题: 两个变体只在 AGP 低于 9 时行为不同, 而迁移后决策恒为 AGP 9.x。
+
 ## 四. 迁移期间发现的上游缺陷
 
 抽取过程中发现的原始 settings.gradle.kts 缺陷, 本项目已修正, 并已回移主项目:

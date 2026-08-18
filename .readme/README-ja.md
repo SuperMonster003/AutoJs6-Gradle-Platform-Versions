@@ -7,9 +7,10 @@
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/SuperMonster003/AutoJs6-Gradle-Platform-Versions?label=Release"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=A24232&label=Issues"/></a>
     <br>
-    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-8.2+-02303A"/></a>
-    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2023.3+-B64FC8"/></a>
-    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2023.3+-EE4677"/></a>
+    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-9.1.0+-02303A"/></a>
+    <a href="https://developer.android.com/build/releases/gradle-plugin"><img alt="AGP" src="https://img.shields.io/badge/AGP-9.0+-3DDC84"/></a>
+    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2025.2.3+-B64FC8"/></a>
+    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2026.1.2+-EE4677"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=534BAE&label=License"/></a>
   </p>
 </div>
@@ -76,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.2.0"
+        id("org.autojs.build.platform-versions") version "1.3.0"
     }
 }
 
@@ -149,6 +150,18 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.3.0
+
+###### 2026/08/18
+
+* `ヒント` 今回より Gradle 8 は非対応となりました。AGP 9.0 は Gradle 9 を要求する最初のバージョンであるため、対応範囲は AGP 9.0 以降となります
+* `改善` 互換性データ表から 9 より前の項目を削除し、IntelliJ IDEA のマッピング表は AGP 9 が得られる項目のみを残すようにした
+* `改善` 現在の Gradle がすべての互換項目より古い場合、最も低い項目へのフォールバックをやめ、明示的にエラーを報告するように変更。ロードできないバージョンが classpath に載ることを防ぐ
+* `改善` 最低対応バージョンを引き上げ: Gradle 9.1.0、Android Studio 2025.2.3、IntelliJ IDEA 2026.1.2、AGP 9.0
+* `改善` README のバッジを上記のバージョンに合わせ、AGP のバッジを追加
+* `改善` 移行スクリプトが kotlin(...) の糖衣構文と、kotlin-android/kotlin-kapt/kotlin-parcelize といった旧来の短縮名に対応。短縮名は完全なプラグイン id へ展開される
+* `改善` 移行スクリプトは移行できない 2 種類のリポジトリをスキップするようにした。apply(from=) で読み込むスクリプト片が AGP の型を参照しているものと、依存関係の検証を有効にしているもの
+
 # v1.2.0
 
 ###### 2026/08/18
@@ -170,22 +183,6 @@ gradle/data/android-studio-agp-compat.properties
 * `機能` 下流リポジトリの一括移行スクリプト `.python/migrate_downstream.py`。プレビュー、適用、ロールバックに対応し、リポジトリごとにバックアップを保持
 * `修正` `getMaxSupportedJavaVersion` にこれまで誤って AGP バージョンを渡しており、ツールチェーンの上限が引き下げられていた。現在は Gradle バージョンを渡すように修正
 * `改善` IntelliJ IDEA のマッピング表から 2026.2.1 の項目を削除し、2026.2 と 2026.2.1 のどちらでも AGP 9.0.1 が得られるようにして、IDE の実際の対応範囲と一致させた
-
-# v1.0.0
-
-###### 2026/08/18
-
-* `機能` AGP と Kotlin Gradle プラグインのバージョンを自動決定する Gradle Settings プラグイン `org.autojs.build.platform-versions`
-* `機能` ビルドホストの識別。Android Studio、IntelliJ IDEA、Temurin JDK および素のコマンドライン環境に対応
-* `機能` AGP バージョンの決定。現在の IDE バージョンをもとにマッピング表で直近の下位一致を探索
-* `機能` マッピング表が古い場合のフォールバック。現在の IDE が表のすべての項目より新しいときは auto 選択に切り替え、古すぎる AGP へ暗黙にダウングレードしない
-* `機能` AGP バージョンに Gradle 互換表による上限を適用し、選ばれたバージョンを現在の Gradle が必ずロードできることを保証
-* `機能` Kotlin Gradle プラグインバージョンの決定。現在の Gradle が対応する最新バージョンに追従
-* `機能` 互換性データをプラグインに同梱して配布。利用側プロジェクトの `gradle/data` ディレクトリで同名のデータファイルを上書き可能
-* `機能` `version.properties` の `OVERRIDDEN_*` という避難口。バージョンを直接指定して自動決定をスキップ可能
-* `機能` 決定結果を `PlatformVersionsExtension` 経由で公開。buildscript の classpath 宣言に利用可能
-* `機能` 最小の利用側プロジェクト `sample`。3 つの典型的なシナリオでの決定結果を検証
-* `機能` README と CHANGELOG の多言語リソース: スペイン語、フランス語、ロシア語、アラビア語、日本語、韓国語、英語、簡体中国語、繁体中国語 (香港)、繁体中国語 (台湾)
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

@@ -7,9 +7,10 @@
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/SuperMonster003/AutoJs6-Gradle-Platform-Versions?label=Release"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=A24232&label=Issues"/></a>
     <br>
-    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-8.2+-02303A"/></a>
-    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2023.3+-B64FC8"/></a>
-    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2023.3+-EE4677"/></a>
+    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-9.1.0+-02303A"/></a>
+    <a href="https://developer.android.com/build/releases/gradle-plugin"><img alt="AGP" src="https://img.shields.io/badge/AGP-9.0+-3DDC84"/></a>
+    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2025.2.3+-B64FC8"/></a>
+    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2026.1.2+-EE4677"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=534BAE&label=License"/></a>
   </p>
 </div>
@@ -76,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.2.0"
+        id("org.autojs.build.platform-versions") version "1.3.0"
     }
 }
 
@@ -149,6 +150,18 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.3.0
+
+###### 2026/08/18
+
+* `تلميح` لم يعد Gradle 8 مدعومًا اعتبارًا من هذا الإصدار، فـ AGP 9.0 هو أول إصدار يشترط Gradle 9، ومن ثم يبدأ نطاق الدعم من AGP 9.0
+* `تحسين` حذف المدخلات الأقدم من 9 من جداول التوافق، ولم يُبقَ في جدول مطابقة IntelliJ IDEA إلا المدخلات التي تعطي AGP 9
+* `تحسين` إذا كان Gradle الحالي أقدم من جميع مدخلات التوافق فلم يعد يرجع إلى أدنى مدخلة، بل صار يبلغ عن خطأ صريح؛ تفاديًا لوضع إصدار يتعذر تحميله على classpath
+* `تحسين` رفع أدنى الإصدارات المدعومة: Gradle 9.1.0 وAndroid Studio 2025.2.3 وIntelliJ IDEA 2026.1.2 وAGP 9.0
+* `تحسين` مواءمة شارات README مع الإصدارات المذكورة، وإضافة شارة AGP
+* `تحسين` صار برنامج الترحيل يدعم السكر النحوي kotlin(...) والأسماء المختصرة القديمة مثل kotlin-android وkotlin-kapt وkotlin-parcelize، وتُوسَّع الأسماء المختصرة إلى معرّف الإضافة الكامل
+* `تحسين` يتخطى برنامج الترحيل نوعين من المستودعات يتعذر ترحيلهما: مستودعات تشير فيها مقاطع البرامج المضمَّنة عبر apply(from=) إلى أنواع AGP، ومستودعات فُعِّل فيها التحقق من التبعيات
+
 # v1.2.0
 
 ###### 2026/08/18
@@ -170,22 +183,6 @@ gradle/data/android-studio-agp-compat.properties
 * `ميزة` برنامج الترحيل الجماعي للمستودعات المستهلكة `.python/migrate_downstream.py`، يدعم المعاينة والتطبيق والتراجع، ويحتفظ بنسخة احتياطية لكل مستودع
 * `إصلاح` كان `getMaxSupportedJavaVersion` يتلقى إصدار AGP خطأً، فينخفض الحد الأعلى لـ toolchain؛ وقد صار يتلقى إصدار Gradle
 * `تحسين` إزالة مدخلة 2026.2.1 من جدول مطابقة IntelliJ IDEA، بحيث يحصل كل من 2026.2 و2026.2.1 على AGP 9.0.1، بما يوافق نطاق الدعم الفعلي لبيئة التطوير
-
-# v1.0.0
-
-###### 2026/08/18
-
-* `ميزة` إضافة Gradle Settings باسم `org.autojs.build.platform-versions`، تحدد تلقائيًا إصداري AGP وKotlin Gradle Plugin
-* `ميزة` تمييز بيئة البناء، بدعم Android Studio/IntelliJ IDEA/Temurin JDK إضافة إلى سطر الأوامر المجرد
-* `ميزة` تحديد إصدار AGP، بمطابقة أقرب مدخلة أدنى في جدول المطابقة وفق إصدار بيئة التطوير الحالي
-* `ميزة` الرجوع عند تأخر جدول المطابقة، فإذا كانت بيئة التطوير الحالية أحدث من جميع مدخلاته استُعمل اختيار auto بدلًا من الهبوط الصامت إلى إصدار AGP قديم أكثر من اللازم
-* `ميزة` فرض حد أعلى على إصدار AGP وفق جدول توافق Gradle، بما يضمن أن الإصدار المختار قادر Gradle الحالي على تحميله قطعًا
-* `ميزة` تحديد إصدار Kotlin Gradle Plugin، متابعًا أحدث إصدار يدعمه Gradle الحالي
-* `ميزة` توزيع بيانات التوافق مع الإضافة، مع إمكانية تجاوز ملفات البيانات المتماثلة الاسم عبر مجلد `gradle/data` في المشروع المستهلك
-* `ميزة` مخرج الطوارئ `OVERRIDDEN_*` في `version.properties`، إذ يمكن تعيين الإصدار مباشرة لتخطي التحديد التلقائي
-* `ميزة` إتاحة نتيجة التحديد عبر `PlatformVersionsExtension`، وهي صالحة للاستعمال في تصريح classpath الخاص بـ buildscript
-* `ميزة` مشروع مستهلك مصغّر باسم `sample`، للتحقق من نتيجة التحديد في ثلاثة سيناريوهات نموذجية
-* `ميزة` موارد متعددة اللغات لملفي README وCHANGELOG: الإسبانية والفرنسية والروسية والعربية واليابانية والكورية والإنجليزية والصينية المبسطة والصينية التقليدية (هونغ كونغ) والصينية التقليدية (تايوان)
 
 ##### لمزيد من سجل الإصدارات يمكن الرجوع إلى
 

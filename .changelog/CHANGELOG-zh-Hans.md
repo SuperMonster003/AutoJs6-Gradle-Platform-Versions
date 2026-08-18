@@ -23,6 +23,18 @@
 
 ******
 
+# v1.3.0
+
+###### 2026/08/18
+
+* `提示` 本次不再支持 Gradle 8. AGP 9.0 是首个要求 Gradle 9 的版本, 因此支持范围自 AGP 9.0 起
+* `优化` 兼容数据表剔除 9 以前的条目, IntelliJ IDEA 映射表仅保留给出 AGP 9 的条目
+* `优化` 当前 Gradle 旧于全部兼容条目时不再回落到最低条目, 改为明确报错, 避免把无法加载的版本放到 classpath 上
+* `优化` 最低支持版本上调: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
+* `优化` README 徽章同步上述版本, 并新增 AGP 徽章
+* `优化` 迁移脚本支持 kotlin(...) 语法糖与 kotlin-android/kotlin-kapt/kotlin-parcelize 等旧式短名, 短名会展开为完整插件 id
+* `优化` 迁移脚本跳过两类无法迁移的仓库: 使用 apply(from=) 引入且引用 AGP 类型的脚本片段, 以及启用了依赖校验的仓库
+
 # v1.2.0
 
 ###### 2026/08/18

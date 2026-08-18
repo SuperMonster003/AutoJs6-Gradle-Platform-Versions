@@ -7,9 +7,10 @@
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/SuperMonster003/AutoJs6-Gradle-Platform-Versions?label=Release"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=A24232&label=Issues"/></a>
     <br>
-    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-8.2+-02303A"/></a>
-    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2023.3+-B64FC8"/></a>
-    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2023.3+-EE4677"/></a>
+    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-9.1.0+-02303A"/></a>
+    <a href="https://developer.android.com/build/releases/gradle-plugin"><img alt="AGP" src="https://img.shields.io/badge/AGP-9.0+-3DDC84"/></a>
+    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2025.2.3+-B64FC8"/></a>
+    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2026.1.2+-EE4677"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=534BAE&label=License"/></a>
   </p>
 </div>
@@ -76,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.2.0"
+        id("org.autojs.build.platform-versions") version "1.3.0"
     }
 }
 
@@ -149,6 +150,18 @@ If a consumer project places a file of the same name under its own `gradle/data`
 
 ******
 
+# v1.3.0
+
+###### 2026/08/18
+
+* `Hint` Gradle 8 is no longer supported. AGP 9.0 is the first version to require Gradle 9, so the supported range starts at AGP 9.0
+* `Improvement` Entries older than 9 are dropped from the compatibility tables, and the IntelliJ IDEA mapping table keeps only the entries that yield AGP 9
+* `Improvement` When the current Gradle is older than every compatibility entry, it no longer falls back to the lowest entry but reports an error outright, so that a version which cannot be loaded is never put on the classpath
+* `Improvement` Minimum supported versions raised: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
+* `Improvement` README badges brought in line with the versions above, with an AGP badge added
+* `Improvement` The migration script now handles the kotlin(...) shorthand as well as legacy short names such as kotlin-android/kotlin-kapt/kotlin-parcelize, the short names being expanded into full plugin ids
+* `Improvement` The migration script skips two kinds of repository that cannot be migrated: those whose script fragments pulled in through apply(from=) reference AGP types, and those with dependency verification enabled
+
 # v1.2.0
 
 ###### 2026/08/18
@@ -170,22 +183,6 @@ If a consumer project places a file of the same name under its own `gradle/data`
 * `Feature` Batch migration script `.python/migrate_downstream.py` for downstream repositories, supporting preview/apply/rollback and keeping a backup per repository
 * `Fix` `getMaxSupportedJavaVersion` used to be handed the AGP version, which lowered the toolchain ceiling; it is now handed the Gradle version
 * `Improvement` Removed the 2026.2.1 entry from the IntelliJ IDEA mapping table, so that both 2026.2 and 2026.2.1 resolve to AGP 9.0.1, in line with what the IDE actually supports
-
-# v1.0.0
-
-###### 2026/08/18
-
-* `Feature` Gradle Settings plugin `org.autojs.build.platform-versions`, which decides the AGP and Kotlin Gradle plugin versions automatically
-* `Feature` Build host detection, covering Android Studio/IntelliJ IDEA/Temurin JDK and the bare command line
-* `Feature` AGP version decision, matching the current IDE version against the mapping table and rounding down to the nearest entry
-* `Feature` Stale mapping table fallback, switching to auto selection when the current IDE is newer than every entry in the table, instead of silently downgrading to an outdated AGP
-* `Feature` AGP version capped against the Gradle compatibility table, so the chosen version is always loadable by the current Gradle
-* `Feature` Kotlin Gradle plugin version decision, following the newest version the current Gradle supports
-* `Feature` Compatibility data shipped with the plugin, with a `gradle/data` directory in the consumer project able to override any data file of the same name
-* `Feature` `OVERRIDDEN_*` escape hatch in `version.properties`, for pinning versions directly and skipping the automatic decision
-* `Feature` Decision results exposed through `PlatformVersionsExtension`, ready for buildscript classpath declarations
-* `Feature` Minimal consumer project `sample`, for verifying the decision results in three typical scenarios
-* `Feature` Multilingual resources for README and CHANGELOG: Spanish/French/Russian/Arabic/Japanese/Korean/English/Simplified Chinese/Traditional Chinese (Hong Kong)/Traditional Chinese (Taiwan)
 
 ##### For more release history, see
 

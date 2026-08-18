@@ -23,6 +23,18 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.3.0
+
+###### 2026/08/18
+
+* `Note` Gradle 8 n'est plus pris en charge. AGP 9.0 est la première version à exiger Gradle 9, la plage prise en charge démarre donc à AGP 9.0
+* `Amélioration` Les entrées antérieures à 9 sont retirées des tables de compatibilité, et la table de correspondance IntelliJ IDEA ne conserve que les entrées aboutissant à AGP 9
+* `Amélioration` Lorsque le Gradle courant est plus ancien que toutes les entrées de compatibilité, il n'y a plus de repli sur l'entrée la plus basse : une erreur explicite est signalée, afin qu'une version impossible à charger ne se retrouve jamais sur le classpath
+* `Amélioration` Versions minimales prises en charge relevées : Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
+* `Amélioration` Badges du README alignés sur les versions ci-dessus, avec l'ajout d'un badge AGP
+* `Amélioration` Le script de migration prend en charge le sucre syntaxique kotlin(...) ainsi que les anciens noms courts tels que kotlin-android/kotlin-kapt/kotlin-parcelize, ces noms courts étant développés en identifiants de plugin complets
+* `Amélioration` Le script de migration ignore deux catégories de dépôts impossibles à migrer : ceux dont les fragments de script inclus via apply(from=) référencent des types AGP, et ceux pour lesquels la vérification des dépendances est activée
+
 # v1.2.0
 
 ###### 2026/08/18

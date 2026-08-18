@@ -7,9 +7,10 @@
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/releases"><img alt="GitHub release (latest by date)" src="https://img.shields.io/github/v/release/SuperMonster003/AutoJs6-Gradle-Platform-Versions?label=Release"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/issues"><img alt="GitHub issues" src="https://img.shields.io/github/issues/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=A24232&label=Issues"/></a>
     <br>
-    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-8.2+-02303A"/></a>
-    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2023.3+-B64FC8"/></a>
-    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2023.3+-EE4677"/></a>
+    <a href="https://gradle.org/releases/"><img alt="Gradle" src="https://img.shields.io/badge/Gradle-9.1.0+-02303A"/></a>
+    <a href="https://developer.android.com/build/releases/gradle-plugin"><img alt="AGP" src="https://img.shields.io/badge/AGP-9.0+-3DDC84"/></a>
+    <a href="https://developer.android.com/studio/archive"><img alt="Android Studio" src="https://img.shields.io/badge/Android%20Studio-2025.2.3+-B64FC8"/></a>
+    <a href="https://www.jetbrains.com/idea/download/other.html"><img alt="IntelliJ IDEA" src="https://img.shields.io/badge/IntelliJ%20IDEA-2026.1.2+-EE4677"/></a>
     <a href="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/LICENSE"><img alt="GitHub License" src="https://img.shields.io/github/license/SuperMonster003/AutoJs6-Gradle-Platform-Versions?color=534BAE&label=License"/></a>
   </p>
 </div>
@@ -76,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.2.0"
+        id("org.autojs.build.platform-versions") version "1.3.0"
     }
 }
 
@@ -149,6 +150,18 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.3.0
+
+###### 2026/08/18
+
+* `힌트` 이번부터 Gradle 8은 지원하지 않음. AGP 9.0이 Gradle 9을 요구하는 첫 버전이므로 지원 범위는 AGP 9.0부터 시작함
+* `개선` 호환성 데이터 표에서 9 이전 항목을 제거하고, IntelliJ IDEA 매핑 표는 AGP 9을 제공하는 항목만 남김
+* `개선` 현재 Gradle이 모든 호환 항목보다 오래된 경우 더 이상 가장 낮은 항목으로 내려가지 않고 명확하게 오류를 보고하도록 변경, 로드할 수 없는 버전이 classpath에 올라가지 않도록 함
+* `개선` 최소 지원 버전 상향: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
+* `개선` README 배지를 위 버전에 맞추고 AGP 배지를 새로 추가
+* `개선` 마이그레이션 스크립트가 kotlin(...) 문법 설탕과 kotlin-android/kotlin-kapt/kotlin-parcelize 같은 옛 방식의 짧은 이름을 지원하며, 짧은 이름은 완전한 플러그인 id로 확장됨
+* `개선` 마이그레이션 스크립트가 마이그레이션할 수 없는 두 종류의 저장소를 건너뜀: apply(from=) 방식으로 가져온 스크립트 조각이 AGP 타입을 참조하는 저장소와, 의존성 검증이 켜져 있는 저장소
+
 # v1.2.0
 
 ###### 2026/08/18
@@ -170,22 +183,6 @@ gradle/data/android-studio-agp-compat.properties
 * `기능` 다운스트림 저장소 일괄 마이그레이션 스크립트 `.python/migrate_downstream.py`, 미리 보기/적용/롤백을 지원하며 저장소마다 백업을 남김
 * `수정` `getMaxSupportedJavaVersion`에 이전에는 AGP 버전을 잘못 전달하여 toolchain 상한이 낮아졌으나, 이제 Gradle 버전을 전달하도록 변경
 * `개선` IntelliJ IDEA 매핑 표에서 2026.2.1 항목을 제거하여 2026.2와 2026.2.1 모두 AGP 9.0.1을 얻도록 하고, IDE의 실제 지원 범위와 일치시킴
-
-# v1.0.0
-
-###### 2026/08/18
-
-* `기능` AGP와 Kotlin Gradle 플러그인 버전을 자동으로 결정하는 Gradle Settings 플러그인 `org.autojs.build.platform-versions`
-* `기능` 빌드 호스트 식별, Android Studio/IntelliJ IDEA/Temurin JDK 및 순수 명령줄 환경 지원
-* `기능` AGP 버전 결정, 현재 IDE 버전을 기준으로 매핑 표에서 가장 가까운 하위 항목 선택
-* `기능` 매핑 표 지연 시 대체 처리, 현재 IDE가 표의 모든 항목보다 새로우면 auto 선택으로 전환하여 지나치게 낮은 AGP로 조용히 내려가지 않음
-* `기능` AGP 버전에 Gradle 호환 표 기반 상한 적용, 선택된 버전을 현재 Gradle이 반드시 로드할 수 있도록 보장
-* `기능` Kotlin Gradle 플러그인 버전 결정, 현재 Gradle이 지원하는 최신 버전을 따름
-* `기능` 호환성 데이터를 플러그인과 함께 배포, 소비 측 프로젝트의 `gradle/data` 디렉터리로 같은 이름의 데이터 파일을 덮어쓸 수 있음
-* `기능` `version.properties`의 `OVERRIDDEN_*` 비상구, 버전을 직접 지정하여 자동 결정을 건너뛸 수 있음
-* `기능` 결정 결과를 `PlatformVersionsExtension`으로 노출, buildscript의 classpath 선언에 사용 가능
-* `기능` 최소 소비 측 프로젝트 `sample`, 세 가지 대표 시나리오에서 결정 결과를 검증
-* `기능` README와 CHANGELOG의 다국어 리소스: 스페인어/프랑스어/러시아어/아랍어/일본어/한국어/영어/중국어 간체/홍콩 번체/대만 번체
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
