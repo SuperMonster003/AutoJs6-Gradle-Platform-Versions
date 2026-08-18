@@ -53,6 +53,8 @@ Désormais publié comme plugin Settings, il ne demande plus qu'une dizaine de l
 - Choix d'une version d'AGP prise en charge par l'IDE courant, avec repli sur l'entrée immédiatement inférieure en l'absence de correspondance exacte.
 - Repli automatique sur la sélection auto lorsque l'IDE est plus récent que toutes les entrées de la table de correspondance, afin d'éviter une rétrogradation silencieuse vers un AGP trop ancien.
 - Plafonnement selon la compatibilité entre AGP et Gradle, ce qui garantit que la version retenue est toujours chargeable par le Gradle courant.
+- Détermination de la version de KSP, avec relèvement automatique de la version d'AGP lorsque le KSP retenu exige un AGP plus récent.
+- Détermination de la version de R8, un R8 externe n'étant introduit que lorsque celui fourni avec AGP n'est pas assez récent.
 - Données de compatibilité distribuées avec le plugin, un répertoire `gradle/data` présent dans le projet consommateur restant prioritaire, ce qui facilite les corrections urgentes.
 - Porte de sortie `OVERRIDDEN_*` conservée dans `version.properties`, pour figer directement les versions lorsqu'un build déterministe est requis.
 - README et CHANGELOG disponibles en espagnol/français/russe/arabe/japonais/coréen/anglais/chinois simplifié/chinois traditionnel de Hong Kong/chinois traditionnel de Taïwan.
@@ -63,7 +65,7 @@ Désormais publié comme plugin Settings, il ne demande plus qu'une dizaine de l
 
 ******
 
-Appliquez le plugin dans le fichier `settings.gradle.kts` du projet consommateur:
+Appliquez le plugin dans le fichier `settings.gradle.kts` du projet consommateur, avant `includeBuild`:
 
 ```kotlin
 pluginManagement {
@@ -74,25 +76,25 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.0.0"
+        id("org.autojs.build.platform-versions") version "1.1.0"
     }
+}
+
+plugins {
+    id("org.autojs.build.platform-versions")
 }
 ```
 
-Le résultat de la décision est ensuite exploitable dans le classpath du buildscript:
+Les scripts de module peuvent ensuite déclarer les plugins via le plugins DSL, les versions provenant du résultat de la décision:
 
 ```kotlin
-import org.autojs.build.platform.PlatformVersionsExtension
-
-val platformVersions = gradle.extra["platformVersions"] as PlatformVersionsExtension
-
-buildscript {
-    dependencies {
-        classpath(platformVersions.agpClasspathNotation)
-        classpath(platformVersions.kotlinClasspathNotation)
-    }
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
+
+Le résultat de la décision est également lisible sous forme d'objet via `gradle.extra["platformVersions"]`.
 
 ******
 
@@ -146,6 +148,18 @@ Si le projet consommateur place un fichier du même nom dans son propre réperto
 ### Historique des versions
 
 ******
+
+# v1.1.0
+
+###### 2026/08/18
+
+* `Fonctionnalité` Décision de la version de R8, obtenue par recherche selon la version de Kotlin courante, un R8 externe n'étant introduit explicitement que lorsque celui fourni avec AGP n'est pas assez récent
+* `Fonctionnalité` Décision de la version de KSP, dont le numéro suit la version de Kotlin ciblée ; la version d'AGP est relevée automatiquement lorsque le KSP retenu exige un AGP plus récent
+* `Fonctionnalité` Résultat de la décision désormais accessible via le point d'entrée `PlatformVersionsFacade`, utilisable directement dans le corps du script settings
+* `Fonctionnalité` Résultat de la décision également publié sous forme de propriétés système, afin que les scripts de module déclarent les versions de plugins via le plugins DSL
+* `Fonctionnalité` Script de migration par lots `.python/migrate_downstream.py` pour les dépôts en aval, prenant en charge la prévisualisation, l'application et le retour arrière, avec une sauvegarde conservée par dépôt
+* `Correctif` `getMaxSupportedJavaVersion` recevait jusqu'ici la version d'AGP, ce qui abaissait le plafond de la toolchain ; il reçoit désormais la version de Gradle
+* `Amélioration` Suppression de l'entrée 2026.2.1 de la table de correspondance IntelliJ IDEA, si bien que 2026.2 comme 2026.2.1 aboutissent à AGP 9.0.1, conformément à ce que l'IDE prend réellement en charge
 
 # v1.0.0
 

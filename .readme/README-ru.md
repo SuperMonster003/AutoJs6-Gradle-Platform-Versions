@@ -53,6 +53,8 @@
 - Подбор версии AGP, которую способна поддержать текущая версия IDE; при отсутствии точного соответствия выбирается ближайшая версия вниз.
 - Если версия IDE новее всех записей таблицы соответствий, происходит автоматический возврат к выбору auto, что предотвращает молчаливый откат к слишком старому AGP.
 - Ограничение сверху по таблице совместимости AGP и Gradle, гарантирующее, что выбранную версию текущий Gradle точно сможет загрузить.
+- Определение версии KSP с автоматическим повышением версии AGP, если выбранная версия KSP требует более высокого AGP.
+- Определение версии R8: внешний R8 подключается только тогда, когда встроенного в AGP R8 недостаточно.
 - Данные о совместимости поставляются вместе с плагином; если в проекте-потребителе есть каталог `gradle/data`, приоритет отдаётся ему, что удобно для срочной правки данных.
 - Сохранён запасной выход `OVERRIDDEN_*` в `version.properties`: когда нужна детерминированная сборка, версию можно зафиксировать напрямую.
 - README и CHANGELOG доступны на испанском, французском, русском, арабском, японском, корейском, английском, китайском упрощённом, гонконгском и тайваньском традиционном.
@@ -63,7 +65,7 @@
 
 ******
 
-Примените плагин в файле `settings.gradle.kts` проекта-потребителя:
+Примените плагин в файле `settings.gradle.kts` проекта-потребителя, до вызова `includeBuild`:
 
 ```kotlin
 pluginManagement {
@@ -74,25 +76,25 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.0.0"
+        id("org.autojs.build.platform-versions") version "1.1.0"
     }
+}
+
+plugins {
+    id("org.autojs.build.platform-versions")
 }
 ```
 
-После этого результат выбора можно прочитать и использовать в classpath для buildscript:
+После этого скрипты модулей могут объявлять плагины через plugins DSL, а версии берутся из результата выбора:
 
 ```kotlin
-import org.autojs.build.platform.PlatformVersionsExtension
-
-val platformVersions = gradle.extra["platformVersions"] as PlatformVersionsExtension
-
-buildscript {
-    dependencies {
-        classpath(platformVersions.agpClasspathNotation)
-        classpath(platformVersions.kotlinClasspathNotation)
-    }
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
+
+Результат выбора можно также прочитать как объект через `gradle.extra["platformVersions"]`.
 
 ******
 
@@ -146,6 +148,18 @@ gradle/data/android-studio-agp-compat.properties
 ### История выпусков
 
 ******
+
+# v1.1.0
+
+###### 2026/08/18
+
+* `Функция` Выбор версии R8 по таблице на основании текущей версии Kotlin: внешний R8 подключается явно только тогда, когда встроенного в AGP R8 недостаточно
+* `Функция` Выбор версии KSP, номер которой следует за целевой версией Kotlin; если выбранная версия KSP требует более высокого AGP, версия AGP автоматически повышается
+* `Функция` Новая точка входа `PlatformVersionsFacade` для результата выбора, доступная прямо в теле settings script
+* `Функция` Результат выбора публикуется также в виде system property, чтобы скрипты модулей могли объявлять версии плагинов через plugins DSL
+* `Функция` Скрипт массовой миграции репозиториев-потребителей `.python/migrate_downstream.py` с поддержкой предпросмотра, применения и отката, сохраняющий резервную копию для каждого репозитория
+* `Исправление` В `getMaxSupportedJavaVersion` ранее ошибочно передавалась версия AGP, из-за чего верхняя граница toolchain занижалась; теперь передаётся версия Gradle
+* `Улучшение` Удалена запись 2026.2.1 из таблицы соответствий IntelliJ IDEA, так что и 2026.2, и 2026.2.1 получают AGP 9.0.1, что соответствует реальному диапазону поддержки IDE
 
 # v1.0.0
 

@@ -53,6 +53,8 @@
 - 按當前 IDE 版本挑選它能支援的 AGP 版本, 版本之間不完全匹配時向下就近選取.
 - IDE 版本比映射表全部條目都新時, 自動回退到 auto 選擇, 避免靜默降級到過舊的 AGP.
 - 按 AGP 與 Gradle 的兼容關係封頂, 保證選出的版本當前 Gradle 一定能載入.
+- 決定 KSP 版本, 並在所選 KSP 要求更高 AGP 時自動抬升 AGP 版本.
+- 決定 R8 版本, 僅在 AGP 自帶的 R8 不夠新時才引入外部 R8.
 - 兼容數據隨插件分發, 消費端項目若存在 `gradle/data` 目錄則優先使用, 便於緊急修數據.
 - 保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生門, 需要確定性構建時可直接釘死版本.
 - README 與 CHANGELOG 支援西班牙語/法語/俄語/阿拉伯語/日語/韓語/英語/簡體中文/香港繁體/台灣繁體.
@@ -63,7 +65,7 @@
 
 ******
 
-在消費端項目的 `settings.gradle.kts` 裡應用插件:
+在消費端項目的 `settings.gradle.kts` 裡應用插件, 位置需在 `includeBuild` 之前:
 
 ```kotlin
 pluginManagement {
@@ -74,25 +76,25 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.0.0"
+        id("org.autojs.build.platform-versions") version "1.1.0"
     }
+}
+
+plugins {
+    id("org.autojs.build.platform-versions")
 }
 ```
 
-隨後即可讀取決策結果, 用於 buildscript 的 classpath:
+模塊腳本隨後即可用 plugins DSL 聲明插件, 版本取自決策結果:
 
 ```kotlin
-import org.autojs.build.platform.PlatformVersionsExtension
-
-val platformVersions = gradle.extra["platformVersions"] as PlatformVersionsExtension
-
-buildscript {
-    dependencies {
-        classpath(platformVersions.agpClasspathNotation)
-        classpath(platformVersions.kotlinClasspathNotation)
-    }
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
+
+決策結果也可通過 `gradle.extra["platformVersions"]` 以對象形式讀取.
 
 ******
 
@@ -146,6 +148,18 @@ gradle/data/android-studio-agp-compat.properties
 ### 發行歷史
 
 ******
+
+# v1.1.0
+
+###### 2026/08/18
+
+* `新增` R8 版本決策, 依據當前 Kotlin 版本查表, 僅在 AGP 自帶的 R8 不夠新時才顯式引入外部 R8
+* `新增` KSP 版本決策, 版本號跟隨目標 Kotlin 版本; 當所選 KSP 要求更高的 AGP 時自動抬升 AGP 版本
+* `新增` 決策結果新增 `PlatformVersionsFacade` 調用入口, 可在 settings 腳本體中直接使用
+* `新增` 決策結果同時以系統屬性發佈, 供模塊腳本以 plugins DSL 方式聲明插件版本
+* `新增` 下游倉庫批量遷移腳本 `.python/migrate_downstream.py`, 支援預覽/應用/回滾, 逐倉保留備份
+* `修復` `getMaxSupportedJavaVersion` 此前誤傳 AGP 版本, 導致工具鏈上限被壓低; 現改為傳入 Gradle 版本
+* `優化` 移除 IntelliJ IDEA 映射表中 2026.2.1 的條目, 使 2026.2 與 2026.2.1 均得到 AGP 9.0.1, 與 IDE 實際支援範圍一致
 
 # v1.0.0
 

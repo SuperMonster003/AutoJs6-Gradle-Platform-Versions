@@ -53,6 +53,8 @@
 - اختيار إصدار AGP الذي تستطيع بيئة التطوير الحالية دعمه، ومع غياب التطابق التام يُختار أقرب إصدار أدنى.
 - عند كون إصدار بيئة التطوير أحدث من جميع مدخلات جدول المطابقة، يجري الرجوع تلقائيًا إلى اختيار auto، تفاديًا للهبوط الصامت إلى إصدار AGP قديم أكثر من اللازم.
 - فرض حد أعلى وفق علاقة التوافق بين AGP وGradle، بما يضمن أن الإصدار المختار قادر Gradle الحالي على تحميله قطعًا.
+- تحديد إصدار KSP، مع رفع إصدار AGP تلقائيًا عندما يتطلب KSP المختار إصدار AGP أعلى.
+- تحديد إصدار R8، فلا يُجلب R8 خارجي إلا إذا كان R8 المرافق لـ AGP غير حديث بما يكفي.
 - تُوزَّع بيانات التوافق مع الإضافة نفسها، وإذا وُجد المجلد `gradle/data` في المشروع المستهلك فله الأولوية؛ ما يسهّل تصحيح البيانات على وجه السرعة.
 - الإبقاء على مخرج الطوارئ `OVERRIDDEN_*` في `version.properties`، إذ يمكن تثبيت الإصدار مباشرة عند الحاجة إلى بناء حتمي.
 - يدعم ملفا README وCHANGELOG الإسبانية والفرنسية والروسية والعربية واليابانية والكورية والإنجليزية والصينية المبسطة والصينية التقليدية (هونغ كونغ) والصينية التقليدية (تايوان).
@@ -63,7 +65,7 @@
 
 ******
 
-طبّق الإضافة في ملف `settings.gradle.kts` الخاص بالمشروع المستهلك:
+طبّق الإضافة في ملف `settings.gradle.kts` الخاص بالمشروع المستهلك، على أن يسبق موضعُها `includeBuild`:
 
 ```kotlin
 pluginManagement {
@@ -74,25 +76,25 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.0.0"
+        id("org.autojs.build.platform-versions") version "1.1.0"
     }
+}
+
+plugins {
+    id("org.autojs.build.platform-versions")
 }
 ```
 
-بعد ذلك يمكن قراءة نتيجة التحديد واستعمالها في classpath الخاص بـ buildscript:
+بعد ذلك يمكن لبرامج الوحدات التصريح بالإضافات عبر plugins DSL، وتُؤخذ الإصدارات من نتيجة التحديد:
 
 ```kotlin
-import org.autojs.build.platform.PlatformVersionsExtension
-
-val platformVersions = gradle.extra["platformVersions"] as PlatformVersionsExtension
-
-buildscript {
-    dependencies {
-        classpath(platformVersions.agpClasspathNotation)
-        classpath(platformVersions.kotlinClasspathNotation)
-    }
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
+
+ويمكن أيضًا قراءة نتيجة التحديد بوصفها كائنًا عبر `gradle.extra["platformVersions"]`.
 
 ******
 
@@ -146,6 +148,18 @@ gradle/data/android-studio-agp-compat.properties
 ### سجل الإصدارات
 
 ******
+
+# v1.1.0
+
+###### 2026/08/18
+
+* `ميزة` تحديد إصدار R8 بالرجوع إلى الجدول وفق إصدار Kotlin الحالي، فلا يُجلب R8 خارجي صراحةً إلا إذا كان R8 المرافق لـ AGP غير حديث بما يكفي
+* `ميزة` تحديد إصدار KSP، ويتبع رقم الإصدار إصدار Kotlin المستهدف؛ وعندما يتطلب KSP المختار إصدار AGP أعلى يُرفع إصدار AGP تلقائيًا
+* `ميزة` إضافة نقطة الاستدعاء `PlatformVersionsFacade` إلى نتيجة التحديد، ويمكن استعمالها مباشرة داخل متن settings script
+* `ميزة` نشر نتيجة التحديد أيضًا بوصفها system property، ليتسنى لبرامج الوحدات التصريح بإصدارات الإضافات عبر plugins DSL
+* `ميزة` برنامج الترحيل الجماعي للمستودعات المستهلكة `.python/migrate_downstream.py`، يدعم المعاينة والتطبيق والتراجع، ويحتفظ بنسخة احتياطية لكل مستودع
+* `إصلاح` كان `getMaxSupportedJavaVersion` يتلقى إصدار AGP خطأً، فينخفض الحد الأعلى لـ toolchain؛ وقد صار يتلقى إصدار Gradle
+* `تحسين` إزالة مدخلة 2026.2.1 من جدول مطابقة IntelliJ IDEA، بحيث يحصل كل من 2026.2 و2026.2.1 على AGP 9.0.1، بما يوافق نطاق الدعم الفعلي لبيئة التطوير
 
 # v1.0.0
 

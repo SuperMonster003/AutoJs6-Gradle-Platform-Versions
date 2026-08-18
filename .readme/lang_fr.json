@@ -14,13 +14,16 @@
     "Choix d'une version d'AGP prise en charge par l'IDE courant, avec repli sur l'entrée immédiatement inférieure en l'absence de correspondance exacte.",
     "Repli automatique sur la sélection auto lorsque l'IDE est plus récent que toutes les entrées de la table de correspondance, afin d'éviter une rétrogradation silencieuse vers un AGP trop ancien.",
     "Plafonnement selon la compatibilité entre AGP et Gradle, ce qui garantit que la version retenue est toujours chargeable par le Gradle courant.",
+    "Détermination de la version de KSP, avec relèvement automatique de la version d'AGP lorsque le KSP retenu exige un AGP plus récent.",
+    "Détermination de la version de R8, un R8 externe n'étant introduit que lorsque celui fourni avec AGP n'est pas assez récent.",
     "Données de compatibilité distribuées avec le plugin, un répertoire `gradle/data` présent dans le projet consommateur restant prioritaire, ce qui facilite les corrections urgentes.",
     "Porte de sortie `OVERRIDDEN_*` conservée dans `version.properties`, pour figer directement les versions lorsqu'un build déterministe est requis.",
     "README et CHANGELOG disponibles en espagnol/français/russe/arabe/japonais/coréen/anglais/chinois simplifié/chinois traditionnel de Hong Kong/chinois traditionnel de Taïwan."
   ],
   "h3_usage": "Utilisation",
-  "p_usage_intro": "Appliquez le plugin dans le fichier `settings.gradle.kts` du projet consommateur",
-  "p_usage_consume": "Le résultat de la décision est ensuite exploitable dans le classpath du buildscript",
+  "p_usage_intro": "Appliquez le plugin dans le fichier `settings.gradle.kts` du projet consommateur, avant `includeBuild`",
+  "p_usage_consume": "Les scripts de module peuvent ensuite déclarer les plugins via le plugins DSL, les versions provenant du résultat de la décision",
+  "p_usage_note": "Le résultat de la décision est également lisible sous forme d'objet via `gradle.extra[\"platformVersions\"]`",
   "h3_decision_flow": "Processus de décision",
   "p_decision_flow_intro": "La version d'AGP est déterminée en trois étapes",
   "decision_steps": [

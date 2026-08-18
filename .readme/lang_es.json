@@ -14,13 +14,16 @@
     "Selección de una versión de AGP compatible con el IDE actual, tomando la entrada inmediatamente inferior cuando no hay coincidencia exacta.",
     "Retorno automático a la selección auto cuando el IDE es más reciente que todas las entradas de la tabla de correspondencias, evitando una degradación silenciosa a un AGP demasiado antiguo.",
     "Límite superior según la compatibilidad entre AGP y Gradle, de modo que la versión elegida siempre pueda cargarla el Gradle actual.",
+    "Decisión de la versión de KSP, con elevación automática de la versión de AGP cuando el KSP elegido exige un AGP más reciente.",
+    "Decisión de la versión de R8, incorporando un R8 externo solo cuando el que trae AGP no es lo bastante reciente.",
     "Los datos de compatibilidad se distribuyen con el plugin, pero un directorio `gradle/data` en el proyecto consumidor tiene prioridad, lo que facilita las correcciones urgentes.",
     "Se conserva la vía de escape `OVERRIDDEN_*` de `version.properties`, para fijar versiones concretas cuando se necesita una compilación determinista.",
     "README y CHANGELOG están disponibles en español/francés/ruso/árabe/japonés/coreano/inglés/chino simplificado/chino tradicional de Hong Kong/chino tradicional de Taiwán."
   ],
   "h3_usage": "Uso",
-  "p_usage_intro": "Aplica el plugin en el archivo `settings.gradle.kts` del proyecto consumidor",
-  "p_usage_consume": "A partir de ahí, el resultado de la decisión puede usarse en el classpath del buildscript",
+  "p_usage_intro": "Aplica el plugin en el archivo `settings.gradle.kts` del proyecto consumidor, antes de `includeBuild`",
+  "p_usage_consume": "Los scripts de módulo pueden declarar después los plugins mediante el plugins DSL, tomando las versiones del resultado de la decisión",
+  "p_usage_note": "El resultado de la decisión también puede leerse como objeto mediante `gradle.extra[\"platformVersions\"]`",
   "h3_decision_flow": "Proceso de decisión",
   "p_decision_flow_intro": "La versión de AGP se decide en tres pasos",
   "decision_steps": [

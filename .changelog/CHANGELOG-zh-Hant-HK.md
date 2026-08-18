@@ -23,6 +23,18 @@
 
 ******
 
+# v1.1.0
+
+###### 2026/08/18
+
+* `新增` R8 版本決策, 依據當前 Kotlin 版本查表, 僅在 AGP 自帶的 R8 不夠新時才顯式引入外部 R8
+* `新增` KSP 版本決策, 版本號跟隨目標 Kotlin 版本; 當所選 KSP 要求更高的 AGP 時自動抬升 AGP 版本
+* `新增` 決策結果新增 `PlatformVersionsFacade` 調用入口, 可在 settings 腳本體中直接使用
+* `新增` 決策結果同時以系統屬性發佈, 供模塊腳本以 plugins DSL 方式聲明插件版本
+* `新增` 下游倉庫批量遷移腳本 `.python/migrate_downstream.py`, 支援預覽/應用/回滾, 逐倉保留備份
+* `修復` `getMaxSupportedJavaVersion` 此前誤傳 AGP 版本, 導致工具鏈上限被壓低; 現改為傳入 Gradle 版本
+* `優化` 移除 IntelliJ IDEA 映射表中 2026.2.1 的條目, 使 2026.2 與 2026.2.1 均得到 AGP 9.0.1, 與 IDE 實際支援範圍一致
+
 # v1.0.0
 
 ###### 2026/08/18

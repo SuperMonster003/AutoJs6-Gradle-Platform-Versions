@@ -236,11 +236,15 @@ def read_plugin_version(root: Path) -> str:
 
 
 def command_list(settings_files):
-    print(f"{len(settings_files)} repositories carry the inlined mechanism:")
+    print(f"{len(settings_files)} repositories in scope:")
     for settings in settings_files:
-        line_count = len(settings.read_text(encoding="utf-8").splitlines())
-        migrated = PLUGIN_ID in settings.read_text(encoding="utf-8")
-        state = "migrated" if migrated else f"{line_count} lines"
+        text = settings.read_text(encoding="utf-8")
+        if PLUGIN_ID in text:
+            state = "migrated"
+        elif needs_agp_classpath(text):
+            state = f"{len(text.splitlines())} lines, needs module-side change first"
+        else:
+            state = f"{len(text.splitlines())} lines, ready"
         print(f"  {settings.parent.name:55} {state}")
 
 

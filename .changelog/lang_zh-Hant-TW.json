@@ -5,6 +5,22 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.1.0": {
+      "released_date": "2026/08/18",
+      "feature": [
+        "R8 版本決策，依據當前 Kotlin 版本查表，僅在 AGP 內建的 R8 不夠新時才顯式引入外部 R8",
+        "KSP 版本決策，版本號跟隨目標 Kotlin 版本；當所選 KSP 要求更高的 AGP 時自動提升 AGP 版本",
+        "決策結果新增 `PlatformVersionsFacade` 呼叫入口，可在 settings 指令碼本體中直接使用",
+        "決策結果同時以系統屬性發布，供模組指令碼以 plugins DSL 方式宣告插件版本",
+        "下游儲存庫批次遷移指令碼 `.python/migrate_downstream.py`，支援預覽、套用、回復，逐一儲存庫保留備份"
+      ],
+      "fix": [
+        "`getMaxSupportedJavaVersion` 先前誤傳 AGP 版本，導致工具鏈上限被壓低；現改為傳入 Gradle 版本"
+      ],
+      "improvement": [
+        "移除 IntelliJ IDEA 對應表中 2026.2.1 的項目，使 2026.2 與 2026.2.1 均得到 AGP 9.0.1，與 IDE 實際支援範圍一致"
+      ]
+    },
     "v1.0.0": {
       "released_date": "2026/08/18",
       "feature": [

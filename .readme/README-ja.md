@@ -53,6 +53,8 @@
 - 現在の IDE バージョンが対応できる AGP バージョンを選択し、完全に一致しない場合は直近の下位バージョンを採用。
 - IDE のバージョンがマッピング表のすべての項目より新しい場合は auto 選択へ自動的にフォールバックし、古すぎる AGP への暗黙のダウングレードを回避。
 - AGP と Gradle の互換関係を上限として適用し、選ばれたバージョンを現在の Gradle が必ずロードできることを保証。
+- KSP バージョンを決定し、選択された KSP がより新しい AGP を要求する場合は AGP バージョンを自動的に引き上げ。
+- R8 バージョンを決定し、AGP に同梱された R8 が十分に新しくない場合にのみ外部の R8 を導入。
 - 互換性データはプラグインに同梱して配布し、利用側プロジェクトに `gradle/data` ディレクトリがあればそちらを優先するため、緊急のデータ修正が容易。
 - `version.properties` の `OVERRIDDEN_*` という避難口を用意しており、決定性のあるビルドが必要な場合はバージョンを直接固定可能。
 - README と CHANGELOG はスペイン語、フランス語、ロシア語、アラビア語、日本語、韓国語、英語、簡体中国語、繁体中国語 (香港)、繁体中国語 (台湾) に対応。
@@ -63,7 +65,7 @@
 
 ******
 
-利用側プロジェクトの `settings.gradle.kts` でプラグインを適用します:
+利用側プロジェクトの `settings.gradle.kts` でプラグインを適用します。位置は `includeBuild` より前である必要があります:
 
 ```kotlin
 pluginManagement {
@@ -74,25 +76,25 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.0.0"
+        id("org.autojs.build.platform-versions") version "1.1.0"
     }
+}
+
+plugins {
+    id("org.autojs.build.platform-versions")
 }
 ```
 
-その後、決定結果を読み取って buildscript の classpath に利用できます:
+その後、モジュールのスクリプトで plugins DSL によりプラグインを宣言でき、バージョンは決定結果から取得されます:
 
 ```kotlin
-import org.autojs.build.platform.PlatformVersionsExtension
-
-val platformVersions = gradle.extra["platformVersions"] as PlatformVersionsExtension
-
-buildscript {
-    dependencies {
-        classpath(platformVersions.agpClasspathNotation)
-        classpath(platformVersions.kotlinClasspathNotation)
-    }
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
+
+決定結果は `gradle.extra["platformVersions"]` からオブジェクトとして読み取ることもできます.
 
 ******
 
@@ -146,6 +148,18 @@ gradle/data/android-studio-agp-compat.properties
 ### リリース履歴
 
 ******
+
+# v1.1.0
+
+###### 2026/08/18
+
+* `機能` R8 バージョンの決定。現在の Kotlin バージョンをもとに表を参照し、AGP に同梱された R8 が十分に新しくない場合にのみ外部の R8 を明示的に導入
+* `機能` KSP バージョンの決定。バージョン番号は対象の Kotlin バージョンに追従し、選択された KSP がより新しい AGP を要求する場合は AGP バージョンを自動的に引き上げ
+* `機能` 決定結果に `PlatformVersionsFacade` という呼び出し口を追加。settings スクリプト本体から直接利用可能
+* `機能` 決定結果をシステムプロパティとしても公開。モジュールのスクリプトから plugins DSL でプラグインのバージョンを宣言可能
+* `機能` 下流リポジトリの一括移行スクリプト `.python/migrate_downstream.py`。プレビュー、適用、ロールバックに対応し、リポジトリごとにバックアップを保持
+* `修正` `getMaxSupportedJavaVersion` にこれまで誤って AGP バージョンを渡しており、ツールチェーンの上限が引き下げられていた。現在は Gradle バージョンを渡すように修正
+* `改善` IntelliJ IDEA のマッピング表から 2026.2.1 の項目を削除し、2026.2 と 2026.2.1 のどちらでも AGP 9.0.1 が得られるようにして、IDE の実際の対応範囲と一致させた
 
 # v1.0.0
 

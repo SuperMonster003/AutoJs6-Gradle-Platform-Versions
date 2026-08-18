@@ -62,22 +62,22 @@ pluginManagement {
         id("org.autojs.build.platform-versions") version "{{ plugin_version }}"
     }
 }
+
+plugins {
+    id("org.autojs.build.platform-versions")
+}
 ```
 
 {{ p_usage_consume }}:
 
 ```kotlin
-import org.autojs.build.platform.PlatformVersionsExtension
-
-val platformVersions = gradle.extra["platformVersions"] as PlatformVersionsExtension
-
-buildscript {
-    dependencies {
-        classpath(platformVersions.agpClasspathNotation)
-        classpath(platformVersions.kotlinClasspathNotation)
-    }
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
+
+{{ p_usage_note }}.
 
 ******
 

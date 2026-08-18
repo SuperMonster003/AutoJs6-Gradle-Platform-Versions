@@ -53,6 +53,8 @@ Now that it ships as a publishable Settings plugin, a downstream project needs l
 - Picks an AGP version the current IDE can support, rounding down to the nearest entry when there is no exact match.
 - Falls back to auto selection when the IDE is newer than every entry in the mapping table, instead of silently downgrading to an outdated AGP.
 - Caps the result against the AGP and Gradle compatibility rules, so the chosen version is always loadable by the current Gradle.
+- Decides the KSP version, and raises the AGP version automatically when the chosen KSP requires a newer AGP.
+- Decides the R8 version, pulling in an external R8 only when the R8 bundled with AGP is not new enough.
 - Ships the compatibility data with the plugin, while a `gradle/data` directory in the consumer project takes precedence, which makes urgent data fixes easy.
 - Keeps the `OVERRIDDEN_*` escape hatch in `version.properties`, so versions can be pinned outright whenever a deterministic build is needed.
 - README and CHANGELOG are available in Spanish/French/Russian/Arabic/Japanese/Korean/English/Simplified Chinese/Traditional Chinese (Hong Kong)/Traditional Chinese (Taiwan).
@@ -63,7 +65,7 @@ Now that it ships as a publishable Settings plugin, a downstream project needs l
 
 ******
 
-Apply the plugin in the `settings.gradle.kts` of the consumer project:
+Apply the plugin in the `settings.gradle.kts` of the consumer project, before `includeBuild`:
 
 ```kotlin
 pluginManagement {
@@ -74,25 +76,25 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.0.0"
+        id("org.autojs.build.platform-versions") version "1.1.0"
     }
+}
+
+plugins {
+    id("org.autojs.build.platform-versions")
 }
 ```
 
-The decision results are then available for the buildscript classpath:
+Module scripts can then declare the plugins through the plugins DSL, with the versions taken from the decision results:
 
 ```kotlin
-import org.autojs.build.platform.PlatformVersionsExtension
-
-val platformVersions = gradle.extra["platformVersions"] as PlatformVersionsExtension
-
-buildscript {
-    dependencies {
-        classpath(platformVersions.agpClasspathNotation)
-        classpath(platformVersions.kotlinClasspathNotation)
-    }
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
+
+The decision results can also be read as an object through `gradle.extra["platformVersions"]`.
 
 ******
 
@@ -146,6 +148,18 @@ If a consumer project places a file of the same name under its own `gradle/data`
 ### Release History
 
 ******
+
+# v1.1.0
+
+###### 2026/08/18
+
+* `Feature` R8 version decision, looked up by the current Kotlin version, pulling in an external R8 explicitly only when the R8 bundled with AGP is not new enough
+* `Feature` KSP version decision, with the version number following the target Kotlin version; the AGP version is raised automatically when the chosen KSP requires a newer AGP
+* `Feature` Decision results now also reachable through the `PlatformVersionsFacade` entry point, usable directly in the body of the settings script
+* `Feature` Decision results published as system properties as well, so module scripts can declare plugin versions through the plugins DSL
+* `Feature` Batch migration script `.python/migrate_downstream.py` for downstream repositories, supporting preview/apply/rollback and keeping a backup per repository
+* `Fix` `getMaxSupportedJavaVersion` used to be handed the AGP version, which lowered the toolchain ceiling; it is now handed the Gradle version
+* `Improvement` Removed the 2026.2.1 entry from the IntelliJ IDEA mapping table, so that both 2026.2 and 2026.2.1 resolve to AGP 9.0.1, in line with what the IDE actually supports
 
 # v1.0.0
 

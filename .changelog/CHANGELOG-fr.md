@@ -23,6 +23,18 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.1.0
+
+###### 2026/08/18
+
+* `Fonctionnalité` Décision de la version de R8, obtenue par recherche selon la version de Kotlin courante, un R8 externe n'étant introduit explicitement que lorsque celui fourni avec AGP n'est pas assez récent
+* `Fonctionnalité` Décision de la version de KSP, dont le numéro suit la version de Kotlin ciblée ; la version d'AGP est relevée automatiquement lorsque le KSP retenu exige un AGP plus récent
+* `Fonctionnalité` Résultat de la décision désormais accessible via le point d'entrée `PlatformVersionsFacade`, utilisable directement dans le corps du script settings
+* `Fonctionnalité` Résultat de la décision également publié sous forme de propriétés système, afin que les scripts de module déclarent les versions de plugins via le plugins DSL
+* `Fonctionnalité` Script de migration par lots `.python/migrate_downstream.py` pour les dépôts en aval, prenant en charge la prévisualisation, l'application et le retour arrière, avec une sauvegarde conservée par dépôt
+* `Correctif` `getMaxSupportedJavaVersion` recevait jusqu'ici la version d'AGP, ce qui abaissait le plafond de la toolchain ; il reçoit désormais la version de Gradle
+* `Amélioration` Suppression de l'entrée 2026.2.1 de la table de correspondance IntelliJ IDEA, si bien que 2026.2 comme 2026.2.1 aboutissent à AGP 9.0.1, conformément à ce que l'IDE prend réellement en charge
+
 # v1.0.0
 
 ###### 2026/08/18

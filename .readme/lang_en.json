@@ -14,13 +14,16 @@
     "Picks an AGP version the current IDE can support, rounding down to the nearest entry when there is no exact match.",
     "Falls back to auto selection when the IDE is newer than every entry in the mapping table, instead of silently downgrading to an outdated AGP.",
     "Caps the result against the AGP and Gradle compatibility rules, so the chosen version is always loadable by the current Gradle.",
+    "Decides the KSP version, and raises the AGP version automatically when the chosen KSP requires a newer AGP.",
+    "Decides the R8 version, pulling in an external R8 only when the R8 bundled with AGP is not new enough.",
     "Ships the compatibility data with the plugin, while a `gradle/data` directory in the consumer project takes precedence, which makes urgent data fixes easy.",
     "Keeps the `OVERRIDDEN_*` escape hatch in `version.properties`, so versions can be pinned outright whenever a deterministic build is needed.",
     "README and CHANGELOG are available in Spanish/French/Russian/Arabic/Japanese/Korean/English/Simplified Chinese/Traditional Chinese (Hong Kong)/Traditional Chinese (Taiwan)."
   ],
   "h3_usage": "Usage",
-  "p_usage_intro": "Apply the plugin in the `settings.gradle.kts` of the consumer project",
-  "p_usage_consume": "The decision results are then available for the buildscript classpath",
+  "p_usage_intro": "Apply the plugin in the `settings.gradle.kts` of the consumer project, before `includeBuild`",
+  "p_usage_consume": "Module scripts can then declare the plugins through the plugins DSL, with the versions taken from the decision results",
+  "p_usage_note": "The decision results can also be read as an object through `gradle.extra[\"platformVersions\"]`",
   "h3_decision_flow": "Decision Flow",
   "p_decision_flow_intro": "The AGP version is decided in three steps",
   "decision_steps": [

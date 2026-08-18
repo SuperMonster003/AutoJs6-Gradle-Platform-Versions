@@ -14,13 +14,16 @@
     "按當前 IDE 版本挑選它能支援的 AGP 版本, 版本之間不完全匹配時向下就近選取.",
     "IDE 版本比映射表全部條目都新時, 自動回退到 auto 選擇, 避免靜默降級到過舊的 AGP.",
     "按 AGP 與 Gradle 的兼容關係封頂, 保證選出的版本當前 Gradle 一定能載入.",
+    "決定 KSP 版本, 並在所選 KSP 要求更高 AGP 時自動抬升 AGP 版本.",
+    "決定 R8 版本, 僅在 AGP 自帶的 R8 不夠新時才引入外部 R8.",
     "兼容數據隨插件分發, 消費端項目若存在 `gradle/data` 目錄則優先使用, 便於緊急修數據.",
     "保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生門, 需要確定性構建時可直接釘死版本.",
     "README 與 CHANGELOG 支援西班牙語/法語/俄語/阿拉伯語/日語/韓語/英語/簡體中文/香港繁體/台灣繁體."
   ],
   "h3_usage": "使用方法",
-  "p_usage_intro": "在消費端項目的 `settings.gradle.kts` 裡應用插件",
-  "p_usage_consume": "隨後即可讀取決策結果, 用於 buildscript 的 classpath",
+  "p_usage_intro": "在消費端項目的 `settings.gradle.kts` 裡應用插件, 位置需在 `includeBuild` 之前",
+  "p_usage_consume": "模塊腳本隨後即可用 plugins DSL 聲明插件, 版本取自決策結果",
+  "p_usage_note": "決策結果也可通過 `gradle.extra[\"platformVersions\"]` 以對象形式讀取",
   "h3_decision_flow": "決策流程",
   "p_decision_flow_intro": "AGP 版本的決定過程分為三步",
   "decision_steps": [
