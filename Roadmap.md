@@ -62,20 +62,49 @@
 
 ### M4 — 版本与提交
 
-- [x] M4.1 version.properties: VERSION_NAME=1.0.0, VERSION_BUILD 与最终提交总数一致。
-- [x] M4.2 全部文件按逻辑拆分提交, 提交信息清晰有序 (共 15 个提交)。
-- [x] M4.3 核对 `git rev-list --count HEAD` == VERSION_BUILD (均为 15)。
+- [x] M4.1 version.properties: VERSION_BUILD 与最终提交总数一致 (v1.0.0 时为 15, M5 后升至 v1.1.0)。
+- [x] M4.2 全部文件按逻辑拆分提交, 提交信息清晰有序。
+- [x] M4.3 核对 `git rev-list --count HEAD` == VERSION_BUILD。
+
+### M5 — 决策链路补齐与下游迁移
+
+- [x] M5.1 移除 IntelliJ IDEA 映射表中 `2026.2.1` 到 `9.1.1` 的条目, 使 2026.2 与 2026.2.1 均落到 9.0.1; 同步修改主项目与 NodeJs 插件项目。
+- [x] M5.2 stale-map 回退回移主项目 AutoJs6, 实测 IDEA 2026.2 与 2027.1 两场景均正确回退。
+- [x] M5.3 `getMaxSupportedJavaVersion` 改传 Gradle 版本, 主项目与 NodeJs 插件项目同步修正, 实测工具链上限由 24 升为 25。
+- [x] M5.4 R8 决策链路: `kotlin-r8-compat` 查表 + AGP 自带 R8 判定, 仅在需要时显式引入外部 R8。
+- [x] M5.5 KSP 决策链路: `ksp-releases` 版本决策 + `ksp-agp-compat` 反向抬升 AGP, 用户钉死 AGP 冲突时抛异常而非静默改写。
+- [x] M5.6 决策结果以 `PlatformVersionsFacade` 与系统属性双通道暴露, 适配 settings buildscript classpath 早于插件应用的时序约束。
+- [x] M5.7 下游批量迁移脚本 `.python/migrate_downstream.py`: 结构化定位 pluginManagement 块, 支持 `--list`/`--dry-run`/`--apply`/`--revert`/`--force`, 逐仓备份可回滚。
 
 ## 四. 迁移期间发现的上游缺陷
 
-抽取过程中发现的原始 settings.gradle.kts 缺陷, 本项目已修正, 建议回移主项目:
+抽取过程中发现的原始 settings.gradle.kts 缺陷, 本项目已修正, 并已回移主项目:
 
-1. **`getMaxSupportedJavaVersion` 误传 AGP 版本**: 该函数按 `java-gradle-compat.properties` 查表, 参数名与属性名 (`gradle.java.version.coerced.by.gradle`) 均指向 Gradle 版本, 但 AutoJs6 (settings.gradle.kts:850) 与本插件项目 (settings.gradle.kts:606) 都传入了 AGP 版本。后果是工具链上限被压低: Gradle 9.3.0 配 AGP 9.0.1 时得到 24, 而按表应为 25。本项目已改为传 Gradle 版本并加测试锁定。
+1. **`getMaxSupportedJavaVersion` 误传 AGP 版本**: 该函数按 `java-gradle-compat.properties` 查表, 参数名与属性名 (`gradle.java.version.coerced.by.gradle`) 均指向 Gradle 版本, 但 AutoJs6 与 NodeJs 插件项目都传入了 AGP 版本。后果是工具链上限被压低: Gradle 9.3.0 配 AGP 9.0.1 时得到 24, 而按表应为 25。三处均已改为传 Gradle 版本, 本项目并加测试锁定。
 2. **`toVersionParts` 注释与实现不符**: 注释声称支持 `1.2.3_preview-2` 形式, 但下划线不在分隔符集合内, 该输入实际抛异常。本项目已修正注释并加测试固化实际行为。
 
-## 五. 后续展望 (不在本期范围)
+## 五. 下游迁移的前置条件
+
+全部 57 个下游仓库的 settings.gradle.kts 都在 `pluginManagement` 内用 `buildscript { classpath(AGP) }` 声明 AGP, 这构成迁移的硬约束:
+
+- Gradle 规定 `buildscript` 块不得早于 `pluginManagement`, 每个脚本仅允许一个, 且其 classpath configuration 一经解析不可再追加;
+- settings 插件的应用晚于该 configuration 的解析。
+
+因此没有任何 settings 插件能为这条 classpath 供版本。原机制不受此限, 是因为决策代码内联于同一块中, 无需先解析任何依赖。
+
+已验证可行的迁移路径: 模块脚本改用 plugins DSL, 版本取自本插件发布的系统属性。
+
+```kotlin
+plugins {
+    id("com.android.application") version System.getProperty("gradle.agp.version")
+    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
+}
+```
+
+迁移脚本默认跳过这些仓库并打印上述指引; 模块改造完成后以 `--force` 重写其 settings 脚本。
+
+## 六. 后续展望 (不在本期范围)
 
 - 发布到 GitHub Packages / Gradle Plugin Portal, 下游用动态版本自动跟进。
 - 主项目 CI cron 定时跑 scraper 并自动发版。
-- 各下游仓库 (40+ 项目与 Worktree) 批量迁移脚本。
-- 补齐 A 版独有的 R8 与 KSP 决策链路 (kotlin-r8-compat / ksp-agp-compat 数据已内置, 逻辑待移植)。
+- 模块脚本改用 plugins DSL 的批量改造 (迁移脚本的前置条件, 见第五节)。
