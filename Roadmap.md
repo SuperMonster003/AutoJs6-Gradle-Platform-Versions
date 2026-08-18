@@ -76,6 +76,14 @@
 - [x] M5.6 决策结果以 `PlatformVersionsFacade` 与系统属性双通道暴露, 适配 settings buildscript classpath 早于插件应用的时序约束。
 - [x] M5.7 下游批量迁移脚本 `.python/migrate_downstream.py`: 结构化定位 pluginManagement 块, 支持 `--list`/`--dry-run`/`--apply`/`--revert`/`--force`, 逐仓备份可回滚。
 
+### M6 — 两步迁移落地
+
+- [x] M6.1 勘察下游模块脚本结构: 确认无版本应用的是 `com.android.application`/`com.android.library`/`com.google.devtools.ksp` 三者, convention 插件与 `kotlin()` 语法糖不受影响。
+- [x] M6.2 模块改造脚本 `.python/migrate_modules.py`: 按插件 id 精确匹配改写为带版本形式, 版本取自系统属性。
+- [x] M6.3 插件补发 `gradle.ksp.version` 属性, 与 AGP/Kotlin 命名对齐。
+- [x] M6.4 第二步脚本自动检测模块状态, 未完成第一步时拒绝执行。
+- [x] M6.5 试点仓库端到端实测: 两步迁移后成功产出 APK, 随后完整回滚。
+
 ## 四. 迁移期间发现的上游缺陷
 
 抽取过程中发现的原始 settings.gradle.kts 缺陷, 本项目已修正, 并已回移主项目:
@@ -83,7 +91,7 @@
 1. **`getMaxSupportedJavaVersion` 误传 AGP 版本**: 该函数按 `java-gradle-compat.properties` 查表, 参数名与属性名 (`gradle.java.version.coerced.by.gradle`) 均指向 Gradle 版本, 但 AutoJs6 与 NodeJs 插件项目都传入了 AGP 版本。后果是工具链上限被压低: Gradle 9.3.0 配 AGP 9.0.1 时得到 24, 而按表应为 25。三处均已改为传 Gradle 版本, 本项目并加测试锁定。
 2. **`toVersionParts` 注释与实现不符**: 注释声称支持 `1.2.3_preview-2` 形式, 但下划线不在分隔符集合内, 该输入实际抛异常。本项目已修正注释并加测试固化实际行为。
 
-## 五. 下游迁移的前置条件
+## 五. 下游迁移: 两步走
 
 全部 57 个下游仓库的 settings.gradle.kts 都在 `pluginManagement` 内用 `buildscript { classpath(AGP) }` 声明 AGP, 这构成迁移的硬约束:
 
@@ -92,16 +100,26 @@
 
 因此没有任何 settings 插件能为这条 classpath 供版本。原机制不受此限, 是因为决策代码内联于同一块中, 无需先解析任何依赖。
 
-已验证可行的迁移路径: 模块脚本改用 plugins DSL, 版本取自本插件发布的系统属性。
+出路是让模块自己声明版本, 取自本插件发布的系统属性。两个脚本配套完成:
 
-```kotlin
-plugins {
-    id("com.android.application") version System.getProperty("gradle.agp.version")
-    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
-}
-```
+| 步骤 | 脚本 | 作用 |
+|---|---|---|
+| 第一步 | `.python/migrate_modules.py` | 模块脚本中无版本的 AGP/KSP 应用改为带版本形式 |
+| 第二步 | `.python/migrate_downstream.py` | settings 脚本的机制段替换为十余行 bootstrap |
 
-迁移脚本默认跳过这些仓库并打印上述指引; 模块改造完成后以 `--force` 重写其 settings 脚本。
+**两步必须成对完成**: 中间态下模块已索要版本而旧 settings 尚未发布, 构建会以 `plugin version 'null' is invalid` 失败。第二步脚本会自动检测模块状态, 未完成第一步时拒绝执行并给出提示。
+
+两脚本均支持 `--list` / `--dry-run` / `--apply` / `--revert`, 逐文件保留备份可回滚。
+
+### 已验证
+
+在 AutoJs6-Plugin-AI-Text-Generation-Catalog 上完成端到端实测: 两步迁移后 `:app:assembleDebug` 成功产出 APK, settings 脚本由 720 行缩减至 35 行, 随后完整回滚至原状。
+
+### 已知限制
+
+- `kotlin("plugin.parcelize")` 等 `kotlin()` 语法糖不被改写, 它依赖 classpath 上已有的 Kotlin 插件。AGP 9 起由其内置 Kotlin 提供, 当前无影响。
+- 部分仓库的 convention 插件会在 AGP 低于 9 时自行应用 `org.jetbrains.kotlin.android`。该路径在 AGP 9 下为死代码, 迁移后未在 AGP 8 环境验证。
+- 主项目 AutoJs6 的 13 个 `libs/*` 模块只用 convention 插件, 不含 AGP, 脚本按插件 id 精确匹配, 已确认不会误伤。
 
 ## 六. 后续展望 (不在本期范围)
 
