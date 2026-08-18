@@ -111,6 +111,7 @@ object PlatformVersionsFacade {
         // 该块内还取不到决策结果对象.
         System.setProperty("gradle.agp.version", agpVersion)
         System.setProperty("gradle.kotlin.version", kotlinVersion)
+        kspVersion?.let { System.setProperty("gradle.ksp.version", it) }
         r8Version?.let { System.setProperty("gradle.r8.version", it) }
 
         return PlatformVersionsExtension(
