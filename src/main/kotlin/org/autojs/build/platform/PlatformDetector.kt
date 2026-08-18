@@ -21,17 +21,17 @@ class PlatformDetector(
     /**
      * @Reference AGP Upgrade Assistant integrated within JetBrains IntelliJ IDEA.
      *
-     * A single entry is all that remains once Gradle 8 is out of scope: 2026.1.2 is the
-     * first IDEA that handles AGP 9, and it tops out at the 9.0 line, since as of 2026.2
-     * the JetBrains Android plugin supports AGP 9.0.x rather than 9.1. Anything newer is
-     * treated as a stale map and falls back to auto selection, which caps at what the
-     * running Gradle can load.
+     * The newest entry has to state the newest IDE's real ceiling, not just the oldest
+     * supported one. Falling off the end of this map means auto selection, which is
+     * bounded only by what the running Gradle can load: on Gradle 9.6.1 that reaches
+     * AGP 9.2.1, which IDEA 2026.2 rejects with "Latest supported version is AGP 9.1.0".
      *
-     * zh-CN: 移除 Gradle 8 支持后仅余一条: 2026.1.2 是首个支持 AGP 9 的 IDEA, 且上限停在 9.0 线,
-     * 因为截至 2026.2 JetBrains 的 Android 插件支持 AGP 9.0.x 而非 9.1.
-     * 更新的版本会被判定为映射表滞后, 回退到 auto 选择, 由当前 Gradle 能加载的上限封顶.
+     * zh-CN: 最新条目必须写出最新 IDE 的真实上限, 而不只是保留最旧的受支持版本.
+     * 越过表尾即进入 auto 选择, 其上界只受当前 Gradle 约束: Gradle 9.6.1 下会取到 AGP 9.2.1,
+     * 而 IDEA 2026.2 会以 "Latest supported version is AGP 9.1.0" 拒绝它.
      */
     private val intelliJIdeaAgpVersionMap = mapOf(
+        "2026.2" to "9.1.0", /* Reported by the IDE itself as its latest supported AGP. */
         "2026.1.2" to "9.0.1",
     )
 

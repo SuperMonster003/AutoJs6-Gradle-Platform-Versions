@@ -55,9 +55,25 @@ class VersionDecider(
             // zh-CN: 当前平台版本比 agpVersionMap 全部条目都新, 说明手动维护的映射表已滞后.
             // 更新的 IDE 至少支持其前代所支持的 AGP, 因此不再静默降级到映射表中最新的已知条目
             // (可能旧到无法构建本项目), 而是回退到 auto 选择: 与当前 Gradle 兼容的最新 AGP 正式版.
+            //
+            // The fallback is capped one minor line above the newest known entry. Auto
+            // selection alone is bounded only by Gradle, which on a new enough wrapper
+            // overshoots what the IDE accepts: an IDE stating "Latest supported version is
+            // AGP 9.1.0" refuses the 9.2.1 that Gradle 9.6.1 would otherwise allow. One line
+            // of headroom covers the usual case of an IDE a little ahead of the map, without
+            // pretending to know how far ahead it really is.
+            // zh-CN: 回退结果被限制在最新已知条目之上一个小版本线内. 单靠 auto 选择只受 Gradle 约束,
+            // 在较新的 wrapper 上会超出 IDE 的接受范围: 声明 "Latest supported version is AGP 9.1.0"
+            // 的 IDE 会拒绝 Gradle 9.6.1 本可选出的 9.2.1. 放宽一个版本线足以覆盖
+            // "IDE 略新于映射表" 这一常见情形, 又不假装知道它究竟新多少.
+            val ceiling = agpFallbackCeiling(map)
+            val capped = when {
+                ceiling != null && VersionComparator.compareVersionStrings(maxSupportedAgpVersion, ceiling) > 0 -> ceiling
+                else -> maxSupportedAgpVersion
+            }
             notices += "Notice: ${platform.fullName} ${platform.version} is newer than " +
                     "all agpVersionMap entries, AGP falls back to auto selection"
-            return Decision(maxSupportedAgpVersion, Identifier.AUTO_SPECIFIED_SUFFIX, notices)
+            return Decision(capped, Identifier.AUTO_SPECIFIED_SUFFIX, notices)
         }
 
         matchedValue ?: return Decision(
@@ -122,6 +138,39 @@ class VersionDecider(
         platform.agpVersionMap.values.minWithOrNull(VersionComparator::compareVersionStrings)
 
     /**
+     * Highest AGP the stale-map fallback may reach: one minor line above the newest
+     * entry the map knows, or null when the map says nothing.
+     *
+     * e.g. a map topping out at AGP 9.1.0 allows the fallback up to the 9.2 line.
+     *
+     * The ceiling never drops below the lowest AGP this Gradle can load, since a map so
+     * far behind that its next line is still unusable says nothing useful about the IDE.
+     *
+     * zh-CN: 上界不会低于当前 Gradle 能加载的最低 AGP: 若映射表滞后到连下一个版本线都无法使用,
+     * 它对当前 IDE 的能力就不再有参考价值.
+     */
+    fun agpFallbackCeiling(map: Map<String, String>): String? {
+        val newestKnown = map.values.maxWithOrNull(VersionComparator::compareVersionStrings) ?: return null
+        val parts = runCatching { VersionComparator.toVersionParts(newestKnown).first }.getOrNull() ?: return null
+        val major = parts.getOrNull(0) ?: return null
+        val minor = parts.getOrNull(1) ?: 0
+        val ceiling = getAgpReleasedVersion("$major.${minor + 1}")
+            ?: getAgpReleasedVersion("$major.$minor")
+            ?: newestKnown
+
+        val lowestUsable = agpGradleCompatProps.entries
+            .filter { gradleVersion.toGradleVersion() >= it.value.toGradleVersion() }
+            .minWithOrNull { a, b -> VersionComparator.compareVersionStrings(a.key, b.key) }
+            ?.let { getAgpReleasedVersion(it.key) }
+            ?: return ceiling
+
+        return when {
+            VersionComparator.compareVersionStrings(ceiling, lowestUsable) < 0 -> lowestUsable
+            else -> ceiling
+        }
+    }
+
+    /**
      * The newest released AGP that the running Gradle version can load, or null when
      * the running Gradle is too old for any of them.
      *
@@ -142,7 +191,7 @@ class VersionDecider(
     }
 
     /** Newest stable AGP release carrying the given prefix, e.g. "9.0" resolves to "9.0.1". */
-    private fun getAgpReleasedVersion(referenceAgpVersion: String): String? = with(VersionComparator) {
+    fun getAgpReleasedVersion(referenceAgpVersion: String): String? = with(VersionComparator) {
         agpReleases.sortByVersionName(isDescend = true)
             .find { it.startsWith(referenceAgpVersion) && !it.contains("-") }
     }

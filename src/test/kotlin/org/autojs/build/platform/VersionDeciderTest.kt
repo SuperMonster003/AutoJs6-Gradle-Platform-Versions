@@ -67,6 +67,26 @@ class VersionDeciderTest {
     }
 
     @Test
+    fun `the stale-map fallback stays within one line of what the map knows`() {
+        // Auto selection alone would reach AGP 9.3.0 here, past what an IDE topping out at
+        // 9.1.0 accepts. The fallback is held to the line just above the newest entry.
+        val map = mapOf("2026.2" to "9.1.0")
+        assertEquals("9.3.0", decider(commandLine(), gradleVersion = "9.6.1").maxSupportedAgpVersion())
+
+        val decision = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
+        assertEquals("9.2.1", decision.version) { "one line of headroom above 9.1 is the 9.2 line" }
+        assertTrue(decision.notices.isNotEmpty())
+    }
+
+    @Test
+    fun `the fallback ceiling never drops below what this Gradle can load`() {
+        // A map this far behind says nothing useful about the IDE, so the ceiling gives way.
+        val staleMap = mapOf("2025.1" to "8.10.1")
+        val ceiling = decider(idea("2026.2", staleMap)).agpFallbackCeiling(staleMap)
+        assertEquals("9.0.1", ceiling) { "8.11 is unusable on Gradle 9.3.0, so the floor applies" }
+    }
+
+    @Test
     fun `IDEA 2026 2 falls back to auto selection and still lands on the 9 0 line`() {
         // The map deliberately stops at 2026.1.2, because as of 2026.2 the JetBrains
         // Android plugin supports AGP 9.0.x rather than 9.1. Both 2026.2 and 2026.2.1
