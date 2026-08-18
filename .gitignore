@@ -1,0 +1,25 @@
+*.iml
+*.log
+*.zip
+*.patch
+*.hprof
+
+.DS_Store
+desktop.ini
+
+.bak/
+.gradle/
+.kotlin/
+
+.idea/*
+!.idea/codeStyles/
+!.idea/inspectionProfiles/
+
+# Anchored to project roots, so package directories named "build"
+# (org/autojs/build) are not swept up along with build output.
+/build/
+/*/build/
+__pycache__/
+node_modules/
+
+/local.properties
