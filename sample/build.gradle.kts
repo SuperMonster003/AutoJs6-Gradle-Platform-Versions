@@ -14,6 +14,8 @@ tasks.register("printPlatformVersions") {
     val platformVersion = platformVersions.platform.version
     val agpVersion = platformVersions.agpVersion
     val kotlinVersion = platformVersions.kotlinVersion
+    val kspVersion = platformVersions.kspVersion
+    val r8Version = platformVersions.r8Version
     val maxJava = platformVersions.maxSupportedJavaVersion
     val info = platformVersions.versionInfo
 
@@ -21,6 +23,8 @@ tasks.register("printPlatformVersions") {
         println("platform=$platformName $platformVersion")
         println("agp=$agpVersion")
         println("kotlin=$kotlinVersion")
+        println("ksp=$kspVersion")
+        println("r8=${r8Version ?: "bundled with AGP"}")
         println("maxSupportedJavaVersion=$maxJava")
         info.forEach { println("info| $it") }
     }

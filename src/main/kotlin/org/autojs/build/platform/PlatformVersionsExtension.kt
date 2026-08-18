@@ -21,6 +21,16 @@ class PlatformVersionsExtension(
     /** The decided Kotlin Gradle plugin version. */
     val kotlinVersion: String,
 
+    /** The decided KSP plugin version, or null when no compatible release is known. */
+    val kspVersion: String?,
+
+    /**
+     * The R8 version to put on the classpath, or null when the one AGP bundles suffices.
+     *
+     * zh-CN: 需显式引入的 R8 版本; 若 AGP 自带的 R8 已够用则为 null.
+     */
+    val r8Version: String?,
+
     /** The highest Java version the running Gradle fully supports. */
     val maxSupportedJavaVersion: Int,
 
@@ -36,5 +46,8 @@ class PlatformVersionsExtension(
 
     /** The buildscript classpath notation for the Kotlin Gradle plugin. */
     val kotlinClasspathNotation: String get() = "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
+
+    /** The R8 classpath notation, or null when AGP's bundled R8 is used. */
+    val r8ClasspathNotation: String? get() = r8Version?.let { "com.android.tools:r8:$it" }
 
 }
