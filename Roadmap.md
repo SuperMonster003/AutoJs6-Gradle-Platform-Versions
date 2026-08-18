@@ -62,9 +62,9 @@
 
 ### M4 — 版本与提交
 
-- [ ] M4.1 version.properties: VERSION_NAME=1.0.0, VERSION_BUILD 与最终提交总数一致。
-- [ ] M4.2 全部文件按逻辑拆分提交, 提交信息清晰有序。
-- [ ] M4.3 核对 `git rev-list --count HEAD` == VERSION_BUILD。
+- [x] M4.1 version.properties: VERSION_NAME=1.0.0, VERSION_BUILD 与最终提交总数一致。
+- [x] M4.2 全部文件按逻辑拆分提交, 提交信息清晰有序 (共 15 个提交)。
+- [x] M4.3 核对 `git rev-list --count HEAD` == VERSION_BUILD (均为 15)。
 
 ## 四. 迁移期间发现的上游缺陷
 
