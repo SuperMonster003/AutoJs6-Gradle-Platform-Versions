@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.1.0"
+        id("org.autojs.build.platform-versions") version "1.2.0"
     }
 }
 
@@ -148,6 +148,16 @@ Si le projet consommateur place un fichier du même nom dans son propre réperto
 ### Historique des versions
 
 ******
+
+# v1.2.0
+
+###### 2026/08/18
+
+* `Fonctionnalité` Script de conversion des scripts de module `.python/migrate_modules.py`, qui réécrit les applications de plugins sans version sous la forme versionnée, la version étant lue depuis une propriété système
+* `Fonctionnalité` La version de KSP retenue est désormais publiée aussi sous la propriété système `gradle.ksp.version`, conformément au nommage employé pour AGP et Kotlin
+* `Correctif` Le retour arrière du script de conversion des modules ne restaurait pas les fichiers d'origine et laissait les sauvegardes derrière lui
+* `Amélioration` Le script de migration settings vérifie d'abord que les scripts de module sont prêts et se contente d'un avertissement sans réécrire lorsqu'ils ne le sont pas, afin de ne pas laisser un état intermédiaire non constructible
+* `Amélioration` Le script de migration settings fusionne désormais le plugin dans le bloc plugins existant et le place avant `includeBuild`, au lieu d'ajouter un nouveau bloc
 
 # v1.1.0
 

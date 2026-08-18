@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.1.0"
+        id("org.autojs.build.platform-versions") version "1.2.0"
     }
 }
 
@@ -148,6 +148,16 @@ gradle/data/android-studio-agp-compat.properties
 ### سجل الإصدارات
 
 ******
+
+# v1.2.0
+
+###### 2026/08/18
+
+* `ميزة` برنامج تحويل برامج الوحدات `.python/migrate_modules.py`، يعيد كتابة تطبيق الإضافات غير المقترن بإصدار إلى الصيغة المقترنة بإصدار، ويؤخذ الإصدار من system property
+* `ميزة` نشر إصدار KSP المحدد أيضًا بوصفه system property باسم `gradle.ksp.version`، بما يوافق تسمية AGP وKotlin
+* `إصلاح` كان التراجع في برنامج تحويل الوحدات لا يستعيد الملفات الأصلية، ويخلّف وراءه النسخ الاحتياطية
+* `تحسين` صار برنامج ترحيل settings يتحقق أولًا من جاهزية برامج الوحدات، فإذا لم تكن جاهزة نبّه دون إعادة كتابة، تفاديًا لترك حالة وسيطة لا يمكن بناؤها
+* `تحسين` صار برنامج ترحيل settings يضم الإضافة إلى plugins block الموجود وينقلها قبل `includeBuild`، بدلًا من إضافة كتلة جديدة
 
 # v1.1.0
 

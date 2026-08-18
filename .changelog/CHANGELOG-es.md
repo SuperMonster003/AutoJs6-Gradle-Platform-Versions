@@ -23,6 +23,16 @@ CHANGELOG.md está disponible actualmente en los siguientes idiomas:
 
 ******
 
+# v1.2.0
+
+###### 2026/08/18
+
+* `Función` Script de conversión de los scripts de módulo `.python/migrate_modules.py`, que reescribe las aplicaciones de plugins sin versión a la forma con versión, tomando la versión de una propiedad del sistema
+* `Función` La versión de KSP decidida se publica ahora también como la propiedad del sistema `gradle.ksp.version`, en consonancia con la nomenclatura usada para AGP y Kotlin
+* `Corrección` La reversión del script de conversión de módulos no restauraba los archivos originales y dejaba atrás las copias de seguridad
+* `Mejora` El script de migración de settings comprueba primero si los scripts de módulo están preparados y, cuando no lo están, avisa en lugar de reescribir, para no dejar un estado intermedio que no se pueda compilar
+* `Mejora` El script de migración de settings pasa a integrar el plugin en el bloque plugins existente y lo mueve delante de `includeBuild`, en vez de añadir un bloque nuevo
+
 # v1.1.0
 
 ###### 2026/08/18

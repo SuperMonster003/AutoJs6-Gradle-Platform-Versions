@@ -5,6 +5,20 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.2.0": {
+      "released_date": "2026/08/18",
+      "feature": [
+        "Module script migration script `.python/migrate_modules.py`, which rewrites versionless plugin applications into the versioned form, with the version taken from a system property",
+        "The decided KSP version is now published as the `gradle.ksp.version` system property as well, in line with the naming used for AGP and Kotlin"
+      ],
+      "improvement": [
+        "The settings migration script now checks first whether the module scripts are ready, and reports instead of rewriting when they are not, so that no unbuildable intermediate state is left behind",
+        "The settings migration script now merges the plugin into the existing plugins block and moves it ahead of `includeBuild`, instead of adding a new block"
+      ],
+      "fix": [
+        "Rollback in the module migration script failed to restore the original files and left the backups behind"
+      ]
+    },
     "v1.1.0": {
       "released_date": "2026/08/18",
       "feature": [

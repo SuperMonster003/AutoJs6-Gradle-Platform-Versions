@@ -10,10 +10,13 @@ The rewrite is deliberately structural rather than textual: the block is located
 its top-level braces, so the many line-count variants across the fleet are all handled
 without pattern matching on their contents.
 
-Repositories that declare AGP on the settings buildscript classpath are reported and
-skipped, because no settings plugin can supply that classpath in time. Those need their
-modules switched to the plugins DSL first, applying the Android and Kotlin plugins with
-the versions this plugin publishes as system properties; --force then rewrites them.
+This is the second of the two migration steps. A repository whose modules still apply
+plugins without a version is reported and skipped: it depends on the very buildscript
+classpath this removes, and no settings plugin can supply that classpath in time.
+Run migrate_modules.py for those first.
+
+The pair has to land together. In between, the module scripts ask for a version the
+old settings script does not publish and the build fails, so run both, then build.
 
 Usage:
   py .python/migrate_downstream.py --list
@@ -371,7 +374,8 @@ def main():
     parser.add_argument("--plugin-version", default=None,
                         help="plugin version to bootstrap (default: VERSION_NAME of this repository)")
     parser.add_argument("--force", action="store_true",
-                        help="rewrite even repositories that declare AGP on the settings buildscript classpath")
+                        help="rewrite even repositories whose modules still lack plugin versions, "
+                             "which leaves them unbuildable until migrate_modules.py runs")
     mode = parser.add_mutually_exclusive_group()
     mode.add_argument("--list", action="store_true", help="show which repositories carry the mechanism")
     mode.add_argument("--dry-run", action="store_true", help="report what would change without writing")

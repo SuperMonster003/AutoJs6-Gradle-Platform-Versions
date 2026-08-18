@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.1.0"
+        id("org.autojs.build.platform-versions") version "1.2.0"
     }
 }
 
@@ -148,6 +148,16 @@ gradle/data/android-studio-agp-compat.properties
 ### 发行历史
 
 ******
+
+# v1.2.0
+
+###### 2026/08/18
+
+* `新增` 模块脚本改造脚本 `.python/migrate_modules.py`, 把无版本的插件应用改为带版本形式, 版本取自系统属性
+* `新增` 决策出的 KSP 版本新增以 `gradle.ksp.version` 系统属性发布, 与 AGP 和 Kotlin 的命名对齐
+* `修复` 模块改造脚本的回滚未能还原原始文件, 且会遗留备份文件
+* `优化` settings 迁移脚本会先检查模块脚本是否就绪, 未就绪时给出提示而不改写, 避免留下无法构建的中间状态
+* `优化` settings 迁移脚本改为把插件并入已有的 plugins 块并移到 `includeBuild` 之前, 而非新增一个块
 
 # v1.1.0
 

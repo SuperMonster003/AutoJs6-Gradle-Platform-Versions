@@ -23,6 +23,16 @@ CHANGELOG.md is currently available in the following languages:
 
 ******
 
+# v1.2.0
+
+###### 2026/08/18
+
+* `Feature` Module script migration script `.python/migrate_modules.py`, which rewrites versionless plugin applications into the versioned form, with the version taken from a system property
+* `Feature` The decided KSP version is now published as the `gradle.ksp.version` system property as well, in line with the naming used for AGP and Kotlin
+* `Fix` Rollback in the module migration script failed to restore the original files and left the backups behind
+* `Improvement` The settings migration script now checks first whether the module scripts are ready, and reports instead of rewriting when they are not, so that no unbuildable intermediate state is left behind
+* `Improvement` The settings migration script now merges the plugin into the existing plugins block and moves it ahead of `includeBuild`, instead of adding a new block
+
 # v1.1.0
 
 ###### 2026/08/18
