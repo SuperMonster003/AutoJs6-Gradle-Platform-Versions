@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.3.0"
+        id("org.autojs.build.platform-versions") version "1.4.0"
     }
 }
 
@@ -150,6 +150,15 @@ If a consumer project places a file of the same name under its own `gradle/data`
 
 ******
 
+# v1.4.0
+
+###### 2026/08/18
+
+* `Fix` The AGP ceiling is no longer relaxed when the IDE version is only a patch-level update. IntelliJ IDEA 2026.2.1 used to resolve to AGP 9.2.1 and be rejected by the IDE; it now stays on the 9.1 line, just as 2026.2 does
+* `Improvement` A 2026.2 entry added to the IntelliJ IDEA mapping table, with its AGP ceiling taken from what the IDE itself reports
+* `Improvement` The migration approach now declares the plugin version once in the root build script, leaving module scripts untouched; adding the version module by module could never work for Groovy modules, whose plugins block accepts string literals only
+* `Improvement` Notes printed to the console moved into a separate paragraph below the version summary, instead of being interleaved with the version lines
+
 # v1.3.0
 
 ###### 2026/08/18
@@ -171,18 +180,6 @@ If a consumer project places a file of the same name under its own `gradle/data`
 * `Fix` Rollback in the module migration script failed to restore the original files and left the backups behind
 * `Improvement` The settings migration script now checks first whether the module scripts are ready, and reports instead of rewriting when they are not, so that no unbuildable intermediate state is left behind
 * `Improvement` The settings migration script now merges the plugin into the existing plugins block and moves it ahead of `includeBuild`, instead of adding a new block
-
-# v1.1.0
-
-###### 2026/08/18
-
-* `Feature` R8 version decision, looked up by the current Kotlin version, pulling in an external R8 explicitly only when the R8 bundled with AGP is not new enough
-* `Feature` KSP version decision, with the version number following the target Kotlin version; the AGP version is raised automatically when the chosen KSP requires a newer AGP
-* `Feature` Decision results now also reachable through the `PlatformVersionsFacade` entry point, usable directly in the body of the settings script
-* `Feature` Decision results published as system properties as well, so module scripts can declare plugin versions through the plugins DSL
-* `Feature` Batch migration script `.python/migrate_downstream.py` for downstream repositories, supporting preview/apply/rollback and keeping a backup per repository
-* `Fix` `getMaxSupportedJavaVersion` used to be handed the AGP version, which lowered the toolchain ceiling; it is now handed the Gradle version
-* `Improvement` Removed the 2026.2.1 entry from the IntelliJ IDEA mapping table, so that both 2026.2 and 2026.2.1 resolve to AGP 9.0.1, in line with what the IDE actually supports
 
 ##### For more release history, see
 

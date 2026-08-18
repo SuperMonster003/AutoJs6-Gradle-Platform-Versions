@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.3.0"
+        id("org.autojs.build.platform-versions") version "1.4.0"
     }
 }
 
@@ -150,6 +150,15 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.4.0
+
+###### 2026/08/18
+
+* `修复` IDE 版本仅为补丁级更新时不再放宽 AGP 上限. 此前 IntelliJ IDEA 2026.2.1 会取到 AGP 9.2.1 而被 IDE 拒绝, 现在与 2026.2 一样停留在 9.1 线
+* `优化` IntelliJ IDEA 映射表补入 2026.2 条目, 采用 IDE 自报的 AGP 上限
+* `优化` 迁移方案改为在根构建脚本声明一次插件版本, 模块脚本无须改动; 此前逐模块添加版本的方式无法用于 Groovy 模块, 因为其 plugins 块只接受字符串字面量
+* `优化` 控制台的注记移至版本摘要下方单独成段, 不再与版本行交错
+
 # v1.3.0
 
 ###### 2026/08/18
@@ -171,18 +180,6 @@ gradle/data/android-studio-agp-compat.properties
 * `修复` 模块改造脚本的回滚未能还原原始文件, 且会遗留备份文件
 * `优化` settings 迁移脚本会先检查模块脚本是否就绪, 未就绪时给出提示而不改写, 避免留下无法构建的中间状态
 * `优化` settings 迁移脚本改为把插件并入已有的 plugins 块并移到 `includeBuild` 之前, 而非新增一个块
-
-# v1.1.0
-
-###### 2026/08/18
-
-* `新增` R8 版本决策, 依据当前 Kotlin 版本查表, 仅在 AGP 自带的 R8 不够新时才显式引入外部 R8
-* `新增` KSP 版本决策, 版本号跟随目标 Kotlin 版本; 当所选 KSP 要求更高的 AGP 时自动抬升 AGP 版本
-* `新增` 决策结果新增 `PlatformVersionsFacade` 调用入口, 可在 settings 脚本体中直接使用
-* `新增` 决策结果同时以系统属性发布, 供模块脚本以 plugins DSL 方式声明插件版本
-* `新增` 下游仓库批量迁移脚本 `.python/migrate_downstream.py`, 支持预览/应用/回滚, 逐仓保留备份
-* `修复` `getMaxSupportedJavaVersion` 此前误传 AGP 版本, 导致工具链上限被压低; 现改为传入 Gradle 版本
-* `优化` 移除 IntelliJ IDEA 映射表中 2026.2.1 的条目, 使 2026.2 与 2026.2.1 均得到 AGP 9.0.1, 与 IDE 实际支持范围一致
 
 ##### 更多发行历史可参阅
 

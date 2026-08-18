@@ -5,6 +5,17 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.4.0": {
+      "released_date": "2026/08/18",
+      "fix": [
+        "IDE 版本僅為修補程式層級的更新時不再放寬 AGP 上限。先前 IntelliJ IDEA 2026.2.1 會取得 AGP 9.2.1 而遭 IDE 拒絕，現在與 2026.2 一樣停留在 9.1 線"
+      ],
+      "improvement": [
+        "IntelliJ IDEA 對應表補入 2026.2 項目，採用 IDE 自行回報的 AGP 上限",
+        "遷移方案改為在根建置指令碼中宣告一次插件版本，模組指令碼無須改動；先前逐模組加上版本的做法無法用於 Groovy 模組，因為其 plugins 區塊只接受字串常值",
+        "主控台的註記移至版本摘要下方單獨成段，不再與版本行交錯"
+      ]
+    },
     "v1.3.0": {
       "released_date": "2026/08/18",
       "hint": [

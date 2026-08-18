@@ -23,6 +23,15 @@ CHANGELOG.md is currently available in the following languages:
 
 ******
 
+# v1.4.0
+
+###### 2026/08/18
+
+* `Fix` The AGP ceiling is no longer relaxed when the IDE version is only a patch-level update. IntelliJ IDEA 2026.2.1 used to resolve to AGP 9.2.1 and be rejected by the IDE; it now stays on the 9.1 line, just as 2026.2 does
+* `Improvement` A 2026.2 entry added to the IntelliJ IDEA mapping table, with its AGP ceiling taken from what the IDE itself reports
+* `Improvement` The migration approach now declares the plugin version once in the root build script, leaving module scripts untouched; adding the version module by module could never work for Groovy modules, whose plugins block accepts string literals only
+* `Improvement` Notes printed to the console moved into a separate paragraph below the version summary, instead of being interleaved with the version lines
+
 # v1.3.0
 
 ###### 2026/08/18

@@ -23,6 +23,15 @@ CHANGELOG.md está disponible actualmente en los siguientes idiomas:
 
 ******
 
+# v1.4.0
+
+###### 2026/08/18
+
+* `Corrección` El límite de AGP ya no se relaja cuando la versión del IDE es solo una actualización de nivel de parche. Antes IntelliJ IDEA 2026.2.1 obtenía AGP 9.2.1 y el IDE lo rechazaba; ahora se queda en la línea 9.1, igual que 2026.2
+* `Mejora` Se incorpora una entrada 2026.2 a la tabla de correspondencias de IntelliJ IDEA, cuyo límite de AGP se toma de lo que informa el propio IDE
+* `Mejora` La migración pasa a declarar la versión del plugin una sola vez en el script de compilación raíz, sin tocar los scripts de módulo; añadir la versión módulo a módulo no podía funcionar con los módulos de Groovy, cuyo bloque plugins solo admite literales de cadena
+* `Mejora` Las notas mostradas en la consola se trasladan a un párrafo aparte, debajo del resumen de versiones, en lugar de intercalarse con las líneas de versiones
+
 # v1.3.0
 
 ###### 2026/08/18

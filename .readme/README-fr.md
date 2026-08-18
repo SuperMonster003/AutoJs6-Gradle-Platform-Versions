@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.3.0"
+        id("org.autojs.build.platform-versions") version "1.4.0"
     }
 }
 
@@ -150,6 +150,15 @@ Si le projet consommateur place un fichier du même nom dans son propre réperto
 
 ******
 
+# v1.4.0
+
+###### 2026/08/18
+
+* `Correctif` Le plafond d'AGP n'est plus relevé lorsque la version de l'IDE ne constitue qu'une mise à jour de niveau correctif. IntelliJ IDEA 2026.2.1 aboutissait jusqu'ici à AGP 9.2.1 et se voyait refusé par l'IDE ; il reste désormais sur la ligne 9.1, comme 2026.2
+* `Amélioration` Ajout d'une entrée 2026.2 à la table de correspondance IntelliJ IDEA, dont le plafond d'AGP reprend la valeur signalée par l'IDE lui-même
+* `Amélioration` La migration déclare désormais la version du plugin une seule fois dans le script de build racine, sans toucher aux scripts de module ; ajouter la version module par module ne pouvait pas fonctionner pour les modules Groovy, dont le bloc plugins n'accepte que des littéraux de chaîne
+* `Amélioration` Les notes affichées dans la console sont déplacées dans un paragraphe distinct sous le résumé des versions, au lieu d'être entrelacées avec les lignes de versions
+
 # v1.3.0
 
 ###### 2026/08/18
@@ -171,18 +180,6 @@ Si le projet consommateur place un fichier du même nom dans son propre réperto
 * `Correctif` Le retour arrière du script de conversion des modules ne restaurait pas les fichiers d'origine et laissait les sauvegardes derrière lui
 * `Amélioration` Le script de migration settings vérifie d'abord que les scripts de module sont prêts et se contente d'un avertissement sans réécrire lorsqu'ils ne le sont pas, afin de ne pas laisser un état intermédiaire non constructible
 * `Amélioration` Le script de migration settings fusionne désormais le plugin dans le bloc plugins existant et le place avant `includeBuild`, au lieu d'ajouter un nouveau bloc
-
-# v1.1.0
-
-###### 2026/08/18
-
-* `Fonctionnalité` Décision de la version de R8, obtenue par recherche selon la version de Kotlin courante, un R8 externe n'étant introduit explicitement que lorsque celui fourni avec AGP n'est pas assez récent
-* `Fonctionnalité` Décision de la version de KSP, dont le numéro suit la version de Kotlin ciblée ; la version d'AGP est relevée automatiquement lorsque le KSP retenu exige un AGP plus récent
-* `Fonctionnalité` Résultat de la décision désormais accessible via le point d'entrée `PlatformVersionsFacade`, utilisable directement dans le corps du script settings
-* `Fonctionnalité` Résultat de la décision également publié sous forme de propriétés système, afin que les scripts de module déclarent les versions de plugins via le plugins DSL
-* `Fonctionnalité` Script de migration par lots `.python/migrate_downstream.py` pour les dépôts en aval, prenant en charge la prévisualisation, l'application et le retour arrière, avec une sauvegarde conservée par dépôt
-* `Correctif` `getMaxSupportedJavaVersion` recevait jusqu'ici la version d'AGP, ce qui abaissait le plafond de la toolchain ; il reçoit désormais la version de Gradle
-* `Amélioration` Suppression de l'entrée 2026.2.1 de la table de correspondance IntelliJ IDEA, si bien que 2026.2 comme 2026.2.1 aboutissent à AGP 9.0.1, conformément à ce que l'IDE prend réellement en charge
 
 ##### Pour un historique plus complet, voir
 

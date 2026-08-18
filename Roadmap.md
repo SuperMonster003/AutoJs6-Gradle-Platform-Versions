@@ -150,6 +150,8 @@ plugins {
 
 教训: **映射表的最新条目必须写出最新 IDE 的真实上限**, 而不只是保留最旧的受支持版本 —— 越过表尾即进入只受 Gradle 约束的 auto 选择。
 
+首版上界按 "任何更新的 IDE 都放宽一个 AGP 版本线" 实现, 仍不够准确: IntelliJ IDEA 2026.2.1 相对表中的 2026.2 只是**补丁级**更新, 并不带来新的 AGP 支持, 却因此取到 AGP 9.2.1 被 IDE 拒绝 (Gradle 9.6.1 的仓库才会触发, 9.3.0 的仓库封顶在 9.0.1 故未暴露)。现改为按更新级别决定: 补丁级不放宽, 仅次版本级 (2026.2 -> 2026.3) 放宽一线。
+
 #### 脚本片段改写方案 (已验证)
 
 `apply(from = ...)` 片段自带 buildscript 的做法**不可行**: 会得到 `ApplicationExtensionImpl cannot be cast to ApplicationExtension`, 因为两个 classloader 各持一份 AGP 类。

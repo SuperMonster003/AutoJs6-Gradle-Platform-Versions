@@ -5,6 +5,17 @@
   "changelog_label_improvement": "Amélioration",
   "changelog_label_dependency": "Dépendance",
   "$data": {
+    "v1.4.0": {
+      "released_date": "2026/08/18",
+      "fix": [
+        "Le plafond d'AGP n'est plus relevé lorsque la version de l'IDE ne constitue qu'une mise à jour de niveau correctif. IntelliJ IDEA 2026.2.1 aboutissait jusqu'ici à AGP 9.2.1 et se voyait refusé par l'IDE ; il reste désormais sur la ligne 9.1, comme 2026.2"
+      ],
+      "improvement": [
+        "Ajout d'une entrée 2026.2 à la table de correspondance IntelliJ IDEA, dont le plafond d'AGP reprend la valeur signalée par l'IDE lui-même",
+        "La migration déclare désormais la version du plugin une seule fois dans le script de build racine, sans toucher aux scripts de module ; ajouter la version module par module ne pouvait pas fonctionner pour les modules Groovy, dont le bloc plugins n'accepte que des littéraux de chaîne",
+        "Les notes affichées dans la console sont déplacées dans un paragraphe distinct sous le résumé des versions, au lieu d'être entrelacées avec les lignes de versions"
+      ]
+    },
     "v1.3.0": {
       "released_date": "2026/08/18",
       "hint": [

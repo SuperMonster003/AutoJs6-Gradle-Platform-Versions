@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.3.0"
+        id("org.autojs.build.platform-versions") version "1.4.0"
     }
 }
 
@@ -150,6 +150,15 @@ gradle/data/android-studio-agp-compat.properties
 
 ******
 
+# v1.4.0
+
+###### 2026/08/18
+
+* `수정` IDE 버전이 패치 수준 업데이트일 뿐인 경우 더 이상 AGP 상한을 완화하지 않음. 이전에는 IntelliJ IDEA 2026.2.1이 AGP 9.2.1을 얻어 IDE에 거부되었으나, 이제 2026.2와 마찬가지로 9.1 라인에 머무름
+* `개선` IntelliJ IDEA 매핑 표에 2026.2 항목을 추가하고, AGP 상한은 IDE가 스스로 보고하는 값을 사용
+* `개선` 마이그레이션 방식을 바꾸어 플러그인 버전을 루트 빌드 스크립트에서 한 번만 선언하고 모듈 스크립트는 그대로 둠. 이전처럼 모듈마다 버전을 붙이는 방식은 Groovy 모듈에서 쓸 수 없었는데, plugins block이 문자열 리터럴만 받기 때문
+* `개선` 콘솔의 참고 사항을 버전 요약 아래 별도 문단으로 옮겨 버전 줄 사이에 섞이지 않도록 함
+
 # v1.3.0
 
 ###### 2026/08/18
@@ -171,18 +180,6 @@ gradle/data/android-studio-agp-compat.properties
 * `수정` 모듈 개조 스크립트의 롤백이 원본 파일을 복원하지 못하고 백업 파일을 남기던 문제
 * `개선` settings 마이그레이션 스크립트가 모듈 스크립트의 준비 여부를 먼저 확인하고, 준비되지 않았으면 안내만 하고 수정하지 않아 빌드할 수 없는 중간 상태를 남기지 않음
 * `개선` settings 마이그레이션 스크립트가 플러그인을 기존 plugins block에 합치고 `includeBuild` 앞으로 옮기도록 변경, 새 블록을 추가하지 않음
-
-# v1.1.0
-
-###### 2026/08/18
-
-* `기능` R8 버전 결정, 현재 Kotlin 버전을 기준으로 표를 조회하며, AGP에 포함된 R8이 충분히 새롭지 않을 때만 외부 R8을 명시적으로 도입
-* `기능` KSP 버전 결정, 버전 번호는 대상 Kotlin 버전을 따르며, 선택된 KSP가 더 높은 AGP를 요구하면 AGP 버전을 자동으로 올림
-* `기능` 결정 결과에 `PlatformVersionsFacade` 호출 진입점 추가, settings 스크립트 본문에서 바로 사용 가능
-* `기능` 결정 결과를 system property로도 게시, 모듈 스크립트가 plugins DSL 방식으로 플러그인 버전을 선언할 수 있음
-* `기능` 다운스트림 저장소 일괄 마이그레이션 스크립트 `.python/migrate_downstream.py`, 미리 보기/적용/롤백을 지원하며 저장소마다 백업을 남김
-* `수정` `getMaxSupportedJavaVersion`에 이전에는 AGP 버전을 잘못 전달하여 toolchain 상한이 낮아졌으나, 이제 Gradle 버전을 전달하도록 변경
-* `개선` IntelliJ IDEA 매핑 표에서 2026.2.1 항목을 제거하여 2026.2와 2026.2.1 모두 AGP 9.0.1을 얻도록 하고, IDE의 실제 지원 범위와 일치시킴
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
