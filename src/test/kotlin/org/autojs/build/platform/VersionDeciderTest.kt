@@ -102,10 +102,20 @@ class VersionDeciderTest {
 
     @Test
     fun `caps AGP against the running Gradle version`() {
-        // Gradle 8.9 predates AGP 9.x, so a map promising 9.0.1 must be capped.
-        val decision = decider(idea("2026.1.2"), gradleVersion = "8.9").decideAgpVersion()
-        assertEquals("8.7.3", decision.version)
+        // AGP 9.1 needs Gradle 9.3.1, so on 9.3.0 a map promising it must be capped.
+        val decision = decider(idea("2026.1.2", mapOf("2026.1.2" to "9.1.1"))).decideAgpVersion()
+        assertEquals("9.0.1", decision.version)
         assertTrue(decision.hintSuffix.contains(Identifier.DOWNGRADED))
+    }
+
+    @Test
+    fun `no longer offers anything to a Gradle 8 build`() {
+        // Support starts at AGP 9.0, which needs Gradle 9.1.0, so the compatibility
+        // table has nothing a Gradle 8 build could load.
+        assertEquals(null, decider(commandLine(), gradleVersion = "8.13").maxSupportedAgpVersion())
+        assertEquals(null, decider(commandLine(), gradleVersion = "9.0.0").maxSupportedAgpVersion())
+        // 9.1.0 is the floor, and it maps to the 9.0 line.
+        assertEquals("9.0.1", decider(commandLine(), gradleVersion = "9.1.0").maxSupportedAgpVersion())
     }
 
     @Test
@@ -135,11 +145,11 @@ class VersionDeciderTest {
 
     @Test
     fun `decides Kotlin from the running Gradle version`() {
-        val onGradle93 = decider(idea("2026.1.2")).decideKotlinVersion().version
-        val onGradle89 = decider(idea("2026.1.2"), gradleVersion = "8.9").decideKotlinVersion().version
-        assertTrue(onGradle93 != null && onGradle89 != null)
-        assertTrue(VersionComparator.compareVersionStrings(onGradle93!!, onGradle89!!) > 0) {
-            "a newer Gradle should allow a newer Kotlin: $onGradle93 vs $onGradle89"
+        val onGradle95 = decider(idea("2026.1.2"), gradleVersion = "9.5.0").decideKotlinVersion().version
+        val onGradle90 = decider(idea("2026.1.2"), gradleVersion = "9.0.0").decideKotlinVersion().version
+        assertTrue(onGradle95 != null && onGradle90 != null)
+        assertTrue(VersionComparator.compareVersionStrings(onGradle95!!, onGradle90!!) > 0) {
+            "a newer Gradle should allow a newer Kotlin: $onGradle95 vs $onGradle90"
         }
     }
 

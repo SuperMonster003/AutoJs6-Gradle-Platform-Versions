@@ -21,31 +21,31 @@ class PlatformDetector(
     /**
      * @Reference AGP Upgrade Assistant integrated within JetBrains IntelliJ IDEA.
      *
-     * Tops out at the 9.0 line on purpose: as of 2026.2 the JetBrains Android plugin
-     * supports AGP 9.0.x, not 9.1. Both 2026.2 and 2026.2.1 therefore land on the
-     * 2026.1.2 entry and get AGP 9.0.1.
+     * A single entry is all that remains once Gradle 8 is out of scope: 2026.1.2 is the
+     * first IDEA that handles AGP 9, and it tops out at the 9.0 line, since as of 2026.2
+     * the JetBrains Android plugin supports AGP 9.0.x rather than 9.1. Anything newer is
+     * treated as a stale map and falls back to auto selection, which caps at what the
+     * running Gradle can load.
      *
-     * zh-CN: 上限刻意停在 9.0 线: 截至 2026.2, JetBrains 的 Android 插件支持 AGP 9.0.x 而非 9.1.
-     * 因此 2026.2 与 2026.2.1 都会落到 2026.1.2 条目, 得到 AGP 9.0.1.
+     * zh-CN: 移除 Gradle 8 支持后仅余一条: 2026.1.2 是首个支持 AGP 9 的 IDEA, 且上限停在 9.0 线,
+     * 因为截至 2026.2 JetBrains 的 Android 插件支持 AGP 9.0.x 而非 9.1.
+     * 更新的版本会被判定为映射表滞后, 回退到 auto 选择, 由当前 Gradle 能加载的上限封顶.
      */
     private val intelliJIdeaAgpVersionMap = mapOf(
         "2026.1.2" to "9.0.1",
-        "2026.1" to "8.13.2",
-        "2025.2.2" to "8.12.0",
-        "2025.2.1" to "8.11.1",
-        "2025.1" to "8.10.1",
-        "2024.3" to "8.7.3",
-        "2024.2" to "8.5.2",
-        "2024.1" to "8.2.2",
-        "2023.3" to "8.2.2", /* Settings: Enable sync with future AGP version. */
     )
 
-    /* More commonly known as "Eclipse Adoptium". */
-    private val temurinAgpVersionMap = mapOf(
-        "21.0.10+7" to "8.9.3", /* Mar 15, 2026. */
-        "21.0.6+7" to "8.7.3", /* Apr 16, 2025. */
-        "20.0.2+9" to "8.2.2", /* Dec 2, 2024. */
-    )
+    /**
+     * Eclipse Adoptium, more commonly known as Temurin.
+     *
+     * Empty since dropping Gradle 8: every entry this map ever held pointed at an AGP
+     * on the 8.x line. An IDE-less build therefore takes the auto-selection path, which
+     * lands on the newest AGP the running Gradle can load.
+     *
+     * zh-CN: 移除 Gradle 8 支持后此表为空: 其历史条目全部指向 8.x 线的 AGP.
+     * 因此无 IDE 的构建会走 auto 选择, 得到当前 Gradle 能加载的最新 AGP.
+     */
+    private val temurinAgpVersionMap = emptyMap<String, String>()
 
     private val androidStudio by lazy {
         object : Platform(

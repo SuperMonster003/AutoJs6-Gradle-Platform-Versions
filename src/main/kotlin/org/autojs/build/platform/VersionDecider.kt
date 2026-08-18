@@ -121,18 +121,24 @@ class VersionDecider(
     fun agpFallbackVersion(): String? =
         platform.agpVersionMap.values.minWithOrNull(VersionComparator::compareVersionStrings)
 
-    /** The newest released AGP that the running Gradle version can load. */
+    /**
+     * The newest released AGP that the running Gradle version can load, or null when
+     * the running Gradle is too old for any of them.
+     *
+     * Returning null matters now that support starts at AGP 9.0: handing a Gradle 8
+     * build the lowest known AGP would put a version on the classpath that it cannot
+     * load, failing later and less legibly than saying so here.
+     *
+     * zh-CN: 当前 Gradle 能加载的最新 AGP 正式版; 若当前 Gradle 旧于全部条目则返回 null.
+     * 支持范围自 AGP 9.0 起后这一点尤为重要: 给 Gradle 8 构建返回已知最低的 AGP,
+     * 只会把一个它加载不了的版本放到 classpath 上, 失败得更晚也更难懂.
+     */
     fun maxSupportedAgpVersion(): String? {
         val currentGradleVersion = gradleVersion.toGradleVersion()
-        val entries = agpGradleCompatProps.entries.sortedByDescending { it.value.toGradleVersion() }
-        var maxSupportedAgpVersionPrefix: String? = null
-        for ((agp, minRequiredGradle) in entries) {
-            maxSupportedAgpVersionPrefix = agp
-            if (currentGradleVersion >= minRequiredGradle.toGradleVersion()) {
-                break
-            }
-        }
-        return maxSupportedAgpVersionPrefix?.let { getAgpReleasedVersion(it) }
+        return agpGradleCompatProps.entries
+            .sortedByDescending { it.value.toGradleVersion() }
+            .firstOrNull { currentGradleVersion >= it.value.toGradleVersion() }
+            ?.let { getAgpReleasedVersion(it.key) }
     }
 
     /** Newest stable AGP release carrying the given prefix, e.g. "9.0" resolves to "9.0.1". */

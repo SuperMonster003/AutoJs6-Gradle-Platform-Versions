@@ -91,8 +91,10 @@ class KspDeciderTest {
 
     @Test
     fun `picks the lowest usable AGP at or above a minimum`() {
-        val chosen = decider().getAgpReleasedVersionAtLeast("8.9.0")
-        assertEquals("8.9.3", chosen)
+        // A minimum from the 8.x line is still met by the oldest AGP that remains, since
+        // support now starts at 9.0.
+        assertEquals("9.0.1", decider().getAgpReleasedVersionAtLeast("8.9.0"))
+        assertEquals("9.1.1", decider(gradleVersion = "9.4.0").getAgpReleasedVersionAtLeast("9.1.0"))
     }
 
 }
