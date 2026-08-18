@@ -71,8 +71,8 @@ class VersionDecider(
                 ceiling != null && VersionComparator.compareVersionStrings(maxSupportedAgpVersion, ceiling) > 0 -> ceiling
                 else -> maxSupportedAgpVersion
             }
-            notices += "Notice: ${platform.fullName} ${platform.version} is newer than " +
-                    "all agpVersionMap entries, AGP falls back to auto selection"
+            notices += "Note: ${platform.fullName} ${platform.version} is newer than " +
+                    "all agpVersionMap entries, AGP falls back to auto selection."
             return Decision(capped, Identifier.AUTO_SPECIFIED_SUFFIX, notices)
         }
 
@@ -138,15 +138,25 @@ class VersionDecider(
         platform.agpVersionMap.values.minWithOrNull(VersionComparator::compareVersionStrings)
 
     /**
-     * Highest AGP the stale-map fallback may reach: one minor line above the newest
-     * entry the map knows, or null when the map says nothing.
+     * Highest AGP the stale-map fallback may reach, or null when the map says nothing.
      *
-     * e.g. a map topping out at AGP 9.1.0 allows the fallback up to the 9.2 line.
+     * How far past the newest known entry the fallback may go depends on how far past
+     * the newest known IDE the running one is. A patch-level IDE update, 2026.2 to
+     * 2026.2.1, ships no new AGP support, so the ceiling stays where the map put it.
+     * Only a minor-level update, 2026.2 to 2026.3, earns one AGP line of headroom.
+     *
+     * Treating every newer IDE as worth a line was what let 2026.2.1 reach AGP 9.2.1,
+     * which the IDE then rejected with "Latest supported version is AGP 9.1.0".
      *
      * The ceiling never drops below the lowest AGP this Gradle can load, since a map so
-     * far behind that its next line is still unusable says nothing useful about the IDE.
+     * far behind that its own line is unusable says nothing useful about the IDE.
      *
-     * zh-CN: 上界不会低于当前 Gradle 能加载的最低 AGP: 若映射表滞后到连下一个版本线都无法使用,
+     * zh-CN: 回退可越过最新已知条目多远, 取决于当前 IDE 比最新已知 IDE 新多少.
+     * 补丁级更新 (2026.2 -> 2026.2.1) 不带来新的 AGP 支持, 上界保持映射表给出的值;
+     * 只有次版本级更新 (2026.2 -> 2026.3) 才放宽一个 AGP 版本线.
+     * 此前对任何更新的 IDE 都放宽一线, 正是 2026.2.1 取到 AGP 9.2.1 的原因,
+     * 而 IDE 会以 "Latest supported version is AGP 9.1.0" 拒绝它.
+     * 上界不会低于当前 Gradle 能加载的最低 AGP: 若映射表滞后到连自身版本线都无法使用,
      * 它对当前 IDE 的能力就不再有参考价值.
      */
     fun agpFallbackCeiling(map: Map<String, String>): String? {
@@ -154,7 +164,9 @@ class VersionDecider(
         val parts = runCatching { VersionComparator.toVersionParts(newestKnown).first }.getOrNull() ?: return null
         val major = parts.getOrNull(0) ?: return null
         val minor = parts.getOrNull(1) ?: 0
-        val ceiling = getAgpReleasedVersion("$major.${minor + 1}")
+
+        val headroom = if (isPlatformMinorNewerThanVersionMap(map)) 1 else 0
+        val ceiling = getAgpReleasedVersion("$major.${minor + headroom}")
             ?: getAgpReleasedVersion("$major.$minor")
             ?: newestKnown
 
@@ -168,6 +180,18 @@ class VersionDecider(
             VersionComparator.compareVersionStrings(ceiling, lowestUsable) < 0 -> lowestUsable
             else -> ceiling
         }
+    }
+
+    /**
+     * Tells whether the platform is a minor release ahead of the newest map entry,
+     * rather than merely a patch ahead of it.
+     */
+    private fun isPlatformMinorNewerThanVersionMap(map: Map<String, String>): Boolean {
+        val newestKey = map.keys.maxWithOrNull(VersionComparator::compareVersionStrings) ?: return false
+        val known = runCatching { VersionComparator.toVersionParts(newestKey).first }.getOrNull() ?: return false
+        val current = runCatching { VersionComparator.toVersionParts(platform.version).first }.getOrNull() ?: return false
+        // Compare only the leading two segments, which is where an IDE states its line.
+        return VersionComparator.compareVersionParts(current.take(2), known.take(2)) > 0
     }
 
     /**

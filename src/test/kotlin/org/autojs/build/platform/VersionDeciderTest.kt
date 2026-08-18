@@ -79,6 +79,20 @@ class VersionDeciderTest {
     }
 
     @Test
+    fun `a patch-level IDE update earns no extra AGP headroom`() {
+        // 2026.2.1 is the same IDE line as 2026.2 and supports the same AGP. Treating it
+        // as newer let it reach 9.2.1, which the IDE rejects: "Latest supported version
+        // is AGP 9.1.0".
+        val map = mapOf("2026.2" to "9.1.0")
+        val decision = decider(idea("2026.2.1", map), gradleVersion = "9.6.1").decideAgpVersion()
+        assertEquals("9.1.1", decision.version) { "a patch update stays on the 9.1 line" }
+
+        // A minor-level update does earn a line.
+        val ahead = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
+        assertEquals("9.2.1", ahead.version) { "a minor update moves up to the 9.2 line" }
+    }
+
+    @Test
     fun `the fallback ceiling never drops below what this Gradle can load`() {
         // A map this far behind says nothing useful about the IDE, so the ceiling gives way.
         val staleMap = mapOf("2025.1" to "8.10.1")

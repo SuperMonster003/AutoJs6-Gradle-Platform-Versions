@@ -43,6 +43,10 @@ object PlatformVersionsFacade {
 
         val versionInfo = mutableListOf<String>()
         platform.prependConsoleInformation(versionInfo)
+        // Notes explain a decision rather than state one, so they are kept apart and
+        // printed below the summary instead of interleaved with the versions.
+        // zh-CN: 注记用于解释决策而非陈述决策, 因此单独收集并打印在摘要下方, 不与版本行交错.
+        val notes = mutableListOf<String>()
 
         val decider = VersionDecider(platform, dataSource, gradleVersion)
         val overriddenJavaVersion = versionProps.escapeHatch("OVERRIDDEN_JAVA_VERSION")?.toIntOrNull()
@@ -56,6 +60,7 @@ object PlatformVersionsFacade {
             fallback = { null },
             label = "org.jetbrains.kotlin:kotlin-gradle-plugin",
             versionInfo = versionInfo,
+            notes = notes,
         )
 
         val kspDecider = KspDecider(dataSource, gradleVersion)
@@ -67,6 +72,7 @@ object PlatformVersionsFacade {
             fallback = { decider.agpFallbackVersion() },
             label = "com.android.tools.build:gradle",
             versionInfo = versionInfo,
+            notes = notes,
             postProcess = { candidate ->
                 kspDecider.refineAgpVersionForKsp(
                     agpVersion = candidate,
@@ -123,6 +129,7 @@ object PlatformVersionsFacade {
             maxSupportedJavaVersion = maxSupportedJavaVersion,
             overriddenJavaVersion = overriddenJavaVersion,
             versionInfo = versionInfo.toList(),
+            notes = notes.toList(),
         )
     }
 
@@ -132,6 +139,7 @@ object PlatformVersionsFacade {
             "Version information for IDE platform and Gradle plugins",
             versions.versionInfo,
             footers = listOf("Gradle version: $gradleVersion"),
+            notes = versions.notes,
         ).print()
     }
 
@@ -146,12 +154,13 @@ object PlatformVersionsFacade {
         fallback: () -> String?,
         label: String,
         versionInfo: MutableList<String>,
+        notes: MutableList<String>,
         postProcess: (String) -> Decision = { Decision(it, "") },
     ): String {
         fun report(version: String, hintSuffix: String): String {
             val refined = postProcess(version)
             val finalVersion = refined.version ?: version
-            versionInfo += refined.notices
+            notes += refined.notices
             versionInfo += "Classpath: \"$label:$finalVersion\"$hintSuffix${refined.hintSuffix}"
             return finalVersion
         }
@@ -159,7 +168,7 @@ object PlatformVersionsFacade {
         overridden?.let { return report(it, Identifier.USER_SPECIFIED_SUFFIX) }
 
         val decision = decide()
-        versionInfo += decision.notices
+        notes += decision.notices
         decision.version?.let { return report(it, decision.hintSuffix) }
 
         val fallbackVersion = fallback()

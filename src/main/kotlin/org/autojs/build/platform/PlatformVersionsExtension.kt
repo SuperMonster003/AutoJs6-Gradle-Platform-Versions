@@ -39,6 +39,13 @@ class PlatformVersionsExtension(
 
     /** Console lines describing how each version was decided. */
     val versionInfo: List<String>,
+
+    /**
+     * Console lines explaining a decision, printed below the summary.
+     *
+     * zh-CN: 用于解释决策的控制台行, 打印在摘要下方.
+     */
+    val notes: List<String> = emptyList(),
 ) {
 
     /** The buildscript classpath notation for AGP, ready to be passed to `classpath(...)`. */
