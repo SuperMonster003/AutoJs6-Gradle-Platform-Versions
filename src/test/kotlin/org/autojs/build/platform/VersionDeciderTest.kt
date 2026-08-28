@@ -67,10 +67,13 @@ class VersionDeciderTest {
 
     @Test
     fun `the stale-map fallback stays within one line of what the map knows`() {
-        // Auto selection alone would reach AGP 9.3.0 here, past what an IDE topping out at
+        // Auto selection alone would reach the AGP 9.3 line here, past what an IDE topping out at
         // 9.1.0 accepts. The fallback is held to the line just above the newest entry.
         val map = mapOf("2026.2" to "9.1.0")
-        assertEquals("9.3.0", decider(commandLine(), gradleVersion = "9.6.1").maxSupportedAgpVersion())
+        val commandLineMaximum = decider(commandLine(), gradleVersion = "9.6.1").maxSupportedAgpVersion()
+        assertTrue(commandLineMaximum != null && commandLineMaximum.startsWith("9.3.")) {
+            "Gradle 9.6.1 should reach the latest published AGP on the 9.3 line, got $commandLineMaximum"
+        }
 
         val decision = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
         assertEquals("9.2.1", decision.version) { "one line of headroom above 9.1 is the 9.2 line" }
