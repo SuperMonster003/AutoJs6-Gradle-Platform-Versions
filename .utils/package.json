@@ -1,0 +1,16 @@
+{
+  "name": "autojs6-gradle-platform-version-scrapers",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "update-data": "node run-scrapers.mjs",
+    "check-data": "node run-scrapers.mjs --check",
+    "test": "node --test"
+  },
+  "engines": {
+    "node": ">=20.18.1"
+  },
+  "dependencies": {
+    "cheerio": "^1.1.2"
+  }
+}

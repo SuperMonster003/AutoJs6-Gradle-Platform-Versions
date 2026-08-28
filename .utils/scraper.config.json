@@ -1,0 +1,10 @@
+{
+  "minimumVersions": {
+    "agp": "9.0",
+    "androidStudio": "2025.2.3",
+    "androidStudioArchive": "2023.3",
+    "gradle": "9.1.0",
+    "java": 17,
+    "kotlin": "1.8.20"
+  }
+}
