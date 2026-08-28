@@ -5,6 +5,16 @@
   "changelog_label_improvement": "개선",
   "changelog_label_dependency": "의존성",
   "$data": {
+    "v1.5.0": {
+      "released_date": "2026/08/28",
+      "feature": [
+        "호환성 데이터 갱신 도구 전체를 이 저장소로 이전하고, 수동 갱신용 대화형 `run-scrapers.bat`와 향후 정기 CI 실행을 위한 크로스 플랫폼 갱신 및 읽기 전용 검사 명령을 추가"
+      ],
+      "improvement": [
+        "스크레이퍼에서 Puppeteer와 Chrome 의존성을 제거하고 공식 정적 소스 분석, 보존 경계 및 출력 검증을 한곳에 모았으며 타임스탬프만 바뀐 경우의 불필요한 재작성을 방지",
+        "내장 데이터를 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03, 9.4.0-rc02 및 9.3.2, Android Studio Rabbit, KSP 2.3.11까지 갱신"
+      ]
+    },
     "v1.4.1": {
       "released_date": "2026/08/18",
       "improvement": [

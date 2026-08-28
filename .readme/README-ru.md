@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.1"
+        id("org.autojs.build.platform-versions") version "1.5.0"
     }
 }
 
@@ -140,15 +140,53 @@ gradle/data/agp-gradle-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
+gradle/data/android-studio-build-version.properties
+gradle/data/android-studio-codename-version.properties
+gradle/data/android-studio-codename.properties
+gradle/data/kotlin-r8-compat.properties
+gradle/data/ksp-agp-compat.properties
+gradle/data/ksp-releases.properties
 ```
 
 Если проект-потребитель положит файл с тем же именем в свой каталог `gradle/data`, приоритет получит этот файл.
 
 ******
 
+### Обновление данных
+
+******
+
+Разработчики могут обновить все данные совместимости, запустив интерактивный пакетный файл из корня репозитория:
+
+```bat
+run-scrapers.bat
+```
+
+Будущая запланированная задача CI может использовать эту точку входа для проверки без изменения файлов:
+
+```bash
+npm --prefix .utils ci
+npm --prefix .utils test
+npm --prefix .utils run check-data
+```
+
+`check-data` не изменяет рабочую область: код выхода `0` означает актуальные данные, `2` — найденные обновления, а `1` — сбой задачи.
+
+Полный охват обновления и правила запуска описаны в [.utils/README.md](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/.utils/README.md).
+
+******
+
 ### История выпусков
 
 ******
+
+# v1.5.0
+
+###### 2026/08/28
+
+* `Функция` Полный набор обновления данных совместимости перенесён в этот репозиторий: добавлен интерактивный `run-scrapers.bat` для ручного обновления и кроссплатформенные команды обновления и проверки без записи для будущих плановых запусков CI
+* `Улучшение` Сборщики больше не зависят от Puppeteer или Chrome: они разбирают официальные статические источники, централизуют границы хранения и проверку результата и не перезаписывают файлы только из-за временных меток
+* `Улучшение` Встроенные данные обновлены до Gradle 9.7 с Kotlin 2.4, последних веток AGP вплоть до 9.5.0-alpha03, 9.4.0-rc02 и 9.3.2, Android Studio Rabbit и KSP 2.3.11
 
 # v1.4.1
 
@@ -165,18 +203,6 @@ gradle/data/android-studio-agp-compat.properties
 * `Улучшение` В таблицу соответствий IntelliJ IDEA добавлена запись 2026.2, верхняя граница AGP в которой взята из того, что сообщает сама IDE
 * `Улучшение` Схема миграции изменена: версия плагина объявляется один раз в корневом build script, а скрипты модулей остаются нетронутыми; прежний способ с добавлением версии в каждый модуль был неприменим к модулям на Groovy, поскольку их plugins block принимает только строковые литералы
 * `Улучшение` Примечания в консоли вынесены в отдельный абзац под сводкой версий и больше не чередуются со строками версий
-
-# v1.3.0
-
-###### 2026/08/18
-
-* `Подсказка` Начиная с этой версии Gradle 8 не поддерживается. AGP 9.0 — первая версия, требующая Gradle 9, поэтому поддерживаемый диапазон начинается с AGP 9.0
-* `Улучшение` Из таблиц совместимости удалены записи старше 9, а в таблице соответствий IntelliJ IDEA оставлены только записи, дающие AGP 9
-* `Улучшение` Если текущий Gradle старше всех записей о совместимости, откат к самой нижней записи больше не выполняется: выдаётся явная ошибка, чтобы версия, которую невозможно загрузить, никогда не попадала в classpath
-* `Улучшение` Повышены минимальные поддерживаемые версии: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
-* `Улучшение` Значки в README приведены в соответствие с указанными версиями, добавлен значок AGP
-* `Улучшение` Скрипт миграции поддерживает синтаксический сахар kotlin(...) и старые короткие имена вроде kotlin-android/kotlin-kapt/kotlin-parcelize, причём короткие имена разворачиваются в полный id плагина
-* `Улучшение` Скрипт миграции пропускает два вида репозиториев, которые невозможно мигрировать: те, где подключаемые через apply(from=) фрагменты скриптов ссылаются на типы AGP, и те, где включена проверка зависимостей
 
 ##### Подробную историю выпусков смотрите здесь
 
@@ -207,6 +233,8 @@ gradle/data/android-studio-agp-compat.properties
 ******
 
 ```text
+run-scrapers.bat
+.utils/
 src/main/kotlin/org/autojs/build/platform/
 src/main/resources/org/autojs/build/platform/data/
 sample/

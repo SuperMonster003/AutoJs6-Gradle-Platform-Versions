@@ -121,9 +121,39 @@ gradle/data/agp-gradle-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
+gradle/data/android-studio-build-version.properties
+gradle/data/android-studio-codename-version.properties
+gradle/data/android-studio-codename.properties
+gradle/data/kotlin-r8-compat.properties
+gradle/data/ksp-agp-compat.properties
+gradle/data/ksp-releases.properties
 ```
 
 {{ p_data_outro }}.
+
+******
+
+### {{ h3_data_updates }}
+
+******
+
+{{ p_data_updates_intro }}:
+
+```bat
+run-scrapers.bat
+```
+
+{{ p_data_updates_ci }}:
+
+```bash
+npm --prefix .utils ci
+npm --prefix .utils test
+npm --prefix .utils run check-data
+```
+
+{{ p_data_updates_exit_codes }}.
+
+{{ text_data_updates_details }} [.utils/README.md]({{ repo_url }}/blob/master/.utils/README.md).
 
 ******
 
@@ -162,6 +192,8 @@ gradle/data/android-studio-agp-compat.properties
 ******
 
 ```text
+run-scrapers.bat
+.utils/
 src/main/kotlin/org/autojs/build/platform/
 src/main/resources/org/autojs/build/platform/data/
 sample/

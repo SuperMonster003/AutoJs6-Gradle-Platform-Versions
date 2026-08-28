@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.1"
+        id("org.autojs.build.platform-versions") version "1.5.0"
     }
 }
 
@@ -140,15 +140,53 @@ gradle/data/agp-gradle-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
+gradle/data/android-studio-build-version.properties
+gradle/data/android-studio-codename-version.properties
+gradle/data/android-studio-codename.properties
+gradle/data/kotlin-r8-compat.properties
+gradle/data/ksp-agp-compat.properties
+gradle/data/ksp-releases.properties
 ```
 
 소비 측 프로젝트가 자신의 `gradle/data` 디렉터리에 같은 이름의 파일을 두면 그 파일이 우선 적용됩니다.
 
 ******
 
+### 데이터 업데이트
+
+******
+
+개발자는 저장소 루트에서 대화형 배치 진입점을 실행하여 모든 호환성 데이터를 업데이트할 수 있습니다:
+
+```bat
+run-scrapers.bat
+```
+
+향후 예약 CI 작업에서는 다음 읽기 전용 검사 진입점을 사용할 수 있습니다:
+
+```bash
+npm --prefix .utils ci
+npm --prefix .utils test
+npm --prefix .utils run check-data
+```
+
+`check-data`는 작업 영역을 수정하지 않습니다. 종료 코드 `0`은 최신 데이터, `2`는 업데이트 발견, `1`은 작업 실패를 뜻합니다.
+
+전체 업데이트 범위와 실행 규약은 다음을 참조하세요 [.utils/README.md](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/.utils/README.md).
+
+******
+
 ### 릴리스 기록
 
 ******
+
+# v1.5.0
+
+###### 2026/08/28
+
+* `기능` 호환성 데이터 갱신 도구 전체를 이 저장소로 이전하고, 수동 갱신용 대화형 `run-scrapers.bat`와 향후 정기 CI 실행을 위한 크로스 플랫폼 갱신 및 읽기 전용 검사 명령을 추가
+* `개선` 스크레이퍼에서 Puppeteer와 Chrome 의존성을 제거하고 공식 정적 소스 분석, 보존 경계 및 출력 검증을 한곳에 모았으며 타임스탬프만 바뀐 경우의 불필요한 재작성을 방지
+* `개선` 내장 데이터를 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03, 9.4.0-rc02 및 9.3.2, Android Studio Rabbit, KSP 2.3.11까지 갱신
 
 # v1.4.1
 
@@ -165,18 +203,6 @@ gradle/data/android-studio-agp-compat.properties
 * `개선` IntelliJ IDEA 매핑 표에 2026.2 항목을 추가하고, AGP 상한은 IDE가 스스로 보고하는 값을 사용
 * `개선` 마이그레이션 방식을 바꾸어 플러그인 버전을 루트 빌드 스크립트에서 한 번만 선언하고 모듈 스크립트는 그대로 둠. 이전처럼 모듈마다 버전을 붙이는 방식은 Groovy 모듈에서 쓸 수 없었는데, plugins block이 문자열 리터럴만 받기 때문
 * `개선` 콘솔의 참고 사항을 버전 요약 아래 별도 문단으로 옮겨 버전 줄 사이에 섞이지 않도록 함
-
-# v1.3.0
-
-###### 2026/08/18
-
-* `힌트` 이번부터 Gradle 8은 지원하지 않음. AGP 9.0이 Gradle 9을 요구하는 첫 버전이므로 지원 범위는 AGP 9.0부터 시작함
-* `개선` 호환성 데이터 표에서 9 이전 항목을 제거하고, IntelliJ IDEA 매핑 표는 AGP 9을 제공하는 항목만 남김
-* `개선` 현재 Gradle이 모든 호환 항목보다 오래된 경우 더 이상 가장 낮은 항목으로 내려가지 않고 명확하게 오류를 보고하도록 변경, 로드할 수 없는 버전이 classpath에 올라가지 않도록 함
-* `개선` 최소 지원 버전 상향: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
-* `개선` README 배지를 위 버전에 맞추고 AGP 배지를 새로 추가
-* `개선` 마이그레이션 스크립트가 kotlin(...) 문법 설탕과 kotlin-android/kotlin-kapt/kotlin-parcelize 같은 옛 방식의 짧은 이름을 지원하며, 짧은 이름은 완전한 플러그인 id로 확장됨
-* `개선` 마이그레이션 스크립트가 마이그레이션할 수 없는 두 종류의 저장소를 건너뜀: apply(from=) 방식으로 가져온 스크립트 조각이 AGP 타입을 참조하는 저장소와, 의존성 검증이 켜져 있는 저장소
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
@@ -207,6 +233,8 @@ gradle/data/android-studio-agp-compat.properties
 ******
 
 ```text
+run-scrapers.bat
+.utils/
 src/main/kotlin/org/autojs/build/platform/
 src/main/resources/org/autojs/build/platform/data/
 sample/

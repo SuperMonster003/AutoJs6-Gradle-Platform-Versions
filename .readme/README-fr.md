@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.1"
+        id("org.autojs.build.platform-versions") version "1.5.0"
     }
 }
 
@@ -140,15 +140,53 @@ gradle/data/agp-gradle-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
+gradle/data/android-studio-build-version.properties
+gradle/data/android-studio-codename-version.properties
+gradle/data/android-studio-codename.properties
+gradle/data/kotlin-r8-compat.properties
+gradle/data/ksp-agp-compat.properties
+gradle/data/ksp-releases.properties
 ```
 
 Si le projet consommateur place un fichier du même nom dans son propre répertoire `gradle/data`, c'est ce fichier qui prévaut.
 
 ******
 
+### Mise à jour des données
+
+******
+
+Les développeurs peuvent mettre à jour toutes les données de compatibilité en exécutant le point d'entrée interactif depuis la racine du dépôt:
+
+```bat
+run-scrapers.bat
+```
+
+Une future tâche CI planifiée peut utiliser ce point d'entrée de vérification en lecture seule:
+
+```bash
+npm --prefix .utils ci
+npm --prefix .utils test
+npm --prefix .utils run check-data
+```
+
+`check-data` ne modifie pas l'espace de travail : le code de sortie `0` indique des données à jour, `2` indique des mises à jour disponibles et `1` indique un échec.
+
+Pour la portée complète et les conventions d'exécution, consultez [.utils/README.md](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/.utils/README.md).
+
+******
+
 ### Historique des versions
 
 ******
+
+# v1.5.0
+
+###### 2026/08/28
+
+* `Fonctionnalité` La suite complète de mise à jour des données de compatibilité réside désormais dans ce dépôt, avec un `run-scrapers.bat` interactif pour les mises à jour manuelles et des commandes multiplateformes de mise à jour et de contrôle en lecture seule prêtes pour de futures exécutions CI planifiées
+* `Amélioration` Les scrapers ne dépendent plus de Puppeteer ni de Chrome : ils analysent les sources officielles statiques, centralisent les limites de conservation et la validation des sorties, et évitent les réécritures dues uniquement aux horodatages
+* `Amélioration` Les données embarquées ont été actualisées jusqu'à Gradle 9.7 avec Kotlin 2.4, aux dernières lignes AGP jusqu'à 9.5.0-alpha03, 9.4.0-rc02 et 9.3.2, à Android Studio Rabbit et à KSP 2.3.11
 
 # v1.4.1
 
@@ -165,18 +203,6 @@ Si le projet consommateur place un fichier du même nom dans son propre réperto
 * `Amélioration` Ajout d'une entrée 2026.2 à la table de correspondance IntelliJ IDEA, dont le plafond d'AGP reprend la valeur signalée par l'IDE lui-même
 * `Amélioration` La migration déclare désormais la version du plugin une seule fois dans le script de build racine, sans toucher aux scripts de module ; ajouter la version module par module ne pouvait pas fonctionner pour les modules Groovy, dont le bloc plugins n'accepte que des littéraux de chaîne
 * `Amélioration` Les notes affichées dans la console sont déplacées dans un paragraphe distinct sous le résumé des versions, au lieu d'être entrelacées avec les lignes de versions
-
-# v1.3.0
-
-###### 2026/08/18
-
-* `Note` Gradle 8 n'est plus pris en charge. AGP 9.0 est la première version à exiger Gradle 9, la plage prise en charge démarre donc à AGP 9.0
-* `Amélioration` Les entrées antérieures à 9 sont retirées des tables de compatibilité, et la table de correspondance IntelliJ IDEA ne conserve que les entrées aboutissant à AGP 9
-* `Amélioration` Lorsque le Gradle courant est plus ancien que toutes les entrées de compatibilité, il n'y a plus de repli sur l'entrée la plus basse : une erreur explicite est signalée, afin qu'une version impossible à charger ne se retrouve jamais sur le classpath
-* `Amélioration` Versions minimales prises en charge relevées : Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
-* `Amélioration` Badges du README alignés sur les versions ci-dessus, avec l'ajout d'un badge AGP
-* `Amélioration` Le script de migration prend en charge le sucre syntaxique kotlin(...) ainsi que les anciens noms courts tels que kotlin-android/kotlin-kapt/kotlin-parcelize, ces noms courts étant développés en identifiants de plugin complets
-* `Amélioration` Le script de migration ignore deux catégories de dépôts impossibles à migrer : ceux dont les fragments de script inclus via apply(from=) référencent des types AGP, et ceux pour lesquels la vérification des dépendances est activée
 
 ##### Pour un historique plus complet, voir
 
@@ -207,6 +233,8 @@ Le numéro de version du plugin provient de `VERSION_NAME` dans `version.propert
 ******
 
 ```text
+run-scrapers.bat
+.utils/
 src/main/kotlin/org/autojs/build/platform/
 src/main/resources/org/autojs/build/platform/data/
 sample/

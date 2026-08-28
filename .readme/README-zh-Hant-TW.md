@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.1"
+        id("org.autojs.build.platform-versions") version "1.5.0"
     }
 }
 
@@ -140,15 +140,53 @@ gradle/data/agp-gradle-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
+gradle/data/android-studio-build-version.properties
+gradle/data/android-studio-codename-version.properties
+gradle/data/android-studio-codename.properties
+gradle/data/kotlin-r8-compat.properties
+gradle/data/ksp-agp-compat.properties
+gradle/data/ksp-releases.properties
 ```
 
 使用端專案若在自己的 `gradle/data` 目錄下放置同名檔案，則該檔案優先生效.
 
 ******
 
+### 資料更新
+
+******
+
+開發者可從儲存庫根目錄執行互動式批次檔，以更新所有相容性資料:
+
+```bat
+run-scrapers.bat
+```
+
+未來的排程 CI 可使用下列唯讀檢查進入點:
+
+```bash
+npm --prefix .utils ci
+npm --prefix .utils test
+npm --prefix .utils run check-data
+```
+
+`check-data` 不會修改工作區：結束碼 `0` 表示資料為最新，`2` 表示發現更新，`1` 表示工作失敗.
+
+完整的更新範圍與執行約定請參閱 [.utils/README.md](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/.utils/README.md).
+
+******
+
 ### 發行歷史
 
 ******
+
+# v1.5.0
+
+###### 2026/08/28
+
+* `新增` 相容性資料更新工具已完整移入本儲存庫，新增供開發者手動更新的互動式 `run-scrapers.bat`，並預留跨平台更新與唯讀檢查命令供日後定期 CI 使用
+* `優化` 擷取器不再依賴 Puppeteer／Chrome，改為解析官方靜態來源；保留邊界與輸出驗證集中設定，並避免只因時間戳記變化而重寫檔案
+* `優化` 內建資料已更新至 Gradle 9.7／Kotlin 2.4、AGP 9.5.0-alpha03、9.4.0-rc02 與 9.3.2、Android Studio Rabbit 及 KSP 2.3.11
 
 # v1.4.1
 
@@ -165,18 +203,6 @@ gradle/data/android-studio-agp-compat.properties
 * `優化` IntelliJ IDEA 對應表補入 2026.2 項目，採用 IDE 自行回報的 AGP 上限
 * `優化` 遷移方案改為在根建置指令碼中宣告一次插件版本，模組指令碼無須改動；先前逐模組加上版本的做法無法用於 Groovy 模組，因為其 plugins 區塊只接受字串常值
 * `優化` 主控台的註記移至版本摘要下方單獨成段，不再與版本行交錯
-
-# v1.3.0
-
-###### 2026/08/18
-
-* `提示` 本次不再支援 Gradle 8。AGP 9.0 是首個要求 Gradle 9 的版本，因此支援範圍自 AGP 9.0 起
-* `優化` 相容性資料表剔除 9 以前的項目，IntelliJ IDEA 對應表僅保留給出 AGP 9 的項目
-* `優化` 當前 Gradle 舊於全部相容項目時不再回退到最低項目，改為明確報錯，避免把無法載入的版本放到 classpath 上
-* `優化` 最低支援版本上調：Gradle 9.1.0、Android Studio 2025.2.3、IntelliJ IDEA 2026.1.2、AGP 9.0
-* `優化` README 徽章同步上述版本，並新增 AGP 徽章
-* `優化` 遷移指令碼支援 kotlin(...) 語法糖與 kotlin-android/kotlin-kapt/kotlin-parcelize 等舊式簡稱，簡稱會展開為完整的插件 id
-* `優化` 遷移指令碼會跳過兩類無法遷移的儲存庫：以 apply(from=) 引入且引用 AGP 型別的指令碼片段，以及啟用了相依性驗證的儲存庫
 
 ##### 更多發行歷史可參閱
 
@@ -207,6 +233,8 @@ gradle/data/android-studio-agp-compat.properties
 ******
 
 ```text
+run-scrapers.bat
+.utils/
 src/main/kotlin/org/autojs/build/platform/
 src/main/resources/org/autojs/build/platform/data/
 sample/

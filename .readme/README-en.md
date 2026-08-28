@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.1"
+        id("org.autojs.build.platform-versions") version "1.5.0"
     }
 }
 
@@ -140,15 +140,53 @@ gradle/data/agp-gradle-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
+gradle/data/android-studio-build-version.properties
+gradle/data/android-studio-codename-version.properties
+gradle/data/android-studio-codename.properties
+gradle/data/kotlin-r8-compat.properties
+gradle/data/ksp-agp-compat.properties
+gradle/data/ksp-releases.properties
 ```
 
 If a consumer project places a file of the same name under its own `gradle/data` directory, that file takes precedence.
 
 ******
 
+### Data Updates
+
+******
+
+Developers can update all compatibility data by running the interactive batch entry point from the repository root:
+
+```bat
+run-scrapers.bat
+```
+
+A future scheduled CI job can use this read-only check entry point:
+
+```bash
+npm --prefix .utils ci
+npm --prefix .utils test
+npm --prefix .utils run check-data
+```
+
+`check-data` does not modify the workspace: exit code `0` means the data is current, `2` means updates were found, and `1` means the task failed.
+
+For the complete update scope and execution contract, see [.utils/README.md](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/.utils/README.md).
+
+******
+
 ### Release History
 
 ******
+
+# v1.5.0
+
+###### 2026/08/28
+
+* `Feature` The complete compatibility-data update suite now lives in this repository, with an interactive `run-scrapers.bat` for manual updates and cross-platform update and read-only check commands ready for future scheduled CI runs
+* `Improvement` The scrapers no longer depend on Puppeteer or Chrome: they parse official static sources, centralize retention bounds and output validation, and avoid rewrites caused only by timestamps
+* `Improvement` Bundled data refreshed through Gradle 9.7 with Kotlin 2.4, the latest AGP lines up to 9.5.0-alpha03, 9.4.0-rc02, and 9.3.2, Android Studio Rabbit, and KSP 2.3.11
 
 # v1.4.1
 
@@ -165,18 +203,6 @@ If a consumer project places a file of the same name under its own `gradle/data`
 * `Improvement` A 2026.2 entry added to the IntelliJ IDEA mapping table, with its AGP ceiling taken from what the IDE itself reports
 * `Improvement` The migration approach now declares the plugin version once in the root build script, leaving module scripts untouched; adding the version module by module could never work for Groovy modules, whose plugins block accepts string literals only
 * `Improvement` Notes printed to the console moved into a separate paragraph below the version summary, instead of being interleaved with the version lines
-
-# v1.3.0
-
-###### 2026/08/18
-
-* `Hint` Gradle 8 is no longer supported. AGP 9.0 is the first version to require Gradle 9, so the supported range starts at AGP 9.0
-* `Improvement` Entries older than 9 are dropped from the compatibility tables, and the IntelliJ IDEA mapping table keeps only the entries that yield AGP 9
-* `Improvement` When the current Gradle is older than every compatibility entry, it no longer falls back to the lowest entry but reports an error outright, so that a version which cannot be loaded is never put on the classpath
-* `Improvement` Minimum supported versions raised: Gradle 9.1.0, Android Studio 2025.2.3, IntelliJ IDEA 2026.1.2, AGP 9.0
-* `Improvement` README badges brought in line with the versions above, with an AGP badge added
-* `Improvement` The migration script now handles the kotlin(...) shorthand as well as legacy short names such as kotlin-android/kotlin-kapt/kotlin-parcelize, the short names being expanded into full plugin ids
-* `Improvement` The migration script skips two kinds of repository that cannot be migrated: those whose script fragments pulled in through apply(from=) reference AGP types, and those with dependency verification enabled
 
 ##### For more release history, see
 
@@ -207,6 +233,8 @@ The plugin version comes from `VERSION_NAME` in `version.properties`.
 ******
 
 ```text
+run-scrapers.bat
+.utils/
 src/main/kotlin/org/autojs/build/platform/
 src/main/resources/org/autojs/build/platform/data/
 sample/

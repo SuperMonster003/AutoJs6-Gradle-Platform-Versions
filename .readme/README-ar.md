@@ -77,7 +77,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.4.1"
+        id("org.autojs.build.platform-versions") version "1.5.0"
     }
 }
 
@@ -140,15 +140,53 @@ gradle/data/agp-gradle-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
+gradle/data/android-studio-build-version.properties
+gradle/data/android-studio-codename-version.properties
+gradle/data/android-studio-codename.properties
+gradle/data/kotlin-r8-compat.properties
+gradle/data/ksp-agp-compat.properties
+gradle/data/ksp-releases.properties
 ```
 
 وإذا وضع المشروع المستهلك ملفًا بالاسم نفسه في مجلد `gradle/data` الخاص به، فإن هذا الملف هو الذي يسري.
 
 ******
 
+### تحديث البيانات
+
+******
+
+يمكن للمطورين تحديث جميع بيانات التوافق بتشغيل نقطة دخول الدفعة التفاعلية من جذر المستودع:
+
+```bat
+run-scrapers.bat
+```
+
+يمكن لمهمة CI مجدولة مستقبلًا استخدام نقطة دخول الفحص للقراءة فقط التالية:
+
+```bash
+npm --prefix .utils ci
+npm --prefix .utils test
+npm --prefix .utils run check-data
+```
+
+لا يعدل `check-data` مساحة العمل: يعني رمز الخروج `0` أن البيانات محدثة، و`2` وجود تحديثات، و`1` فشل المهمة.
+
+للاطلاع على نطاق التحديث الكامل واتفاقية التشغيل، راجع [.utils/README.md](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/.utils/README.md).
+
+******
+
 ### سجل الإصدارات
 
 ******
+
+# v1.5.0
+
+###### 2026/08/28
+
+* `ميزة` انتقلت مجموعة تحديث بيانات التوافق بالكامل إلى هذا المستودع، مع ملف `run-scrapers.bat` تفاعلي للتحديث اليدوي وأوامر متعددة المنصات للتحديث والفحص للقراءة فقط استعدادا للتشغيل الدوري مستقبلا عبر CI
+* `تحسين` لم تعد أدوات الجمع تعتمد على Puppeteer أو Chrome؛ فهي تحلل المصادر الرسمية الثابتة، وتجمع حدود الاحتفاظ والتحقق من المخرجات في إعداد واحد، وتتجنب إعادة الكتابة الناتجة عن تغير الطابع الزمني وحده
+* `تحسين` حدثت البيانات المضمنة لتشمل Gradle 9.7 مع Kotlin 2.4، وإصدارات AGP الأحدث حتى 9.5.0-alpha03 و9.4.0-rc02 و9.3.2، وAndroid Studio Rabbit، وKSP 2.3.11
 
 # v1.4.1
 
@@ -165,18 +203,6 @@ gradle/data/android-studio-agp-compat.properties
 * `تحسين` إضافة مدخلة 2026.2 إلى جدول مطابقة IntelliJ IDEA، مع أخذ الحد الأعلى لـ AGP مما تبلغ عنه بيئة التطوير نفسها
 * `تحسين` تغيير أسلوب الترحيل، فصار إصدار الإضافة يُصرَّح به مرة واحدة في برنامج البناء الجذري دون المساس ببرامج الوحدات؛ إذ كان الأسلوب السابق القائم على إضافة الإصدار في كل وحدة متعذرًا في وحدات Groovy، لأن plugins block فيها لا يقبل إلا القيم النصية الحرفية
 * `تحسين` نقل ملاحظات وحدة التحكم إلى فقرة مستقلة أسفل ملخص الإصدارات، فلم تعد تتخلل أسطر الإصدارات
-
-# v1.3.0
-
-###### 2026/08/18
-
-* `تلميح` لم يعد Gradle 8 مدعومًا اعتبارًا من هذا الإصدار، فـ AGP 9.0 هو أول إصدار يشترط Gradle 9، ومن ثم يبدأ نطاق الدعم من AGP 9.0
-* `تحسين` حذف المدخلات الأقدم من 9 من جداول التوافق، ولم يُبقَ في جدول مطابقة IntelliJ IDEA إلا المدخلات التي تعطي AGP 9
-* `تحسين` إذا كان Gradle الحالي أقدم من جميع مدخلات التوافق فلم يعد يرجع إلى أدنى مدخلة، بل صار يبلغ عن خطأ صريح؛ تفاديًا لوضع إصدار يتعذر تحميله على classpath
-* `تحسين` رفع أدنى الإصدارات المدعومة: Gradle 9.1.0 وAndroid Studio 2025.2.3 وIntelliJ IDEA 2026.1.2 وAGP 9.0
-* `تحسين` مواءمة شارات README مع الإصدارات المذكورة، وإضافة شارة AGP
-* `تحسين` صار برنامج الترحيل يدعم السكر النحوي kotlin(...) والأسماء المختصرة القديمة مثل kotlin-android وkotlin-kapt وkotlin-parcelize، وتُوسَّع الأسماء المختصرة إلى معرّف الإضافة الكامل
-* `تحسين` يتخطى برنامج الترحيل نوعين من المستودعات يتعذر ترحيلهما: مستودعات تشير فيها مقاطع البرامج المضمَّنة عبر apply(from=) إلى أنواع AGP، ومستودعات فُعِّل فيها التحقق من التبعيات
 
 ##### لمزيد من سجل الإصدارات يمكن الرجوع إلى
 
@@ -207,6 +233,8 @@ gradle/data/android-studio-agp-compat.properties
 ******
 
 ```text
+run-scrapers.bat
+.utils/
 src/main/kotlin/org/autojs/build/platform/
 src/main/resources/org/autojs/build/platform/data/
 sample/

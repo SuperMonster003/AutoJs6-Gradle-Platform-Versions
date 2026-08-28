@@ -5,6 +5,16 @@
   "changelog_label_improvement": "优化",
   "changelog_label_dependency": "依赖",
   "$data": {
+    "v1.5.0": {
+      "released_date": "2026/08/28",
+      "feature": [
+        "兼容数据更新套件已完整迁入本仓库, 新增供开发者手动更新的交互式 `run-scrapers.bat`, 并预留跨平台更新与只读检查命令供未来定期 CI 使用"
+      ],
+      "improvement": [
+        "抓取器不再依赖 Puppeteer/Chrome, 改为解析官方静态来源; 保留边界与输出校验集中配置, 且避免仅因时间戳变化而重写文件",
+        "内置数据已更新至 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03、9.4.0-rc02 与 9.3.2, Android Studio Rabbit 及 KSP 2.3.11"
+      ]
+    },
     "v1.4.1": {
       "released_date": "2026/08/18",
       "improvement": [

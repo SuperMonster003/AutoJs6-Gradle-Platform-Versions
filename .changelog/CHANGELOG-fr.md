@@ -23,6 +23,14 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.5.0
+
+###### 2026/08/28
+
+* `Fonctionnalité` La suite complète de mise à jour des données de compatibilité réside désormais dans ce dépôt, avec un `run-scrapers.bat` interactif pour les mises à jour manuelles et des commandes multiplateformes de mise à jour et de contrôle en lecture seule prêtes pour de futures exécutions CI planifiées
+* `Amélioration` Les scrapers ne dépendent plus de Puppeteer ni de Chrome : ils analysent les sources officielles statiques, centralisent les limites de conservation et la validation des sorties, et évitent les réécritures dues uniquement aux horodatages
+* `Amélioration` Les données embarquées ont été actualisées jusqu'à Gradle 9.7 avec Kotlin 2.4, aux dernières lignes AGP jusqu'à 9.5.0-alpha03, 9.4.0-rc02 et 9.3.2, à Android Studio Rabbit et à KSP 2.3.11
+
 # v1.4.1
 
 ###### 2026/08/18

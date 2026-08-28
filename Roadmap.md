@@ -1,6 +1,6 @@
 # AutoJs6 Gradle Platform Versions — 开发路线图 (Roadmap)
 
-> 修订日期: 2026-08-18
+> 修订日期: 2026-08-28
 
 ## 一. 项目定位
 
@@ -167,6 +167,15 @@ plugins {
 **但改写成果无法直接复制到 Worktree**: 它们各自位于独立开发分支 (`codex/ai-public-chat` 等), `app/build.gradle.kts` 等文件与主项目 HEAD 差异显著, 覆盖会破坏在研工作。这 14 个仓库需在各自分支上逐一改写, 或等其分支合并回主项目后再迁移。
 
 若 convention 插件所在的 build-logic 在配置阶段早于 settings 插件求值 (`gradle.agp.version` 尚未发布), 则不能用 `compileOnly` 依赖 AGP, 改以反射访问 android 扩展 —— 这与各仓库 `Utils.kt` 既有的 AGP 探测方式一致。AutoJs6-Plugin-NodeJs-Runtime 即按此改写: 32 行片段变为 `org.autojs.build.node-runtime-kit` 插件, 迁移后 settings 由 763 行降至 38 行, `:app:assembleDebug` 通过且 4 个 BuildConfig 字段照常生成。
+
+### M10 — 兼容数据更新职责迁移
+
+- [x] M10.1 从 AutoJs6 抓取器中迁移 11 份 Gradle/AGP/Kotlin/Java/KSP/R8/Android Studio 数据的完整生成逻辑。
+- [x] M10.2 增加仓库根目录 `run-scrapers.bat`, 首次运行自动安装依赖并保留 R/Shift+R 交互式重跑体验。
+- [x] M10.3 增加跨平台无交互入口 `npm --prefix .utils run update-data`, 供脚本和未来 CI 直接更新数据。
+- [x] M10.4 增加只读 CI 检查入口 `npm --prefix .utils run check-data`; 数据最新/发现更新/任务失败分别返回 0/2/1。
+- [x] M10.5 移除抓取过程对 Puppeteer/Chrome 的依赖, 改为解析官方静态表格, 降低 CI 安装体积与运行成本。
+- [x] M10.6 增加 Node 解析测试、生成内容校验、固定时区日期和二次检查幂等验证; 更新后的 Gradle 插件测试与打包通过。
 
 ## 四. 迁移期间发现的上游缺陷
 
