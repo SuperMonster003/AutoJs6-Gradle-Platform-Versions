@@ -12,11 +12,11 @@ import org.gradle.kotlin.dsl.extra
  *
  * ```kotlin
  * pluginManagement {
- *     repositories { mavenLocal(); gradlePluginPortal(); mavenCentral(); google() }
- *     plugins { id("org.autojs.build.platform-versions") version "1.0.0" }
+ *     repositories { gradlePluginPortal(); mavenCentral(); google() }
+ *     plugins { id("io.github.supermonster003.autojs6-platform-versions") version "1.5.0" }
  * }
  *
- * plugins { id("org.autojs.build.platform-versions") }
+ * plugins { id("io.github.supermonster003.autojs6-platform-versions") }
  * ```
  *
  * A project that also needs AGP on its own buildscript classpath cannot use the plugin

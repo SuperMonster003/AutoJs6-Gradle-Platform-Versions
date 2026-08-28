@@ -35,7 +35,8 @@ SETTINGS_NAME = "settings.gradle.kts"
 BACKUP_SUFFIX = ".pre-platform-versions.bak"
 
 # The marker that tells a migrated repository from an unmigrated one.
-PLUGIN_ID = "org.autojs.build.platform-versions"
+PLUGIN_ID = "io.github.supermonster003.autojs6-platform-versions"
+LEGACY_PLUGIN_IDS = ("org.autojs.build.platform-versions",)
 
 # Recognizes the mechanism rather than a plain pluginManagement block, so repositories
 # that merely declare repositories are left alone.
@@ -53,7 +54,6 @@ MECHANISM_MARKER = "agpVersionMap"
 # them so they can be handled deliberately.
 BOOTSTRAP_TEMPLATE = """pluginManagement {{
     repositories {{
-        mavenLocal()
         gradlePluginPortal()
         mavenCentral()
         google()
@@ -96,7 +96,7 @@ VERSIONED_PLUGIN_IDS = {
     "kotlin-parcelize",
 }
 
-PLUGIN_GROUP = "org.autojs.build"
+PLUGIN_GROUP = "io.github.supermonster003"
 PLUGIN_ARTIFACT = "autojs6-gradle-platform-versions"
 
 # Plugins the root plugins block applies without a version, mapped to their
@@ -117,7 +117,9 @@ def find_repositories(workspace: Path):
     for settings in sorted(workspace.glob(f"*/{SETTINGS_NAME}")):
         text = settings.read_text(encoding="utf-8")
         has_backup = settings.with_suffix(settings.suffix + BACKUP_SUFFIX).is_file()
-        if MECHANISM_MARKER not in text and PLUGIN_ID not in text and not has_backup:
+        known_plugin_ids = (PLUGIN_ID, *LEGACY_PLUGIN_IDS)
+        if MECHANISM_MARKER not in text and not any(plugin_id in text for plugin_id in known_plugin_ids) \
+                and not has_backup:
             continue
         yield settings
 
@@ -283,6 +285,18 @@ def migrate_text(text: str, plugin_version: str, repo_root: Path):
     if PLUGIN_ID in text:
         return None
 
+    if any(plugin_id in text for plugin_id in LEGACY_PLUGIN_IDS):
+        migrated = text
+        for plugin_id in LEGACY_PLUGIN_IDS:
+            migrated = migrated.replace(plugin_id, PLUGIN_ID)
+        version_pattern = re.compile(
+            rf'(id\("{re.escape(PLUGIN_ID)}"\)\s+version\s+)"[^"]+"'
+        )
+        return version_pattern.sub(
+            lambda match: f'{match.group(1)}"{plugin_version}"',
+            migrated,
+        )
+
     lines = text.splitlines(keepends=True)
     span = locate_top_level_block(lines, r"^pluginManagement\s*\{")
     if span is None:
@@ -336,6 +350,8 @@ def command_list(settings_files):
         text = settings.read_text(encoding="utf-8")
         if PLUGIN_ID in text:
             state = "migrated"
+        elif any(plugin_id in text for plugin_id in LEGACY_PLUGIN_IDS):
+            state = "legacy plugin id, ready to upgrade"
         elif needs_agp_classpath(text) and lacks_plugin_declarations(settings.parent):
             state = f"{len(text.splitlines())} lines, run migrate_modules.py first"
         else:

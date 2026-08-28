@@ -71,18 +71,17 @@ Appliquez le plugin dans le fichier `settings.gradle.kts` du projet consommateur
 ```kotlin
 pluginManagement {
     repositories {
-        mavenLocal()
         gradlePluginPortal()
         mavenCentral()
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "1.5.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.5.0"
     }
 }
 
 plugins {
-    id("org.autojs.build.platform-versions")
+    id("io.github.supermonster003.autojs6-platform-versions")
 }
 ```
 

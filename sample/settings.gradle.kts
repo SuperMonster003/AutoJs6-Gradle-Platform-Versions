@@ -8,7 +8,7 @@ pluginManagement {
 }
 
 plugins {
-    id("org.autojs.build.platform-versions")
+    id("io.github.supermonster003.autojs6-platform-versions")
 }
 
 rootProject.name = "sample"

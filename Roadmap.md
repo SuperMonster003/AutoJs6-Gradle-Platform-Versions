@@ -1,6 +1,6 @@
 # AutoJs6 Gradle Platform Versions — 开发路线图 (Roadmap)
 
-> 修订日期: 2026-08-28
+> 修订日期: 2026-08-29
 
 ## 一. 项目定位
 
@@ -176,6 +176,20 @@ plugins {
 - [x] M10.4 增加只读 CI 检查入口 `npm --prefix .utils run check-data`; 数据最新/发现更新/任务失败分别返回 0/2/1。
 - [x] M10.5 移除抓取过程对 Puppeteer/Chrome 的依赖, 改为解析官方静态表格, 降低 CI 安装体积与运行成本。
 - [x] M10.6 增加 Node 解析测试、生成内容校验、固定时区日期和二次检查幂等验证; 更新后的 Gradle 插件测试与打包通过。
+
+### M11 — 首次在线发布
+
+- [x] M11.1 确定永久 Maven group `io.github.supermonster003` 与插件 ID `io.github.supermonster003.autojs6-platform-versions`。
+- [x] M11.2 创建公共 GitHub 仓库, 将 37 个历史提交的作者/提交者邮箱改写为 GitHub noreply 并完成逐提交内容校验与首次推送。
+- [x] M11.3 补齐 Maven Central POM 元数据、源码包、文档包、校验和及按凭据启用的 PGP 签名链路。
+- [x] M11.4 接入 Gradle Plugin Publish 2.1.1, 补齐英文文档 URL、VCS、标签与兼容性声明。
+- [x] M11.5 增加隔离测试 Maven 仓库与 Central bundle 任务; 使用一次性测试密钥验证全部签名和 Maven 仓库布局。
+- [x] M11.6 独立消费者在离线、无 `includeBuild`、无 `mavenLocal()` 条件下从隔离仓库解析新插件 ID 并完成版本决策。
+- [ ] M11.7 使用 GitHub 登录 Central Portal, 确认 `io.github.supermonster003` namespace 已验证, 生成 Portal token。
+- [ ] M11.8 生成正式 PGP 密钥、发布公钥并以安全方式配置本机与 GitHub Actions secrets。
+- [ ] M11.9 上传首个 `USER_MANAGED` Central deployment, 验证后发布并从 `mavenCentral()` 进行全新消费测试。
+- [ ] M11.10 提交 Gradle Plugin Portal 首版审核, 通过后以纯 `gradlePluginPortal()` 消费验证。
+- [ ] M11.11 增加受保护的 GitHub Actions 手动发布入口与周期数据检查/更新入口。
 
 ## 四. 迁移期间发现的上游缺陷
 

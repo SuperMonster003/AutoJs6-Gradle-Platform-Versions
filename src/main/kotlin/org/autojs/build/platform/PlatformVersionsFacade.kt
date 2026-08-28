@@ -13,11 +13,11 @@ import java.util.Properties
  * timing the inlined mechanism had.
  *
  * ```kotlin
- * pluginManagement { repositories { mavenLocal(); mavenCentral(); google() } }
+ * pluginManagement { repositories { gradlePluginPortal(); mavenCentral(); google() } }
  *
  * buildscript {
- *     repositories { mavenLocal(); mavenCentral() }
- *     dependencies { classpath("org.autojs.build:autojs6-gradle-platform-versions:1.0.0") }
+ *     repositories { mavenCentral(); google() }
+ *     dependencies { classpath("io.github.supermonster003:autojs6-gradle-platform-versions:1.5.0") }
  * }
  *
  * val versions = PlatformVersionsFacade.decide(rootDir, gradle.gradleVersion)

@@ -54,18 +54,17 @@
 ```kotlin
 pluginManagement {
     repositories {
-        mavenLocal()
         gradlePluginPortal()
         mavenCentral()
         google()
     }
     plugins {
-        id("org.autojs.build.platform-versions") version "{{ plugin_version }}"
+        id("{{ plugin_id }}") version "{{ plugin_version }}"
     }
 }
 
 plugins {
-    id("org.autojs.build.platform-versions")
+    id("{{ plugin_id }}")
 }
 ```
 
