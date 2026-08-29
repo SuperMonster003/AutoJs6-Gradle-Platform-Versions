@@ -31,16 +31,36 @@ not accidentally resolve a stale artifact from the developer's home directory.
 
 ## Signing credentials
 
-Maven Central requires PGP signatures. The build accepts an ASCII-armored private key and its passphrase from either
-Gradle properties or environment variables:
+Maven Central requires PGP signatures. The release key has the following public identity:
+
+```text
+UID:         SuperMonster003 <30370009+SuperMonster003@users.noreply.github.com>
+Fingerprint: 6533 227D 9B22 7132 07B4  4CA5 3278 716E 2E61 74D7
+Long key ID: 3278716E2E6174D7
+Key server:  keyserver.ubuntu.com
+```
+
+For CI, the build accepts an ASCII-armored private key and its passphrase from either Gradle properties or environment
+variables:
 
 | Gradle property | Environment variable |
 |---|---|
 | `signingKey` | `SIGNING_KEY` |
 | `signingPassword` | `SIGNING_PASSWORD` |
 
-Signing is enabled only when a non-blank private key is present. This keeps ordinary local builds credential-free.
-The `centralBundle` task fails explicitly when no signing key is configured.
+For local release work, Gradle can instead use the GPG keyring and `gpg-agent`. Put Git's GPG directory on `PATH`,
+select the release key by its public long ID, and enable command-based signing:
+
+```powershell
+$env:Path = 'C:\Program Files\Git\usr\bin;' + $env:Path
+.\gradlew.bat centralBundle `
+  -PsigningUseGpgCmd=true `
+  '-Psigning.gnupg.keyName=3278716E2E6174D7'
+```
+
+GPG obtains the passphrase from its agent or secure Pinentry window; it is not passed to Gradle. Signing remains
+disabled for ordinary credential-free builds. The `centralBundle` task fails explicitly when neither local GPG nor an
+in-memory signing key is configured.
 
 Never put a private key, passphrase, Central token, or Plugin Portal key in this repository, `local.properties`, a
 command-line argument, build output intended for upload, or a commit. Store local secrets outside the repository and
@@ -48,7 +68,7 @@ use protected CI secrets for automation.
 
 ## Maven Central bundle
 
-With signing variables present, build the upload archive:
+With in-memory signing variables present, build the upload archive:
 
 ```powershell
 .\gradlew.bat centralBundle

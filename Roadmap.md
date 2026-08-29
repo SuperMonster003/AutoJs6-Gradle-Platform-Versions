@@ -185,11 +185,13 @@ plugins {
 - [x] M11.4 接入 Gradle Plugin Publish 2.1.1, 补齐英文文档 URL、VCS、标签与兼容性声明。
 - [x] M11.5 增加隔离测试 Maven 仓库与 Central bundle 任务; 使用一次性测试密钥验证全部签名和 Maven 仓库布局。
 - [x] M11.6 独立消费者在离线、无 `includeBuild`、无 `mavenLocal()` 条件下从隔离仓库解析新插件 ID 并完成版本决策。
-- [ ] M11.7 使用 GitHub 登录 Central Portal, 确认 `io.github.supermonster003` namespace 已验证, 生成 Portal token。
-- [ ] M11.8 生成正式 PGP 密钥、发布公钥并以安全方式配置本机与 GitHub Actions secrets。
-- [ ] M11.9 上传首个 `USER_MANAGED` Central deployment, 验证后发布并从 `mavenCentral()` 进行全新消费测试。
-- [ ] M11.10 提交 Gradle Plugin Portal 首版审核, 通过后以纯 `gradlePluginPortal()` 消费验证。
-- [ ] M11.11 增加受保护的 GitHub Actions 手动发布入口与周期数据检查/更新入口。
+- [x] M11.7 使用 GitHub 登录 Central Portal, 确认 `io.github.supermonster003` namespace 已验证。
+- [ ] M11.8 生成 Central Portal token 并保存到受控凭据存储。
+- [x] M11.9 生成正式 PGP 主签名密钥、发布公钥, 并通过本机 `gpg-agent` 构建和逐项验证 Central bundle。
+- [ ] M11.10 将签名密钥与 Portal 凭据配置为受保护的 GitHub Actions secrets。
+- [ ] M11.11 上传首个 `USER_MANAGED` Central deployment, 验证后发布并从 `mavenCentral()` 进行全新消费测试。
+- [ ] M11.12 提交 Gradle Plugin Portal 首版审核, 通过后以纯 `gradlePluginPortal()` 消费验证。
+- [ ] M11.13 增加受保护的 GitHub Actions 手动发布入口与周期数据检查/更新入口。
 
 ## 四. 迁移期间发现的上游缺陷
 

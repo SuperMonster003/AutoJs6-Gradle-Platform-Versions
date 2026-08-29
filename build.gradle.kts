@@ -139,12 +139,28 @@ val signingKey = providers.gradleProperty("signingKey")
     .orElse(providers.environmentVariable("SIGNING_KEY"))
 val signingPassword = providers.gradleProperty("signingPassword")
     .orElse(providers.environmentVariable("SIGNING_PASSWORD"))
-val signingConfigured = signingKey.map { it.isNotBlank() }.orElse(false)
+val signingUsesGpgCommand = providers.gradleProperty("signingUseGpgCmd")
+    .map { value ->
+        value.toBooleanStrictOrNull()
+            ?: throw GradleException("signingUseGpgCmd must be either true or false.")
+    }
+    .orElse(false)
+    .get()
+val signingHasInMemoryKey = signingKey.map { it.isNotBlank() }.orElse(false).get()
+val signingConfigured = signingUsesGpgCommand || signingHasInMemoryKey
 
-if (signingConfigured.get()) {
+check(!(signingUsesGpgCommand && signingHasInMemoryKey)) {
+    "Choose either local GPG command signing or an in-memory PGP key, not both."
+}
+
+if (signingConfigured) {
     pluginManager.apply("signing")
     extensions.configure<SigningExtension> {
-        useInMemoryPgpKeys(signingKey.get(), signingPassword.orNull)
+        if (signingUsesGpgCommand) {
+            useGpgCmd()
+        } else {
+            useInMemoryPgpKeys(signingKey.get(), signingPassword.orNull)
+        }
         sign(publishing.publications)
     }
 }
@@ -159,12 +175,13 @@ val cleanCentralStagingRepository by tasks.registering(Delete::class) {
 
 val validateCentralPublishing by tasks.registering {
     group = "publishing"
-    description = "Checks that the in-memory PGP signing key required by Maven Central is available."
+    description = "Checks that a PGP signing method required by Maven Central is configured."
 
     doLast {
-        check(signingConfigured.get()) {
+        check(signingConfigured) {
             "Maven Central artifacts must be signed. Set signingKey/signingPassword Gradle properties " +
-                    "or SIGNING_KEY/SIGNING_PASSWORD environment variables."
+                    "or SIGNING_KEY/SIGNING_PASSWORD environment variables, or enable local GPG command " +
+                    "signing with -PsigningUseGpgCmd=true."
         }
     }
 }
