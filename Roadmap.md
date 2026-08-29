@@ -189,7 +189,7 @@ plugins {
 - [x] M11.8 生成 Central Portal token 并保存到受控凭据存储。
 - [x] M11.9 生成正式 PGP 主签名密钥、发布公钥, 并通过本机 `gpg-agent` 构建和逐项验证 Central bundle。
 - [ ] M11.10 将签名密钥与 Portal 凭据配置为受保护的 GitHub Actions secrets。
-- [ ] M11.11 上传首个 `USER_MANAGED` Central deployment, 验证后发布并从 `mavenCentral()` 进行全新消费测试。
+- [x] M11.11 上传并发布首个 `USER_MANAGED` Central deployment `b7dda1bd-c9af-4782-9f46-a29a1378579d`; 公开仓库 60/60 个文件与本地 bundle 逐字节一致, 全新消费者仅通过 `mavenCentral()` 成功解析并应用 `1.6.0`。
 - [ ] M11.12 提交 Gradle Plugin Portal 首版审核, 通过后以纯 `gradlePluginPortal()` 消费验证。
 - [ ] M11.13 增加受保护的 GitHub Actions 手动发布入口与周期数据检查/更新入口。
 
