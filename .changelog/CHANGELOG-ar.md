@@ -23,6 +23,15 @@
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `تلميح` أصبح معرف إضافة Gradle الدائم `io.github.supermonster003.autojs6-platform-versions` بدلا من `org.autojs.build.platform-versions`، وصارت إحداثيات Maven هي `io.github.supermonster003:autojs6-gradle-platform-versions`؛ فيما تبقى حزمة Java/Kotlin باسم `org.autojs.build.platform`
+* `ميزة` أول مسار إصدار عام عبر الإنترنت إلى Maven Central وGradle Plugin Portal، مع توقيع مكونات التنفيذ والمصادر وJavadoc وبيانات الوحدة وملف تعريف الإضافة
+* `تحسين` أضيف مستودع GitHub العام وبيانات POM الكاملة لـ Central وحزمة Portal قابلة لإعادة الإنتاج والتحقق المعزول من جانب المستهلك ومسارا توقيع آمنان منفصلان لـ GPG المحلي وCI
+* `تحسين` يُحل الاستخدام الرسمي الآن من المستودعات العامة وحدها من دون `mavenLocal()`؛ كما تتعرف أداة الترحيل على معرف الإضافة القديم وتحدثه
+
 # v1.5.0
 
 ###### 2026/08/28

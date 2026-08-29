@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.5.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
     }
 }
 
@@ -179,6 +179,15 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `Hint` The permanent Gradle plugin ID is now `io.github.supermonster003.autojs6-platform-versions` instead of `org.autojs.build.platform-versions`, and the Maven coordinates are `io.github.supermonster003:autojs6-gradle-platform-versions`; the Java/Kotlin package remains `org.autojs.build.platform`
+* `Feature` First public online-release pipeline for Maven Central and the Gradle Plugin Portal, with signed implementation, sources, Javadoc, module-metadata, and plugin-marker artifacts
+* `Improvement` Added the public GitHub repository, complete Central POM metadata, a reproducible Portal bundle, isolated consumer validation, and separate secure signing paths for local GPG and CI
+* `Improvement` Official usage now resolves through public repositories without `mavenLocal()`; the migration tool also recognizes and updates the legacy plugin ID
+
 # v1.5.0
 
 ###### 2026/08/28
@@ -193,15 +202,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 * `Improvement` No explanatory note is printed to the console when the mapping table has fallen behind. The [auto-specified] suffix at the end of the version line already says how the version was reached, and the note ran longer than the summary it explained
 * `Improvement` The notes API is removed along with it: PlatformVersionsExtension.notes and the notes parameter of Formatted are gone, so a consuming script that read that property needs adjusting
-
-# v1.4.0
-
-###### 2026/08/18
-
-* `Fix` The AGP ceiling is no longer relaxed when the IDE version is only a patch-level update. IntelliJ IDEA 2026.2.1 used to resolve to AGP 9.2.1 and be rejected by the IDE; it now stays on the 9.1 line, just as 2026.2 does
-* `Improvement` A 2026.2 entry added to the IntelliJ IDEA mapping table, with its AGP ceiling taken from what the IDE itself reports
-* `Improvement` The migration approach now declares the plugin version once in the root build script, leaving module scripts untouched; adding the version module by module could never work for Groovy modules, whose plugins block accepts string literals only
-* `Improvement` Notes printed to the console moved into a separate paragraph below the version summary, instead of being interleaved with the version lines
 
 ##### For more release history, see
 

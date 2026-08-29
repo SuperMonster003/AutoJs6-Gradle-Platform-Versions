@@ -5,6 +5,19 @@
   "changelog_label_improvement": "Улучшение",
   "changelog_label_dependency": "Зависимость",
   "$data": {
+    "v1.6.0": {
+      "released_date": "2026/08/29",
+      "hint": [
+        "Постоянный идентификатор плагина Gradle изменён с `org.autojs.build.platform-versions` на `io.github.supermonster003.autojs6-platform-versions`, а координаты Maven заданы как `io.github.supermonster003:autojs6-gradle-platform-versions`; имя пакета Java/Kotlin остаётся `org.autojs.build.platform`"
+      ],
+      "feature": [
+        "Первый конвейер публичного онлайн-выпуска для Maven Central и Gradle Plugin Portal с подписанными артефактами реализации, исходников, Javadoc, метаданных модуля и маркера плагина"
+      ],
+      "improvement": [
+        "Добавлены публичный репозиторий GitHub, полные метаданные POM для Central, воспроизводимый Portal bundle, изолированная проверка потребителем и отдельные безопасные пути подписи для локального GPG и CI",
+        "Официальный пример теперь разрешает зависимости только из публичных репозиториев без `mavenLocal()`; средство миграции также распознаёт и обновляет прежний идентификатор плагина"
+      ]
+    },
     "v1.5.0": {
       "released_date": "2026/08/28",
       "feature": [

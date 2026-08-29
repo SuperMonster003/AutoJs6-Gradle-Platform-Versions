@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.5.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
     }
 }
 
@@ -179,6 +179,15 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `Note` L'identifiant permanent du plugin Gradle est désormais `io.github.supermonster003.autojs6-platform-versions` au lieu de `org.autojs.build.platform-versions`, et les coordonnées Maven sont `io.github.supermonster003:autojs6-gradle-platform-versions` ; le package Java/Kotlin reste `org.autojs.build.platform`
+* `Fonctionnalité` Première chaîne de publication publique en ligne pour Maven Central et le Gradle Plugin Portal, avec des artefacts signés pour l'implémentation, les sources, le Javadoc, les métadonnées de module et le marqueur du plugin
+* `Amélioration` Ajout du dépôt GitHub public, des métadonnées POM complètes pour Central, d'un bundle Portal reproductible, d'une validation isolée côté consommateur et de voies de signature sécurisées distinctes pour GPG local et la CI
+* `Amélioration` L'utilisation officielle se résout désormais uniquement depuis les dépôts publics sans `mavenLocal()` ; l'outil de migration reconnaît et met également à jour l'ancien identifiant du plugin
+
 # v1.5.0
 
 ###### 2026/08/28
@@ -193,15 +202,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 * `Amélioration` Plus aucune note explicative n'est affichée dans la console lorsque la table de correspondance a pris du retard. Le suffixe [auto-specified] en fin de ligne de version indique déjà comment la version a été obtenue, et la note était plus longue que le résumé qu'elle expliquait
 * `Amélioration` L'API notes disparaît par la même occasion : PlatformVersionsExtension.notes et le paramètre notes de Formatted n'existent plus, un script consommateur qui lisait cette propriété doit donc être adapté
-
-# v1.4.0
-
-###### 2026/08/18
-
-* `Correctif` Le plafond d'AGP n'est plus relevé lorsque la version de l'IDE ne constitue qu'une mise à jour de niveau correctif. IntelliJ IDEA 2026.2.1 aboutissait jusqu'ici à AGP 9.2.1 et se voyait refusé par l'IDE ; il reste désormais sur la ligne 9.1, comme 2026.2
-* `Amélioration` Ajout d'une entrée 2026.2 à la table de correspondance IntelliJ IDEA, dont le plafond d'AGP reprend la valeur signalée par l'IDE lui-même
-* `Amélioration` La migration déclare désormais la version du plugin une seule fois dans le script de build racine, sans toucher aux scripts de module ; ajouter la version module par module ne pouvait pas fonctionner pour les modules Groovy, dont le bloc plugins n'accepte que des littéraux de chaîne
-* `Amélioration` Les notes affichées dans la console sont déplacées dans un paragraphe distinct sous le résumé des versions, au lieu d'être entrelacées avec les lignes de versions
 
 ##### Pour un historique plus complet, voir
 

@@ -23,6 +23,15 @@
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `힌트` 영구 Gradle 플러그인 ID를 `org.autojs.build.platform-versions`에서 `io.github.supermonster003.autojs6-platform-versions`로 변경하고 Maven 좌표를 `io.github.supermonster003:autojs6-gradle-platform-versions`로 확정함. Java/Kotlin 패키지 이름은 계속 `org.autojs.build.platform`임
+* `기능` Maven Central과 Gradle Plugin Portal을 위한 첫 공개 온라인 릴리스 경로를 추가하고 구현, 소스, Javadoc, 모듈 메타데이터 및 플러그인 마커 산출물에 정식 서명을 적용
+* `개선` 공개 GitHub 저장소, 완전한 Central POM 메타데이터, 재현 가능한 Portal bundle, 격리된 소비자 검증, 로컬 GPG와 CI용으로 분리된 안전한 서명 경로를 추가
+* `개선` 공식 사용 예제는 이제 `mavenLocal()` 없이 공개 저장소만으로 해석되며 마이그레이션 도구도 기존 플러그인 ID를 인식하고 갱신
+
 # v1.5.0
 
 ###### 2026/08/28

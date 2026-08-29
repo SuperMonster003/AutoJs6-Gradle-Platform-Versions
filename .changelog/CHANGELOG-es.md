@@ -23,6 +23,15 @@ CHANGELOG.md está disponible actualmente en los siguientes idiomas:
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `Aviso` El ID permanente del plugin de Gradle ahora es `io.github.supermonster003.autojs6-platform-versions` en lugar de `org.autojs.build.platform-versions`, y las coordenadas de Maven son `io.github.supermonster003:autojs6-gradle-platform-versions`; el paquete Java/Kotlin sigue siendo `org.autojs.build.platform`
+* `Función` Primera cadena de publicación pública en línea para Maven Central y Gradle Plugin Portal, con artefactos firmados de implementación, fuentes, Javadoc, metadatos de módulo y marcador del plugin
+* `Mejora` Se añadieron el repositorio público de GitHub, los metadatos POM completos para Central, un bundle reproducible para el Portal, la validación aislada del consumidor y rutas de firma seguras separadas para GPG local y CI
+* `Mejora` El uso oficial ahora resuelve únicamente desde repositorios públicos sin `mavenLocal()`; la herramienta de migración también reconoce y actualiza el ID antiguo del plugin
+
 # v1.5.0
 
 ###### 2026/08/28

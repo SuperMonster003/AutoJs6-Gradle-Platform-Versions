@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.5.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
     }
 }
 
@@ -179,6 +179,15 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `ヒント` 恒久的な Gradle プラグイン ID を `org.autojs.build.platform-versions` から `io.github.supermonster003.autojs6-platform-versions` へ変更し、Maven 座標を `io.github.supermonster003:autojs6-gradle-platform-versions` に設定。Java／Kotlin パッケージ名は引き続き `org.autojs.build.platform`
+* `機能` Maven Central と Gradle Plugin Portal に向けた初の公開オンラインリリース経路を追加し、実装、ソース、Javadoc、モジュールメタデータ、プラグインマーカーの各成果物に正式署名を付与
+* `改善` 公開 GitHub リポジトリ、完全な Central POM メタデータ、再現可能な Portal bundle、隔離した利用側検証、およびローカル GPG と CI 向けに分離した安全な署名経路を追加
+* `改善` 正式な使用例は `mavenLocal()` なしで公開リポジトリだけから解決するようになり、移行ツールも旧プラグイン ID を認識して更新
+
 # v1.5.0
 
 ###### 2026/08/28
@@ -193,15 +202,6 @@ npm --prefix .utils run check-data
 
 * `改善` マッピング表が古くなっている場合に、説明用の注記をコンソールへ出力しないようにした。バージョン行の末尾に付く [auto-specified] だけで由来は分かるうえ、注記はそれが説明する概要よりも長かった
 * `改善` あわせて notes の API を削除。PlatformVersionsExtension.notes と Formatted の notes 引数はなくなったため、このプロパティを読んでいた利用側のスクリプトは修正が必要である
-
-# v1.4.0
-
-###### 2026/08/18
-
-* `修正` IDE のバージョンがパッチレベルの更新にとどまる場合、AGP の上限を緩めないように修正。これまで IntelliJ IDEA 2026.2.1 では AGP 9.2.1 が得られて IDE に拒否されていたが、現在は 2026.2 と同じく 9.1 系にとどまる
-* `改善` IntelliJ IDEA のマッピング表に 2026.2 の項目を追加。AGP の上限には IDE 自身が報告する値を採用
-* `改善` 移行方式を変更し、プラグインのバージョンをルートのビルドスクリプトで一度だけ宣言するようにして、モジュールのスクリプトには手を加えない。これまでのモジュールごとにバージョンを付ける方式は Groovy のモジュールでは使えなかった。plugins ブロックが文字列リテラルしか受け付けないためである
-* `改善` コンソールの注記をバージョン概要の下へ移し、独立した段落とした。バージョンの行と交互に並ぶことはなくなった
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

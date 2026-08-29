@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.5.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
     }
 }
 
@@ -179,6 +179,15 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `提示` 永久 Gradle 外掛程式 ID 已由 `org.autojs.build.platform-versions` 改為 `io.github.supermonster003.autojs6-platform-versions`，Maven 座標為 `io.github.supermonster003:autojs6-gradle-platform-versions`；Java／Kotlin 套件名稱仍為 `org.autojs.build.platform`
+* `新增` 新增面向 Maven Central 與 Gradle Plugin Portal 的首次公開線上發布流程，實作成品、原始碼、Javadoc、模組中繼資料及外掛程式 marker 均附有正式簽章
+* `優化` 新增公開 GitHub 儲存庫、完整 Central POM 中繼資料、可重現 Portal bundle、隔離取用端驗證，以及分別供本機 GPG 與 CI 使用的安全簽章入口
+* `優化` 正式用法現可僅透過公共儲存庫解析，不再依賴 `mavenLocal()`；遷移工具也可辨識並更新舊外掛程式 ID
+
 # v1.5.0
 
 ###### 2026/08/28
@@ -193,15 +202,6 @@ npm --prefix .utils run check-data
 
 * `優化` 對應表落後時不再向主控台輸出解釋性註記。版本行末尾的 [auto-specified] 後綴已足以說明來由，而該註記比它所解釋的摘要還長
 * `優化` 隨之移除 notes 相關介面：PlatformVersionsExtension.notes 與 Formatted 的 notes 參數不再存在，讀取過該屬性的取用端指令碼需一併調整
-
-# v1.4.0
-
-###### 2026/08/18
-
-* `修復` IDE 版本僅為修補程式層級的更新時不再放寬 AGP 上限。先前 IntelliJ IDEA 2026.2.1 會取得 AGP 9.2.1 而遭 IDE 拒絕，現在與 2026.2 一樣停留在 9.1 線
-* `優化` IntelliJ IDEA 對應表補入 2026.2 項目，採用 IDE 自行回報的 AGP 上限
-* `優化` 遷移方案改為在根建置指令碼中宣告一次插件版本，模組指令碼無須改動；先前逐模組加上版本的做法無法用於 Groovy 模組，因為其 plugins 區塊只接受字串常值
-* `優化` 主控台的註記移至版本摘要下方單獨成段，不再與版本行交錯
 
 ##### 更多發行歷史可參閱
 

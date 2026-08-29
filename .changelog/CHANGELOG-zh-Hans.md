@@ -23,6 +23,15 @@
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `提示` 永久 Gradle 插件 ID 已由 `org.autojs.build.platform-versions` 改为 `io.github.supermonster003.autojs6-platform-versions`, Maven 坐标为 `io.github.supermonster003:autojs6-gradle-platform-versions`; Java/Kotlin 包名仍为 `org.autojs.build.platform`
+* `新增` 新增面向 Maven Central 与 Gradle Plugin Portal 的首次公开在线发布链路, 实现构件、源码、Javadoc、模块元数据及插件 marker 均带正式签名
+* `优化` 新增公开 GitHub 仓库、完整 Central POM 元数据、可复现 Portal bundle、隔离消费者验证, 以及分别供本机 GPG 与 CI 使用的安全签名入口
+* `优化` 正式用法现可仅通过公共仓库解析, 不再依赖 `mavenLocal()`; 迁移工具也可识别并更新旧插件 ID
+
 # v1.5.0
 
 ###### 2026/08/28

@@ -17,7 +17,7 @@ import java.util.Properties
  *
  * buildscript {
  *     repositories { mavenCentral(); google() }
- *     dependencies { classpath("io.github.supermonster003:autojs6-gradle-platform-versions:1.5.0") }
+ *     dependencies { classpath("io.github.supermonster003:autojs6-gradle-platform-versions:1.6.0") }
  * }
  *
  * val versions = PlatformVersionsFacade.decide(rootDir, gradle.gradleVersion)

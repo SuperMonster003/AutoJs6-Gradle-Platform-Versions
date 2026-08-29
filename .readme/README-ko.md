@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.5.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
     }
 }
 
@@ -179,6 +179,15 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.6.0
+
+###### 2026/08/29
+
+* `힌트` 영구 Gradle 플러그인 ID를 `org.autojs.build.platform-versions`에서 `io.github.supermonster003.autojs6-platform-versions`로 변경하고 Maven 좌표를 `io.github.supermonster003:autojs6-gradle-platform-versions`로 확정함. Java/Kotlin 패키지 이름은 계속 `org.autojs.build.platform`임
+* `기능` Maven Central과 Gradle Plugin Portal을 위한 첫 공개 온라인 릴리스 경로를 추가하고 구현, 소스, Javadoc, 모듈 메타데이터 및 플러그인 마커 산출물에 정식 서명을 적용
+* `개선` 공개 GitHub 저장소, 완전한 Central POM 메타데이터, 재현 가능한 Portal bundle, 격리된 소비자 검증, 로컬 GPG와 CI용으로 분리된 안전한 서명 경로를 추가
+* `개선` 공식 사용 예제는 이제 `mavenLocal()` 없이 공개 저장소만으로 해석되며 마이그레이션 도구도 기존 플러그인 ID를 인식하고 갱신
+
 # v1.5.0
 
 ###### 2026/08/28
@@ -193,15 +202,6 @@ npm --prefix .utils run check-data
 
 * `개선` 매핑 표가 뒤처진 경우 콘솔에 설명용 참고 사항을 더 이상 출력하지 않음. 버전 줄 끝의 [auto-specified] 접미사만으로도 경위를 알 수 있으며, 그 참고 사항은 설명 대상인 요약보다 길었음
 * `개선` 이에 따라 notes API를 제거함. PlatformVersionsExtension.notes와 Formatted의 notes 매개변수가 사라졌으므로, 해당 속성을 읽던 소비 측 스크립트는 함께 조정해야 함
-
-# v1.4.0
-
-###### 2026/08/18
-
-* `수정` IDE 버전이 패치 수준 업데이트일 뿐인 경우 더 이상 AGP 상한을 완화하지 않음. 이전에는 IntelliJ IDEA 2026.2.1이 AGP 9.2.1을 얻어 IDE에 거부되었으나, 이제 2026.2와 마찬가지로 9.1 라인에 머무름
-* `개선` IntelliJ IDEA 매핑 표에 2026.2 항목을 추가하고, AGP 상한은 IDE가 스스로 보고하는 값을 사용
-* `개선` 마이그레이션 방식을 바꾸어 플러그인 버전을 루트 빌드 스크립트에서 한 번만 선언하고 모듈 스크립트는 그대로 둠. 이전처럼 모듈마다 버전을 붙이는 방식은 Groovy 모듈에서 쓸 수 없었는데, plugins block이 문자열 리터럴만 받기 때문
-* `개선` 콘솔의 참고 사항을 버전 요약 아래 별도 문단으로 옮겨 버전 줄 사이에 섞이지 않도록 함
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
