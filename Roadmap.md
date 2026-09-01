@@ -1,6 +1,6 @@
 # AutoJs6 Gradle Platform Versions — 开发路线图 (Roadmap)
 
-> 修订日期: 2026-08-29
+> 修订日期: 2026-09-01
 
 ## 一. 项目定位
 
@@ -190,7 +190,7 @@ plugins {
 - [x] M11.9 生成正式 PGP 主签名密钥、发布公钥, 并通过本机 `gpg-agent` 构建和逐项验证 Central bundle。
 - [ ] M11.10 将签名密钥与 Portal 凭据配置为受保护的 GitHub Actions secrets。
 - [x] M11.11 上传并发布首个 `USER_MANAGED` Central deployment `b7dda1bd-c9af-4782-9f46-a29a1378579d`; 公开仓库 60/60 个文件与本地 bundle 逐字节一致, 全新消费者仅通过 `mavenCentral()` 成功解析并应用 `1.6.0`。
-- [ ] M11.12 提交 Gradle Plugin Portal 首版审核, 通过后以纯 `gradlePluginPortal()` 消费验证。
+- [x] M11.12 提交并通过 Gradle Plugin Portal 首版审核; 公开页面、marker POM 与实现构件验证通过, 全新 Gradle User Home 仅配置 `gradlePluginPortal()` 即成功解析并应用 `1.6.0`, 完整缓存亦通过离线重放。
 - [ ] M11.13 增加受保护的 GitHub Actions 手动发布入口与周期数据检查/更新入口。
 
 ## 四. 迁移期间发现的上游缺陷
