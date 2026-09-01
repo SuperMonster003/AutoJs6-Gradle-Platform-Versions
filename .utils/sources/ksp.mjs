@@ -1,10 +1,7 @@
-import { runWhenDirect } from '../lib/cli.mjs';
-import { loadConfig } from '../lib/config.mjs';
-import { updateProperties } from '../lib/data-files.mjs';
 import { fetchJson, fetchText } from '../lib/fetch.mjs';
 import { compareVersions, compareVersionsDescending } from '../lib/versioning.mjs';
 
-const KSP_RELEASES_URL = 'https://api.github.com/repos/google/ksp/releases';
+export const KSP_RELEASES_URL = 'https://api.github.com/repos/google/ksp/releases';
 const KSP_AGP_GUARD_PATH = 'gradle-plugin/src/main/kotlin/com/google/devtools/ksp/gradle/utils/agpUtils.kt';
 
 function githubHeaders() {
@@ -50,12 +47,12 @@ export async function fetchKspReleases() {
     return releases;
 }
 
-function releaseDate(release) {
+export function releaseDate(release) {
     const date = new Date(release.published_at);
     return Number.isNaN(date.getTime()) ? null : date;
 }
 
-function formatReleaseDate(date) {
+export function formatReleaseDate(date) {
     return new Intl.DateTimeFormat('en-US', {
         timeZone: 'Asia/Shanghai',
         month: 'short',
@@ -138,43 +135,3 @@ export async function buildKspAgpCompatibility(releases, minimumKotlin) {
     }
     return entries;
 }
-
-export async function main() {
-    const { minimumVersions } = await loadConfig();
-    const releases = await fetchKspReleases();
-    const releaseMap = buildKspReleaseMap(releases, minimumVersions.kotlin);
-    const compatibility = await buildKspAgpCompatibility(releases, minimumVersions.kotlin);
-
-    const releaseEntries = [ ...releaseMap ].map(([ key, { value } ]) => [ key, value ]);
-    const compatibilityEntries = compatibility.map(({ version, minimumAgp }) => [ version, minimumAgp ]);
-    const changed = await Promise.all([
-        updateProperties('ksp-releases', releaseEntries, {
-            label: 'Kotlin and KSP release map',
-            sort: ([ left ], [ right ]) => compareVersionsDescending(left, right),
-            render: (entries) => entries.flatMap(([ key, value ]) => [
-                `#${formatReleaseDate(releaseMap.get(key).date)}`,
-                `${key}=${value}`,
-            ]),
-            compareRenderedBody: true,
-        }),
-        updateProperties('ksp-agp-compat', compatibilityEntries, {
-            label: 'KSP and minimum AGP compatibility map',
-            sort: ([ left ], [ right ]) => compareVersionsDescending(left, right),
-            render: (entries) => [
-                '# Generated from the official AGP guard in each google/ksp release tag',
-                ...entries.flatMap(([ version, minimumAgp ]) => {
-                    const item = compatibility.find((entry) => entry.version === version);
-                    const date = releaseDate(item.release);
-                    return [
-                        ...(date ? [ `#${formatReleaseDate(date)}` ] : []),
-                        `${version}=${minimumAgp}`,
-                    ];
-                }),
-            ],
-            compareRenderedBody: true,
-        }),
-    ]);
-    return changed.some(Boolean);
-}
-
-runWhenDirect(import.meta.url, main);

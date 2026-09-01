@@ -7,10 +7,15 @@ import { CHECK_MODE_EXIT_CODE } from './lib/data-files.mjs';
 
 const UTILS_DIR = path.dirname(fileURLToPath(import.meta.url));
 const SCRAPERS = [
-    'scrapers/update-gradle-compatibility.mjs',
-    'scrapers/update-android-build-tools.mjs',
-    'scrapers/update-android-studio.mjs',
-    'scrapers/update-ksp.mjs',
+    'scrapers/update-gradle-kotlin-compatibility.mjs',
+    'scrapers/update-kotlin-r8-compatibility.mjs',
+    'scrapers/update-android-studio-releases.mjs',
+    'scrapers/update-android-studio-agp-compatibility.mjs',
+    'scrapers/update-java-gradle-compatibility.mjs',
+    'scrapers/update-agp-gradle-compatibility.mjs',
+    'scrapers/update-agp-releases.mjs',
+    'scrapers/update-ksp-releases.mjs',
+    'scrapers/update-ksp-agp-compatibility.mjs',
 ];
 
 function usage() {

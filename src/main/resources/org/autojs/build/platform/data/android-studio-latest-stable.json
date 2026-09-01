@@ -1,0 +1,27 @@
+{
+  "schemaVersion": 1,
+  "sourceUrl": "https://jb.gg/android-studio-releases-list.json",
+  "name": "Android Studio Quail 3 | 2026.1.3 Patch 1",
+  "version": "2026.1.3.8",
+  "build": "AI-261.26222.65.2613.16025427",
+  "platformVersion": "2026.1.4",
+  "channel": "Patch",
+  "releaseDate": "2026-08-10",
+  "downloads": {
+    "windowsExe": {
+      "fileName": "android-studio-quail3-patch1-windows.exe",
+      "url": "https://edgedl.me.gvt1.com/android/studio/install/2026.1.3.8/android-studio-quail3-patch1-windows.exe",
+      "sizeBytes": 1507848042
+    },
+    "windowsZip": {
+      "fileName": "android-studio-quail3-patch1-windows.zip",
+      "url": "https://edgedl.me.gvt1.com/android/studio/ide-zips/2026.1.3.8/android-studio-quail3-patch1-windows.zip",
+      "sizeBytes": 1516955868
+    },
+    "linuxTar": {
+      "fileName": "android-studio-quail3-patch1-linux.tar.gz",
+      "url": "https://edgedl.me.gvt1.com/android/studio/ide-zips/2026.1.3.8/android-studio-quail3-patch1-linux.tar.gz",
+      "sizeBytes": 1560605310
+    }
+  }
+}

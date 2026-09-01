@@ -5,21 +5,26 @@ import {
     floorVersionKey,
     isStableVersion,
 } from '../lib/versioning.mjs';
-import { parseGradleCompatibility } from '../scrapers/update-gradle-compatibility.mjs';
+import {
+    parseGradleKotlinCompatibility,
+    parseJavaGradleCompatibility,
+} from '../sources/gradle-compatibility.mjs';
 import {
     parseAgpGradleCompatibility,
     parseAgpReleases,
     parseKotlinR8Compatibility,
-} from '../scrapers/update-android-build-tools.mjs';
+} from '../sources/android-build-tools.mjs';
 import {
     buildAndroidStudioArchiveMaps,
+    buildLatestStableMetadata,
+    findLatestStableRelease,
     parseStudioAgpCompatibility,
-} from '../scrapers/update-android-studio.mjs';
+} from '../sources/android-studio.mjs';
 import {
     buildKspReleaseMap,
     parseMinimumAgpVersion,
     splitKspTag,
-} from '../scrapers/update-ksp.mjs';
+} from '../sources/ksp.mjs';
 
 const minimumVersions = {
     agp: '9.0',
@@ -47,13 +52,15 @@ test('Gradle tables retain the Kotlin change point below the supported Gradle fl
       <table><tr><th>Java version</th><th>Support for toolchains</th><th>Support for running Gradle</th></tr>
         <tr><td>17</td><td>7.3</td><td>7.3 and after</td></tr>
         <tr><td>25</td><td>9.1.0</td><td>9.1.0 and after</td></tr></table>`;
-    const parsed = parseGradleCompatibility(html, minimumVersions);
-    assert.deepEqual(parsed.kotlinByGradle, [
+    assert.deepEqual(parseGradleKotlinCompatibility(html, minimumVersions.gradle), [
         [ '9.0.0', '2.2.0' ],
         [ '9.2.0', '2.2.20' ],
         [ '9.4.0', '2.3.0' ],
     ]);
-    assert.deepEqual(parsed.javaByVersion, [ [ '17', '7.3' ], [ '25', '9.1.0' ] ]);
+    assert.deepEqual(
+        parseJavaGradleCompatibility(html, minimumVersions.java),
+        [ [ '17', '7.3' ], [ '25', '9.1.0' ] ],
+    );
 });
 
 test('Android build-tool parsers select official compatibility rows and latest line releases', () => {
@@ -108,6 +115,51 @@ test('Android Studio data derives build, compatibility, and compressed codename 
         [ '2023.3.2.1', 'J' ],
         [ '2023.3.1', 'J' ],
     ]));
+});
+
+test('Android Studio latest-stable metadata selects Patch releases and exact artifact sizes', async () => {
+    const downloads = [
+        { link: 'https://example.test/android-studio-quail3-patch1-windows.exe' },
+        { link: 'https://example.test/android-studio-quail3-patch1-windows.zip' },
+        { link: 'https://example.test/android-studio-quail3-patch1-linux.tar.gz' },
+    ];
+    const releases = [
+        {
+            version: '2026.2.1.1',
+            name: 'Android Studio Rabbit | 2026.2.1 Canary 1',
+            channel: 'Canary',
+            date: 'August 20, 2026',
+            download: downloads,
+        },
+        {
+            version: '2026.1.3.7',
+            name: 'Android Studio Quail 3 | 2026.1.3',
+            channel: 'Release',
+            date: 'August 1, 2026',
+            download: downloads,
+        },
+        {
+            version: '2026.1.3.8',
+            build: 'AI-261.8',
+            platformVersion: '2026.1.4',
+            name: 'Android Studio Quail 3 | 2026.1.3 Patch 1',
+            channel: 'Patch',
+            date: 'August 10, 2026',
+            download: downloads,
+        },
+    ];
+    assert.equal(findLatestStableRelease(releases).version, '2026.1.3.8');
+
+    const sizes = new Map(downloads.map(({ link }, index) => [ link, 1_500_000_000 + index ]));
+    const metadata = await buildLatestStableMetadata(releases, async (url) => sizes.get(url));
+    assert.equal(metadata.schemaVersion, 1);
+    assert.equal(metadata.name, 'Android Studio Quail 3 | 2026.1.3 Patch 1');
+    assert.equal(metadata.releaseDate, '2026-08-10');
+    assert.deepEqual(metadata.downloads.windowsZip, {
+        fileName: 'android-studio-quail3-patch1-windows.zip',
+        url: downloads[1].link,
+        sizeBytes: 1_500_000_001,
+    });
 });
 
 test('KSP parsers cover legacy and standalone release schemes', () => {

@@ -1,5 +1,6 @@
 import fs from 'node:fs/promises';
 import path from 'node:path';
+import { isDeepStrictEqual } from 'node:util';
 import { DATA_DIR } from './paths.mjs';
 
 export const CHECK_MODE_EXIT_CODE = 2;
@@ -171,5 +172,21 @@ export async function updateList(name, values, options = {}) {
     console.log(`[${fileName}] ${isCheckMode() ? 'Update available' : 'Updated'}${options.label ? ` (${options.label})` : ''}`);
     printListDiff(original, updated);
     if (!isCheckMode()) await fs.writeFile(file, `${timestamp()}\n${updated.join('\n')}\n`, 'utf8');
+    return true;
+}
+
+export async function updateJson(name, value, options = {}) {
+    const fileName = name.endsWith('.json') ? name : `${name}.json`;
+    const file = path.join(DATA_DIR, fileName);
+    let original;
+    try {
+        original = JSON.parse(await fs.readFile(file, 'utf8'));
+    } catch (error) {
+        if (error?.code !== 'ENOENT') throw error;
+    }
+    if (isDeepStrictEqual(original, value)) return false;
+
+    console.log(`[${fileName}] ${isCheckMode() ? 'Update available' : 'Updated'}${options.label ? ` (${options.label})` : ''}`);
+    if (!isCheckMode()) await fs.writeFile(file, `${JSON.stringify(value, null, 2)}\n`, 'utf8');
     return true;
 }

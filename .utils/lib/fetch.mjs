@@ -73,3 +73,38 @@ export async function fetchText(url, options = {}) {
 export async function fetchJson(url, options = {}) {
     return (await fetchResponse(url, options)).json();
 }
+
+function positiveContentLength(response) {
+    const contentRange = response.headers.get('content-range');
+    const rangeLength = /bytes\s+\d+-\d+\/(\d+)/i.exec(contentRange || '')?.[1];
+    const contentLength = rangeLength ?? response.headers.get('content-length');
+    const parsed = Number.parseInt(contentLength || '', 10);
+    return Number.isSafeInteger(parsed) && parsed > 0 ? parsed : null;
+}
+
+/** Reads a remote artifact size without downloading the artifact body. */
+export async function fetchContentLength(url, options = {}) {
+    try {
+        const response = await fetchResponse(url, { ...options, method: 'HEAD' });
+        const length = positiveContentLength(response);
+        if (length) return length;
+    } catch {
+        // Some artifact servers reject HEAD. Fall through to a one-byte range request.
+    }
+
+    try {
+        const response = await fetchResponse(url, {
+            ...options,
+            method: 'GET',
+            headers: {
+                ...options.headers,
+                range: 'bytes=0-0',
+            },
+        });
+        const length = positiveContentLength(response);
+        await response.body?.cancel();
+        return length;
+    } catch {
+        return null;
+    }
+}

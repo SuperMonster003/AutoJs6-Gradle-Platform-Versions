@@ -1,12 +1,8 @@
-import { runWhenDirect } from '../lib/cli.mjs';
-import { loadConfig } from '../lib/config.mjs';
-import { updateProperties } from '../lib/data-files.mjs';
-import { fetchJson, fetchText } from '../lib/fetch.mjs';
 import { tableRows } from '../lib/html.mjs';
 import { compareVersions, compareVersionsDescending, firstVersionIn } from '../lib/versioning.mjs';
 
-const ANDROID_STUDIO_ARCHIVE_URL = 'https://jb.gg/android-studio-releases-list.json';
-const ANDROID_STUDIO_COMPATIBILITY_URL = 'https://developer.android.com/studio/releases?hl=en';
+export const ANDROID_STUDIO_ARCHIVE_URL = 'https://jb.gg/android-studio-releases-list.json';
+export const ANDROID_STUDIO_COMPATIBILITY_URL = 'https://developer.android.com/studio/releases?hl=en';
 const MANUAL_CODENAME_OVERRIDES = Object.freeze({});
 
 function groupBy(values, keyOf) {
@@ -37,7 +33,7 @@ export function parseStudioAgpCompatibility(html, minimumVersions) {
     return [ ...result ];
 }
 
-function codenameFromReleaseName(name) {
+export function codenameFromReleaseName(name) {
     const matched = /^Android\s+Studio\s+(.+?)(?:\s+\d+)?(?:\s+Feature Drop)?\s*\|/i.exec(String(name || ''));
     const codename = matched?.[1]?.trim();
     return codename && /[A-Za-z]/.test(codename) ? codename : null;
@@ -95,13 +91,83 @@ function compressCodenameVersions(versionCodes) {
     return [ ...result ];
 }
 
-function formatReleaseDate(date) {
+export function formatReleaseDate(date) {
     return new Intl.DateTimeFormat('en-US', {
         timeZone: 'UTC',
         month: 'short',
         day: 'numeric',
         year: 'numeric',
     }).format(date);
+}
+
+function parseArchiveDate(date) {
+    const parsed = new Date(`${date} 00:00:00 UTC`);
+    return Number.isNaN(parsed.getTime()) ? null : parsed;
+}
+
+export function findLatestStableRelease(releases) {
+    if (!Array.isArray(releases)) throw new Error('Android Studio archive response contains no releases');
+    const stable = releases
+        .filter(({ channel, version }) => (
+            /^(?:Release|Patch)$/i.test(String(channel || '').trim())
+            && /^\d{4}(?:\.\d+){1,3}$/.test(String(version || '').trim())
+        ))
+        .sort((left, right) => {
+            const byVersion = compareVersionsDescending(left.version, right.version);
+            if (byVersion !== 0) return byVersion;
+            return (parseArchiveDate(right.date)?.getTime() ?? 0) - (parseArchiveDate(left.date)?.getTime() ?? 0);
+        });
+    if (stable.length === 0) throw new Error('Android Studio archive contains no stable release');
+    return stable[0];
+}
+
+function findDownload(release, pattern, label) {
+    const item = release.download?.find(({ link }) => pattern.test(String(link || '')));
+    if (!item?.link) throw new Error(`Latest Android Studio release is missing its ${label} download`);
+    return item;
+}
+
+function fileNameFromUrl(url) {
+    const name = new URL(url).pathname.split('/').filter(Boolean).at(-1);
+    if (!name) throw new Error(`Cannot derive a file name from Android Studio download URL: ${url}`);
+    return decodeURIComponent(name);
+}
+
+export async function buildLatestStableMetadata(releases, sizeOf) {
+    if (typeof sizeOf !== 'function') throw new TypeError('sizeOf must be a function');
+    const release = findLatestStableRelease(releases);
+    const date = parseArchiveDate(release.date);
+    if (!date) throw new Error(`Invalid Android Studio release date: ${release.date}`);
+
+    const selected = {
+        windowsExe: findDownload(release, /windows\.exe$/i, 'Windows EXE'),
+        windowsZip: findDownload(release, /windows\.zip$/i, 'Windows ZIP'),
+        linuxTar: findDownload(release, /linux\.tar(?:\.gz)?$/i, 'Linux TAR'),
+    };
+    const sizes = await Promise.all(Object.values(selected).map(({ link }) => sizeOf(link)));
+    const downloads = Object.fromEntries(Object.entries(selected).map(([ key, item ], index) => {
+        const sizeBytes = sizes[index];
+        if (!Number.isSafeInteger(sizeBytes) || sizeBytes <= 0) {
+            throw new Error(`Cannot determine the size of Android Studio download: ${item.link}`);
+        }
+        return [ key, {
+            fileName: fileNameFromUrl(item.link),
+            url: item.link,
+            sizeBytes,
+        } ];
+    }));
+
+    return {
+        schemaVersion: 1,
+        sourceUrl: ANDROID_STUDIO_ARCHIVE_URL,
+        name: String(release.name || '').trim(),
+        version: String(release.version || '').trim(),
+        build: String(release.build || '').trim(),
+        platformVersion: String(release.platformVersion || '').trim(),
+        channel: String(release.channel || '').trim(),
+        releaseDate: date.toISOString().slice(0, 10),
+        downloads,
+    };
 }
 
 export function buildAndroidStudioArchiveMaps(releases, minimumAndroidStudio) {
@@ -137,8 +203,8 @@ export function buildAndroidStudioArchiveMaps(releases, minimumAndroidStudio) {
 
         // Archive dates carry no timezone. Parse them explicitly as UTC so a
         // developer's local timezone cannot shift a codename's birthday.
-        const born = new Date(`${release.date} 00:00:00 UTC`);
-        if (Number.isNaN(born.getTime())) continue;
+        const born = parseArchiveDate(release.date);
+        if (!born) continue;
         const previous = codenameInfo.get(code);
         if (!previous || born < previous.born) codenameInfo.set(code, { name, born });
     }
@@ -153,41 +219,3 @@ export function buildAndroidStudioArchiveMaps(releases, minimumAndroidStudio) {
         codenameInfo,
     };
 }
-
-export async function main() {
-    const { minimumVersions } = await loadConfig();
-    const [ archive, compatibilityHtml ] = await Promise.all([
-        fetchJson(ANDROID_STUDIO_ARCHIVE_URL),
-        fetchText(ANDROID_STUDIO_COMPATIBILITY_URL),
-    ]);
-    const releases = archive?.content?.item;
-    const compatibility = parseStudioAgpCompatibility(compatibilityHtml, minimumVersions);
-    const maps = buildAndroidStudioArchiveMaps(releases, minimumVersions.androidStudioArchive);
-
-    const changed = await Promise.all([
-        updateProperties('android-studio-agp-compat', compatibility, {
-            label: 'Android Studio and maximum AGP compatibility map',
-            sort: ([ left ], [ right ]) => compareVersionsDescending(left, right),
-        }),
-        updateProperties('android-studio-build-version', maps.buildVersions, {
-            label: 'Android Studio build and marketing version map',
-            sort: ([, left ], [, right ]) => compareVersionsDescending(left, right),
-        }),
-        updateProperties('android-studio-codename-version', maps.codenameVersions, {
-            label: 'Android Studio version and codename code map',
-            sort: ([ left ], [ right ]) => compareVersionsDescending(left, right),
-        }),
-        updateProperties('android-studio-codename', maps.codenames, {
-            label: 'Android Studio codename code map',
-            sort: ([ left ], [ right ]) => maps.codenameInfo.get(right).born - maps.codenameInfo.get(left).born,
-            render: (entries) => entries.flatMap(([ code, name ]) => [
-                `#Born on ${formatReleaseDate(maps.codenameInfo.get(code).born)}`,
-                `${code}=${name}`,
-            ]),
-            compareRenderedBody: true,
-        }),
-    ]);
-    return changed.some(Boolean);
-}
-
-runWhenDirect(import.meta.url, main);
