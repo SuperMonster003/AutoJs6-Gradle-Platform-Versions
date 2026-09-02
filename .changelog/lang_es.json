@@ -5,6 +5,24 @@
   "changelog_label_improvement": "Mejora",
   "changelog_label_dependency": "Dependencia",
   "$data": {
+    "v1.7.0": {
+      "released_date": "2026/09/02",
+      "hint": [
+        "Las compilaciones normales deben declarar sus niveles de SDK y, solo cuando sea necesario, `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; reserve `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` para pruebas deliberadas de una versión exacta o como vía de escape excepcional"
+      ],
+      "feature": [
+        "La selección de AGP ahora cruza los límites inferiores de Android API, del proyecto y de KSP con los límites superiores del Gradle y el IDE activos, e indica el origen cuando no existe una versión compatible",
+        "Se añadieron flujos de GitHub Actions para compilaciones con Temurin, comprobaciones periódicas de datos de compatibilidad o PR de actualización y publicación protegida por etiqueta y aprobación en Maven Central y Gradle Plugin Portal"
+      ],
+      "fix": [
+        "Las compilaciones con Temurin y desde la línea de comandos ya no consultan los antiguos mapeos de JDK a AGP, por lo que JDK `21.0.6+7` no puede elegir silenciosamente AGP 8.7.3; Android API 36 exige ahora automáticamente AGP 8.9.1 o posterior",
+        "Se corrigieron los mapeos de IDE de dos componentes que eludían el límite de AGP de Gradle y el retroceso de Gradle antiguos a una versión de plataforma que no podían cargar"
+      ],
+      "improvement": [
+        "Se añadieron datos oficiales de Android API a AGP mínimo obtenidos de forma independiente y se actualizaron los datos de Android Studio, versiones de AGP y compatibilidad AGP/Gradle",
+        "La verificación se amplió a 70 pruebas JVM, pruebas de análisis e idempotencia en Node y una compilación de ejemplo real en CI con Temurin 17 que ejercita la selección automática sin interfaz"
+      ]
+    },
     "v1.6.0": {
       "released_date": "2026/08/29",
       "hint": [

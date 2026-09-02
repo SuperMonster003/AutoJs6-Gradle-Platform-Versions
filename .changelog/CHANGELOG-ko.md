@@ -23,6 +23,18 @@
 
 ******
 
+# v1.7.0
+
+###### 2026/09/02
+
+* `힌트` 일반 빌드는 SDK 수준을 선언하고 필요한 경우에만 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`을 지정해야 함. `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION`은 의도적인 정확한 버전 테스트나 예외적인 탈출 경로 용도로 남겨 둘 것
+* `기능` AGP 선택 시 Android API, 프로젝트 및 KSP 하한과 현재 Gradle 및 IDE 상한의 교집합을 구하고 호환 버전이 없으면 제약 조건의 출처를 보고하도록 변경
+* `기능` Temurin 빌드, 정기 호환성 데이터 검사 또는 갱신 PR, 태그와 승인으로 보호되는 Maven Central 및 Gradle Plugin Portal 게시를 위한 GitHub Actions 워크플로를 추가
+* `수정` Temurin 및 순수 명령줄 빌드에서 더 이상 이전 JDK→AGP 매핑을 조회하지 않으므로 JDK `21.0.6+7`이 AGP 8.7.3을 조용히 선택할 수 없음. Android API 36은 이제 AGP 8.9.1 이상을 자동으로 요구
+* `수정` 두 요소 IDE 매핑이 Gradle의 AGP 상한을 우회하던 문제와 오래된 Gradle이 로드할 수 없는 플랫폼 버전으로 대체되던 문제를 수정
+* `개선` Android API별 최소 AGP 공식 데이터를 독립 스크레이핑 대상으로 추가하고 Android Studio, AGP 릴리스 및 AGP/Gradle 호환성 데이터를 갱신
+* `개선` 검증 범위를 JVM 테스트 70개, Node 파서 및 멱등성 테스트, 헤드리스 자동 선택을 실행하는 실제 Temurin 17 CI 예제 빌드까지 확대
+
 # v1.6.0
 
 ###### 2026/08/29

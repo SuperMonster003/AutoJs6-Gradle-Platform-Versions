@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
     }
 }
 
@@ -180,6 +180,18 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.0
+
+###### 2026/09/02
+
+* `힌트` 일반 빌드는 SDK 수준을 선언하고 필요한 경우에만 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`을 지정해야 함. `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION`은 의도적인 정확한 버전 테스트나 예외적인 탈출 경로 용도로 남겨 둘 것
+* `기능` AGP 선택 시 Android API, 프로젝트 및 KSP 하한과 현재 Gradle 및 IDE 상한의 교집합을 구하고 호환 버전이 없으면 제약 조건의 출처를 보고하도록 변경
+* `기능` Temurin 빌드, 정기 호환성 데이터 검사 또는 갱신 PR, 태그와 승인으로 보호되는 Maven Central 및 Gradle Plugin Portal 게시를 위한 GitHub Actions 워크플로를 추가
+* `수정` Temurin 및 순수 명령줄 빌드에서 더 이상 이전 JDK→AGP 매핑을 조회하지 않으므로 JDK `21.0.6+7`이 AGP 8.7.3을 조용히 선택할 수 없음. Android API 36은 이제 AGP 8.9.1 이상을 자동으로 요구
+* `수정` 두 요소 IDE 매핑이 Gradle의 AGP 상한을 우회하던 문제와 오래된 Gradle이 로드할 수 없는 플랫폼 버전으로 대체되던 문제를 수정
+* `개선` Android API별 최소 AGP 공식 데이터를 독립 스크레이핑 대상으로 추가하고 Android Studio, AGP 릴리스 및 AGP/Gradle 호환성 데이터를 갱신
+* `개선` 검증 범위를 JVM 테스트 70개, Node 파서 및 멱등성 테스트, 헤드리스 자동 선택을 실행하는 실제 Temurin 17 CI 예제 빌드까지 확대
+
 # v1.6.0
 
 ###### 2026/08/29
@@ -196,13 +208,6 @@ npm --prefix .utils run check-data
 * `기능` 호환성 데이터 갱신 도구 전체를 이 저장소로 이전하고, 수동 갱신용 대화형 `run-scrapers.bat`와 향후 정기 CI 실행을 위한 크로스 플랫폼 갱신 및 읽기 전용 검사 명령을 추가
 * `개선` 스크레이퍼에서 Puppeteer와 Chrome 의존성을 제거하고 공식 정적 소스 분석, 보존 경계 및 출력 검증을 한곳에 모았으며 타임스탬프만 바뀐 경우의 불필요한 재작성을 방지
 * `개선` 내장 데이터를 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03, 9.4.0-rc02 및 9.3.2, Android Studio Rabbit, KSP 2.3.11까지 갱신
-
-# v1.4.1
-
-###### 2026/08/18
-
-* `개선` 매핑 표가 뒤처진 경우 콘솔에 설명용 참고 사항을 더 이상 출력하지 않음. 버전 줄 끝의 [auto-specified] 접미사만으로도 경위를 알 수 있으며, 그 참고 사항은 설명 대상인 요약보다 길었음
-* `개선` 이에 따라 notes API를 제거함. PlatformVersionsExtension.notes와 Formatted의 notes 매개변수가 사라졌으므로, 해당 속성을 읽던 소비 측 스크립트는 함께 조정해야 함
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

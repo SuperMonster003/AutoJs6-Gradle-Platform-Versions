@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
     }
 }
 
@@ -180,6 +180,18 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.7.0
+
+###### 2026/09/02
+
+* `Hint` Normal builds should declare their SDK levels and, only when necessary, `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; keep `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` for deliberate exact-version tests or exceptional escape-hatch use
+* `Feature` AGP selection now intersects the Android API, project, and KSP lower bounds with the active Gradle and IDE upper bounds, reporting the source when no compatible version exists
+* `Feature` Added GitHub Actions workflows for Temurin builds, scheduled compatibility-data checks or update PRs, and tag-gated protected publication to Maven Central and the Gradle Plugin Portal
+* `Fix` Temurin and bare command-line builds no longer consult legacy JDK-to-AGP mappings, so JDK `21.0.6+7` cannot silently choose AGP 8.7.3; Android API 36 now automatically requires AGP 8.9.1 or newer
+* `Fix` Fixed two-component IDE mappings bypassing the Gradle AGP ceiling and old Gradle versions falling back to a platform version they cannot load
+* `Improvement` Added independently scraped official Android API-to-minimum-AGP data and refreshed Android Studio, AGP release, and AGP/Gradle compatibility data
+* `Improvement` Expanded verification to 70 JVM tests, Node parser and idempotency tests, and a real Temurin 17 CI sample that exercises headless automatic selection
+
 # v1.6.0
 
 ###### 2026/08/29
@@ -196,13 +208,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 * `Feature` The complete compatibility-data update suite now lives in this repository, with an interactive `run-scrapers.bat` for manual updates and cross-platform update and read-only check commands ready for future scheduled CI runs
 * `Improvement` The scrapers no longer depend on Puppeteer or Chrome: they parse official static sources, centralize retention bounds and output validation, and avoid rewrites caused only by timestamps
 * `Improvement` Bundled data refreshed through Gradle 9.7 with Kotlin 2.4, the latest AGP lines up to 9.5.0-alpha03, 9.4.0-rc02, and 9.3.2, Android Studio Rabbit, and KSP 2.3.11
-
-# v1.4.1
-
-###### 2026/08/18
-
-* `Improvement` No explanatory note is printed to the console when the mapping table has fallen behind. The [auto-specified] suffix at the end of the version line already says how the version was reached, and the note ran longer than the summary it explained
-* `Improvement` The notes API is removed along with it: PlatformVersionsExtension.notes and the notes parameter of Formatted are gone, so a consuming script that read that property needs adjusting
 
 ##### For more release history, see
 
