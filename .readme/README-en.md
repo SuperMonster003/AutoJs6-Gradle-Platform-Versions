@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
     }
 }
 
@@ -181,6 +181,14 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.7.1
+
+###### 2026/09/02
+
+* `Fix` Enforced the oldest IDE compatibility-map entry as the central support floor; consumer `MIN_SUPPORTED_*_IDE_VERSION` values can only tighten it and can no longer route unsupported old IDEs into Gradle-only fallback
+* `Improvement` Satisfied AGP minimum constraints remain machine-readable without appearing in routine successful-build summaries; incompatibility errors now include the detected IDE version and complete requirement sources
+* `Improvement` Clarified that bundled compatibility data is authoritative for official AutoJs6 consumers; `gradle/data` overrides remain only for legacy compatibility or temporary diagnostics
+
 # v1.7.0
 
 ###### 2026/09/02
@@ -201,14 +209,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 * `Feature` First public online-release pipeline for Maven Central and the Gradle Plugin Portal, with signed implementation, sources, Javadoc, module-metadata, and plugin-marker artifacts
 * `Improvement` Added the public GitHub repository, complete Central POM metadata, a reproducible Portal bundle, isolated consumer validation, and separate secure signing paths for local GPG and CI
 * `Improvement` Official usage now resolves through public repositories without `mavenLocal()`; the migration tool also recognizes and updates the legacy plugin ID
-
-# v1.5.0
-
-###### 2026/08/28
-
-* `Feature` The complete compatibility-data update suite now lives in this repository, with an interactive `run-scrapers.bat` for manual updates and cross-platform update and read-only check commands ready for future scheduled CI runs
-* `Improvement` The scrapers no longer depend on Puppeteer or Chrome: they parse official static sources, centralize retention bounds and output validation, and avoid rewrites caused only by timestamps
-* `Improvement` Bundled data refreshed through Gradle 9.7 with Kotlin 2.4, the latest AGP lines up to 9.5.0-alpha03, 9.4.0-rc02, and 9.3.2, Android Studio Rabbit, and KSP 2.3.11
 
 ##### For more release history, see
 

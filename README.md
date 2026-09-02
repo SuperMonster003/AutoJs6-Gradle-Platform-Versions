@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
     }
 }
 
@@ -181,6 +181,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.1
+
+###### 2026/09/02
+
+* `修复` 将每份 IDE 兼容映射的最早条目强制作为中央支持下界; 消费端 `MIN_SUPPORTED_*_IDE_VERSION` 只能收紧该范围, 不再允许不受支持的旧 IDE 落入仅按 Gradle 选择 AGP 的回退路径
+* `优化` 已满足的 AGP 最低约束仍以机器可读结果公开, 但不再干扰常规成功摘要; 不兼容错误现会包含检测到的 IDE 版本和完整约束来源
+* `优化` 明确内置兼容数据是 AutoJs6 官方消费仓的权威来源; `gradle/data` 覆盖仅为旧版兼容或临时诊断保留
+
 # v1.7.0
 
 ###### 2026/09/02
@@ -201,14 +209,6 @@ npm --prefix .utils run check-data
 * `新增` 新增面向 Maven Central 与 Gradle Plugin Portal 的首次公开在线发布链路, 实现构件、源码、Javadoc、模块元数据及插件 marker 均带正式签名
 * `优化` 新增公开 GitHub 仓库、完整 Central POM 元数据、可复现 Portal bundle、隔离消费者验证, 以及分别供本机 GPG 与 CI 使用的安全签名入口
 * `优化` 正式用法现可仅通过公共仓库解析, 不再依赖 `mavenLocal()`; 迁移工具也可识别并更新旧插件 ID
-
-# v1.5.0
-
-###### 2026/08/28
-
-* `新增` 兼容数据更新套件已完整迁入本仓库, 新增供开发者手动更新的交互式 `run-scrapers.bat`, 并预留跨平台更新与只读检查命令供未来定期 CI 使用
-* `优化` 抓取器不再依赖 Puppeteer/Chrome, 改为解析官方静态来源; 保留边界与输出校验集中配置, 且避免仅因时间戳变化而重写文件
-* `优化` 内置数据已更新至 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03、9.4.0-rc02 与 9.3.2, Android Studio Rabbit 及 KSP 2.3.11
 
 ##### 更多发行历史可参阅
 

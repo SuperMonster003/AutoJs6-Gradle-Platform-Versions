@@ -5,6 +5,16 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.7.1": {
+      "released_date": "2026/09/02",
+      "fix": [
+        "Enforced the oldest IDE compatibility-map entry as the central support floor; consumer `MIN_SUPPORTED_*_IDE_VERSION` values can only tighten it and can no longer route unsupported old IDEs into Gradle-only fallback"
+      ],
+      "improvement": [
+        "Satisfied AGP minimum constraints remain machine-readable without appearing in routine successful-build summaries; incompatibility errors now include the detected IDE version and complete requirement sources",
+        "Clarified that bundled compatibility data is authoritative for official AutoJs6 consumers; `gradle/data` overrides remain only for legacy compatibility or temporary diagnostics"
+      ]
+    },
     "v1.7.0": {
       "released_date": "2026/09/02",
       "hint": [

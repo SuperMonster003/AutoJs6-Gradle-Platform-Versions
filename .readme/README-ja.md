@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
     }
 }
 
@@ -181,6 +181,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.1
+
+###### 2026/09/02
+
+* `修正` 各 IDE 互換性マップの最古エントリを中央のサポート下限として強制。利用側の `MIN_SUPPORTED_*_IDE_VERSION` はこの範囲を狭めることしかできず、未サポートの古い IDE を Gradle のみに基づくフォールバックへ流せないように修正
+* `改善` 満たされた AGP 最小要件は機械可読な結果として維持しつつ、通常の成功ビルド概要には表示しないように変更。非互換エラーには検出した IDE バージョンとすべての要件元を表示
+* `改善` 組み込み互換性データを AutoJs6 公式利用プロジェクトの信頼できる情報源として明確化。`gradle/data` の上書きは旧版互換性または一時診断のためにのみ維持
+
 # v1.7.0
 
 ###### 2026/09/02
@@ -201,14 +209,6 @@ npm --prefix .utils run check-data
 * `機能` Maven Central と Gradle Plugin Portal に向けた初の公開オンラインリリース経路を追加し、実装、ソース、Javadoc、モジュールメタデータ、プラグインマーカーの各成果物に正式署名を付与
 * `改善` 公開 GitHub リポジトリ、完全な Central POM メタデータ、再現可能な Portal bundle、隔離した利用側検証、およびローカル GPG と CI 向けに分離した安全な署名経路を追加
 * `改善` 正式な使用例は `mavenLocal()` なしで公開リポジトリだけから解決するようになり、移行ツールも旧プラグイン ID を認識して更新
-
-# v1.5.0
-
-###### 2026/08/28
-
-* `機能` 互換性データ更新スイートをこのリポジトリへ全面移行し、手動更新用の対話型 `run-scrapers.bat` と、将来の定期 CI 実行に備えたクロスプラットフォームの更新・読み取り専用検査コマンドを追加
-* `改善` スクレイパーの Puppeteer／Chrome 依存を除去し、公式の静的ソース解析、保持下限、出力検証を一元化。タイムスタンプだけが変わる不要な再書き込みも抑制
-* `改善` 組み込みデータを Gradle 9.7／Kotlin 2.4、AGP 9.5.0-alpha03・9.4.0-rc02・9.3.2、Android Studio Rabbit、KSP 2.3.11 まで更新
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

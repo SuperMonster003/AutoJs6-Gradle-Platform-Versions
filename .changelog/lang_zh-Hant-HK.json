@@ -5,6 +5,16 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "依賴",
   "$data": {
+    "v1.7.1": {
+      "released_date": "2026/09/02",
+      "fix": [
+        "強制以每份 IDE 兼容映射的最早項目作為中央支援下界; 取用端 `MIN_SUPPORTED_*_IDE_VERSION` 只可收緊該範圍, 不再容許不受支援的舊 IDE 落入僅按 Gradle 選擇 AGP 的回退路徑"
+      ],
+      "improvement": [
+        "已滿足的 AGP 最低約束仍以機器可讀結果公開, 但不再干擾一般成功摘要; 不兼容錯誤現會包含偵測到的 IDE 版本和完整約束來源",
+        "明確內置兼容數據是 AutoJs6 官方取用端的權威來源; `gradle/data` 覆寫只為舊版兼容或臨時診斷保留"
+      ]
+    },
     "v1.7.0": {
       "released_date": "2026/09/02",
       "hint": [
