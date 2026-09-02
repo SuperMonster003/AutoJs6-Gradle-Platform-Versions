@@ -44,6 +44,33 @@ class PlatformVersionsFacadeTest {
         assertTrue(VersionComparator.compareVersionStrings(versions.agpVersion, versions.minimumAgpVersion!!) > 0) {
             "the API-derived lower boundary must not become an exact AGP pin"
         }
+        assertTrue(versions.agpRequirements.isNotEmpty()) {
+            "the lower boundary and its sources must remain available to consumers"
+        }
+        assertTrue(versions.versionInfo.none { it.startsWith("Minimum: ") }) {
+            "a satisfied lower boundary should not add routine noise to the successful-build summary"
+        }
+    }
+
+    @Test
+    fun `satisfied KSP minimum stays machine readable without routine console noise`() {
+        rootDir.resolve("version.properties").writeText("")
+
+        val versions = PlatformVersionsFacade.decide(
+            rootDir = rootDir.toFile(),
+            gradleVersion = "9.5.0",
+            systemProperties = temurinProperties,
+        )
+
+        assertEquals("2.3.20", versions.kotlinVersion)
+        assertEquals("2.3.11", versions.kspVersion)
+        assertEquals("8.10.0", versions.minimumAgpVersion)
+        assertTrue(
+            versions.agpRequirements.any {
+                it.minimumVersion == "8.10.0" && it.source == "KSP 2.3.11"
+            },
+        ) { "the KSP lower boundary must remain available for selection and failure diagnostics" }
+        assertTrue(versions.versionInfo.none { it.startsWith("Minimum: ") })
     }
 
     @Test
@@ -59,5 +86,34 @@ class PlatformVersionsFacadeTest {
         }
         assertTrue(error.message!!.contains("Current Gradle version 9.3.0"))
         assertTrue(error.message!!.contains("9.4.0"))
+    }
+
+    @Test
+    fun `central IDE floor is enforced when the consumer omits or lowers it`() {
+        val oldAndroidStudio = SystemProperties(
+            mapOf(
+                "idea.paths.selector" to "AndroidStudio2023.3",
+                "idea.version" to "2023.3",
+                "idea.vendor.name" to "Google",
+                "os.name" to "Linux",
+            )::get
+        )
+
+        listOf(
+            "",
+            "MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION=2023.3",
+        ).forEach { consumerProperties ->
+            rootDir.resolve("version.properties").writeText(consumerProperties)
+            val error = assertThrows<IllegalStateException> {
+                PlatformVersionsFacade.decide(
+                    rootDir = rootDir.toFile(),
+                    gradleVersion = "9.3.0",
+                    systemProperties = oldAndroidStudio,
+                )
+            }
+
+            assertTrue(error.message!!.contains("effective minimum requirement 2025.2.3"))
+            assertTrue(error.message!!.contains("central compatibility range"))
+        }
     }
 }

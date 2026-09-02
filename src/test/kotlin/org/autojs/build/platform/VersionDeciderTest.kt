@@ -50,6 +50,25 @@ class VersionDeciderTest {
     }
 
     @Test
+    fun `bundled stable AGP candidates stay on supported lines with Gradle compatibility data`() {
+        val stableCandidates = dataSource.list("agp-releases").filterNot { it.contains('-') }
+        val gradleCompatibility = dataSource.props("agp-gradle-compat")
+
+        assertTrue(stableCandidates.isNotEmpty()) { "the bundled AGP candidate list must contain stable releases" }
+        stableCandidates.forEach { candidate ->
+            assertTrue(VersionComparator.compareVersionStrings(candidate, "9.0") >= 0) {
+                "bundled stable AGP candidate $candidate is below the centrally supported AGP 9 floor"
+            }
+
+            val versionParts = VersionComparator.toVersionParts(candidate).first
+            val minorLine = versionParts.take(2).joinToString(".")
+            assertTrue(gradleCompatibility.containsKey(minorLine)) {
+                "bundled stable AGP candidate $candidate has no Gradle compatibility entry for line $minorLine"
+            }
+        }
+    }
+
+    @Test
     fun `scenario B - a covered IDE version follows the map`() {
         val decision = decider(idea("2026.1.2")).decideAgpVersion()
         assertEquals("9.0.1", decision.version)
@@ -220,6 +239,7 @@ class VersionDeciderTest {
             )
         }
 
+        assertTrue(error.message!!.contains("The highest AGP available to IntelliJ IDEA 2026.1.2 on Gradle 9.3.0 is 9.0.1"))
         assertTrue(error.message!!.contains("compileSdk 37.0"))
         assertTrue(error.message!!.contains("AGP 9.1.1 or higher"))
     }
@@ -231,12 +251,15 @@ class VersionDeciderTest {
         assertThrows<IllegalStateException> {
             decider.validateUserSpecifiedAgpVersion("9.2.1")
         }
-        assertThrows<IllegalStateException> {
+        val error = assertThrows<IllegalStateException> {
             decider.validateUserSpecifiedAgpVersion(
                 "9.0.1",
-                listOf(AgpRequirement("9.1.1", "compileSdk 37.0")),
+                listOf(AgpRequirement("9.1.1", "KSP 2.4.0")),
             )
         }
+        assertTrue(error.message!!.contains("User specified AGP version 9.0.1"))
+        assertTrue(error.message!!.contains("project requires AGP 9.1.1 or higher"))
+        assertTrue(error.message!!.contains("KSP 2.4.0 requires AGP 9.1.1+"))
 
         // The explicit escape hatch may intentionally go beyond an IDE map when the
         // running Gradle and hard project requirements can still support the version.
