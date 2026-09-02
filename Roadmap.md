@@ -202,6 +202,7 @@ plugins {
 - [x] M12.4 将 Android API、项目声明与 KSP 的 AGP 下界同 IDE/Gradle 上界求交, 交集为空时在 settings 阶段给出来源明确的错误, 不再越过 IDE 上限事后抬升。
 - [x] M12.5 强制 AGP 仍可绕过 IDE 映射用于特殊测试, 但会验证 Gradle 与项目硬要求; 同时修复两段式平台映射绕过 Gradle 封顶及旧 Gradle 回落到不可加载平台版本的边界。
 - [x] M12.6 在 Temurin 17 CI 与单元测试中锁定旧 `21.0.6+7 -> AGP 8.7.3` 映射不再生效, API 36 自动要求 AGP 8.9.1 以上。
+- [x] M12.7 通过受保护工作流发布 `1.7.0`: Central deployment `1ad2cc8b-e5d7-49f8-898c-5252aff59a28` 在 Portal GitHub OAuth 返回 400 时改由官方 API 最终发布; Maven Central 与 Gradle Plugin Portal 的全新隔离消费者均成功在线解析并离线重放。
 
 ## 四. 迁移期间发现的上游缺陷
 
@@ -242,6 +243,6 @@ plugins {
 
 ## 六. 后续展望 (不在本期范围)
 
-- 以 `v1.7.0` 作为受保护发布工作流的首轮真实演练, 验证 Central `USER_MANAGED` 与 Gradle Plugin Portal 双目标发布及单目标恢复路径。
+- 后续发行沿用已由 `v1.7.0` 验证的受保护双目标工作流; Central Portal UI 不可用时使用 `Finalize Central deployment`, 仅在明确不需要最终人工门禁时选择 `AUTOMATIC`。
 - 观察周期数据检查的稳定性后, 再决定是否把当前的手动 update PR 提升为定时自动建 PR 或自动发版。
 - 模块脚本改用 plugins DSL 的批量改造 (迁移脚本的前置条件, 见第五节)。
