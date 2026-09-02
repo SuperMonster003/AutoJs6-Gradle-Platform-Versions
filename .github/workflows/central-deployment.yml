@@ -1,0 +1,134 @@
+name: Finalize Central deployment
+
+on:
+  workflow_dispatch:
+    inputs:
+      deployment_id:
+        description: UUID returned by the Maven Central upload step
+        required: true
+        type: string
+      expected_version:
+        description: Release version without the leading v
+        required: true
+        type: string
+      operation:
+        description: Inspect is read-only; publish finalizes an already validated deployment
+        required: true
+        default: inspect
+        type: choice
+        options:
+          - inspect
+          - publish
+
+permissions:
+  contents: read
+
+concurrency:
+  group: central-deployment-${{ inputs.deployment_id }}
+  cancel-in-progress: false
+
+jobs:
+  central:
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    environment:
+      name: release
+
+    steps:
+      - name: Inspect or publish validated Central deployment
+        env:
+          CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
+          CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
+          DEPLOYMENT_ID: ${{ inputs.deployment_id }}
+          EXPECTED_VERSION: ${{ inputs.expected_version }}
+          OPERATION: ${{ inputs.operation }}
+        shell: bash
+        run: |
+          if [[ ! "$DEPLOYMENT_ID" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ ]]; then
+            echo "::error title=Invalid deployment ID::Expected a 36-character UUID."
+            exit 1
+          fi
+          if [[ ! "$EXPECTED_VERSION" =~ ^[0-9]+\.[0-9]+\.[0-9]+([+-][0-9A-Za-z.-]+)?$ ]]; then
+            echo "::error title=Invalid version::Use a release version without the leading v."
+            exit 1
+          fi
+          if [[ -z "$CENTRAL_USERNAME" || -z "$CENTRAL_PASSWORD" ]]; then
+            echo "::error title=Missing release secret::CENTRAL_USERNAME and CENTRAL_PASSWORD must exist in the release environment."
+            exit 1
+          fi
+
+          central_auth="$(printf '%s:%s' "$CENTRAL_USERNAME" "$CENTRAL_PASSWORD" | base64 | tr -d '\n')"
+          echo "::add-mask::$central_auth"
+          expected_name="autojs6-gradle-platform-versions-${EXPECTED_VERSION}"
+          status_url="https://central.sonatype.com/api/v1/publisher/status?id=${DEPLOYMENT_ID}"
+
+          read_status() {
+            curl --fail-with-body --silent --show-error \
+              --request POST \
+              --header "Authorization: Bearer $central_auth" \
+              "$status_url"
+          }
+
+          status_json="$(read_status)"
+          if ! jq -e --arg id "$DEPLOYMENT_ID" '.deploymentId == $id' <<< "$status_json" >/dev/null; then
+            echo "::error title=Central identity mismatch::The status response did not contain the requested deployment ID."
+            exit 1
+          fi
+
+          deployment_name="$(jq -r '.deploymentName' <<< "$status_json")"
+          deployment_state="$(jq -r '.deploymentState' <<< "$status_json")"
+          if [[ "$deployment_name" != "$expected_name" ]]; then
+            echo "::error title=Central name mismatch::Expected $expected_name but Central returned $deployment_name."
+            exit 1
+          fi
+          if ! jq -e --arg suffix "@${EXPECTED_VERSION}" '(.purls // []) | all(.[]; endswith($suffix))' <<< "$status_json" >/dev/null; then
+            echo "::error title=Central version mismatch::At least one component does not match $EXPECTED_VERSION."
+            exit 1
+          fi
+
+          echo "Central deployment: $DEPLOYMENT_ID"
+          echo "Central deployment name: $deployment_name"
+          echo "Central deployment state: $deployment_state"
+          echo "Maven Central deployment: $DEPLOYMENT_ID" >> "$GITHUB_STEP_SUMMARY"
+          echo "Current state: $deployment_state" >> "$GITHUB_STEP_SUMMARY"
+
+          if [[ "$OPERATION" == "inspect" ]]; then
+            exit 0
+          fi
+          if [[ "$deployment_state" == "PUBLISHED" ]]; then
+            echo "Deployment is already published; no mutation was necessary." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          if [[ "$deployment_state" != "VALIDATED" ]]; then
+            echo "::error title=Central deployment not publishable::Expected VALIDATED but found $deployment_state."
+            exit 1
+          fi
+
+          publish_code="$(curl --silent --show-error \
+            --request POST \
+            --header "Authorization: Bearer $central_auth" \
+            --output /dev/null \
+            --write-out '%{http_code}' \
+            "https://central.sonatype.com/api/v1/publisher/deployment/${DEPLOYMENT_ID}")"
+          if [[ "$publish_code" != "204" ]]; then
+            echo "::error title=Central publish rejected::Expected HTTP 204 but received $publish_code."
+            exit 1
+          fi
+
+          for attempt in {1..120}; do
+            status_json="$(read_status)"
+            deployment_state="$(jq -r '.deploymentState' <<< "$status_json")"
+            echo "Central deployment state: $deployment_state"
+            if [[ "$deployment_state" == "PUBLISHED" ]]; then
+              echo "Final state: PUBLISHED" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            if [[ "$deployment_state" == "FAILED" ]]; then
+              jq '.errors // .' <<< "$status_json"
+              exit 1
+            fi
+            sleep 15
+          done
+
+          echo "::error title=Central timeout::Deployment $DEPLOYMENT_ID did not reach PUBLISHED within 30 minutes."
+          exit 1
