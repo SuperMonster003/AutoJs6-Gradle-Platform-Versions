@@ -5,6 +5,7 @@
   "scripts": {
     "update-data": "node run-scrapers.mjs",
     "check-data": "node run-scrapers.mjs --check",
+    "prepare-data-release": "node prepare-data-release.mjs",
     "test": "node --test"
   },
   "engines": {
