@@ -53,8 +53,8 @@
 - 識別建置主機：Android Studio、IntelliJ IDEA、Temurin JDK，以及裸命令列環境。
 - 依當前 IDE 版本挑選它所能支援的 AGP 版本，版本之間未完全相符時向下就近選取。
 - IDE 版本比對應表中全部項目都新時，自動回退至 auto 選擇，避免靜默降級到過舊的 AGP。
-- 依 AGP 與 Gradle 的相容關係設定上限，確保選出的版本當前 Gradle 一定能載入。
-- 決定 KSP 版本，並在所選 KSP 要求更高的 AGP 時自動提升 AGP 版本。
+- Temurin 與裸命令列不再使用平台版本對應表，而是明確依 Gradle 相容性自動選擇 AGP。
+- 將 Android API、KSP 與專案宣告的最低 AGP 作為下限，和 IDE/Gradle 上限求交集；沒有相容交集時提前報錯。
 - 決定 R8 版本，僅在 AGP 內建的 R8 不夠新時才引入外部 R8。
 - 相容性資料隨插件一同散布，使用端專案若存在 `gradle/data` 目錄則優先採用，便於緊急修正資料。
 - 保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生門，需要確定性建置時可直接鎖定版本。
@@ -104,9 +104,9 @@ plugins {
 
 AGP 版本的決定過程分為三個步驟:
 
-- 以當前平台版本在該平台的 AGP 對應表中進行就近向下比對。
-- 判斷對應表是否落後，亦即當前 IDE 是否比表中全部項目都新；若是則回退至 auto 選擇。
-- 依 AGP 與 Gradle 的相容表設定上限，結果不會超出當前 Gradle 能載入的範圍。
+- IDE 環境使用平台對應表決定上限並保留落後回退；Temurin 與裸命令列直接採用 Gradle 相容上限。
+- 依 AGP 與 Gradle 的官方相容表再次設定上限，確保候選版本可由當前 Gradle 載入。
+- 從 compileSdk/targetSdk、KSP 與選用的專案最低版本推導下限，僅在上下限存在交集時回傳 AGP。
 
 Kotlin 版本則跟隨 Gradle 而非 IDE，始終選取當前 Gradle 支援的最新版本.
 
@@ -116,14 +116,14 @@ Kotlin 版本則跟隨 Gradle 而非 IDE，始終選取當前 Gradle 支援的�
 
 ******
 
-若希望跳過所有自動決策，可以在 `version.properties` 中直接指定版本:
+若因測試或確定性建置而需要固定版本，可以在 `version.properties` 中直接指定:
 
 ```properties
 OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-值為 `NONE` 或留空時表示不指定，走自動決策流程.
+值為 `NONE` 或留空時表示不固定。若只想宣告下限而不鎖定版本，可使用 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`；數字形式的 `COMPILE_SDK_VERSION` 與 `TARGET_SDK_VERSION` 會自動納入判斷.
 
 ******
 
@@ -136,6 +136,7 @@ OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```text
 gradle/data/agp-releases.list
 gradle/data/agp-gradle-compat.properties
+gradle/data/android-api-agp-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
@@ -161,7 +162,7 @@ gradle/data/ksp-releases.properties
 run-scrapers.bat
 ```
 
-未來的排程 CI 可使用下列唯讀檢查進入點:
+儲存庫的排程 CI 使用下列唯讀檢查進入點；手動 update 模式會在驗證後建立資料 PR:
 
 ```bash
 npm --prefix .utils ci

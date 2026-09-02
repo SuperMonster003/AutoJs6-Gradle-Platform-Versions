@@ -53,8 +53,8 @@ Now that it ships as a publishable Settings plugin, a downstream project needs l
 - Detects the build host: Android Studio, IntelliJ IDEA, Temurin JDK and the bare command line.
 - Picks an AGP version the current IDE can support, rounding down to the nearest entry when there is no exact match.
 - Falls back to auto selection when the IDE is newer than every entry in the mapping table, instead of silently downgrading to an outdated AGP.
-- Caps the result against the AGP and Gradle compatibility rules, so the chosen version is always loadable by the current Gradle.
-- Decides the KSP version, and raises the AGP version automatically when the chosen KSP requires a newer AGP.
+- Treats Temurin and the bare command line as explicitly headless, selecting AGP from Gradle compatibility instead of an IDE-version map.
+- Intersects the IDE/Gradle upper boundary with minimum AGP requirements from Android API levels, KSP and the project, failing early when no compatible version exists.
 - Decides the R8 version, pulling in an external R8 only when the R8 bundled with AGP is not new enough.
 - Ships the compatibility data with the plugin, while a `gradle/data` directory in the consumer project takes precedence, which makes urgent data fixes easy.
 - Keeps the `OVERRIDDEN_*` escape hatch in `version.properties`, so versions can be pinned outright whenever a deterministic build is needed.
@@ -104,9 +104,9 @@ The decision results can also be read as an object through `gradle.extra["platfo
 
 The AGP version is decided in three steps:
 
-- Match the current platform version against that platform's AGP mapping table, rounding down to the nearest entry.
-- Check whether the mapping table is stale, that is, whether the current IDE is newer than every entry in it; if so, fall back to auto selection.
-- Cap the result against the AGP and Gradle compatibility table, so it never exceeds what the current Gradle can load.
+- Use the platform map as the upper boundary for an IDE, including its stale-map fallback; use Gradle compatibility directly for Temurin and bare command-line builds.
+- Cap that upper boundary against the official AGP/Gradle compatibility table so the candidate is loadable by the running Gradle.
+- Derive lower boundaries from compileSdk/targetSdk, KSP and an optional project minimum, returning AGP only when the boundaries intersect.
 
 The Kotlin version follows Gradle rather than the IDE, always taking the newest version the current Gradle supports.
 
@@ -116,14 +116,14 @@ The Kotlin version follows Gradle rather than the IDE, always taking the newest 
 
 ******
 
-To skip the automatic decision entirely, specify the versions directly in `version.properties`:
+For testing or a deterministic build, exact versions can be pinned directly in `version.properties`:
 
 ```properties
 OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-A value of `NONE` or an empty value means nothing is pinned, and the automatic decision flow applies.
+A value of `NONE` or an empty value means nothing is pinned. To state a lower boundary without fixing an exact version, use `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; numeric `COMPILE_SDK_VERSION` and `TARGET_SDK_VERSION` values are considered automatically.
 
 ******
 
@@ -136,6 +136,7 @@ The decision relies on the following data files, which are distributed together 
 ```text
 gradle/data/agp-releases.list
 gradle/data/agp-gradle-compat.properties
+gradle/data/android-api-agp-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
@@ -161,7 +162,7 @@ Developers can update all compatibility data by running the interactive batch en
 run-scrapers.bat
 ```
 
-A future scheduled CI job can use this read-only check entry point:
+The scheduled repository workflow uses this read-only check entry point; manual update mode opens a data pull request after validation:
 
 ```bash
 npm --prefix .utils ci

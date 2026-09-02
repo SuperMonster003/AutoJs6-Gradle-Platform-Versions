@@ -53,8 +53,8 @@ Désormais publié comme plugin Settings, il ne demande plus qu'une dizaine de l
 - Détection de l'hôte de build : Android Studio, IntelliJ IDEA, Temurin JDK et la simple ligne de commande.
 - Choix d'une version d'AGP prise en charge par l'IDE courant, avec repli sur l'entrée immédiatement inférieure en l'absence de correspondance exacte.
 - Repli automatique sur la sélection auto lorsque l'IDE est plus récent que toutes les entrées de la table de correspondance, afin d'éviter une rétrogradation silencieuse vers un AGP trop ancien.
-- Plafonnement selon la compatibilité entre AGP et Gradle, ce qui garantit que la version retenue est toujours chargeable par le Gradle courant.
-- Détermination de la version de KSP, avec relèvement automatique de la version d'AGP lorsque le KSP retenu exige un AGP plus récent.
+- Traitement explicite de Temurin et de la ligne de commande comme environnements sans IDE, avec sélection d'AGP selon la compatibilité Gradle plutôt que selon une table de versions d'IDE.
+- Intersection de la limite supérieure IDE/Gradle avec les versions minimales d'AGP requises par le niveau d'API Android, KSP et le projet, avec échec anticipé lorsqu'aucune version n'est compatible.
 - Détermination de la version de R8, un R8 externe n'étant introduit que lorsque celui fourni avec AGP n'est pas assez récent.
 - Données de compatibilité distribuées avec le plugin, un répertoire `gradle/data` présent dans le projet consommateur restant prioritaire, ce qui facilite les corrections urgentes.
 - Porte de sortie `OVERRIDDEN_*` conservée dans `version.properties`, pour figer directement les versions lorsqu'un build déterministe est requis.
@@ -104,9 +104,9 @@ Le résultat de la décision est également lisible sous forme d'objet via `grad
 
 La version d'AGP est déterminée en trois étapes:
 
-- Rechercher la version de la plateforme courante dans la table de correspondance AGP de cette plateforme, en retenant l'entrée immédiatement inférieure.
-- Vérifier si la table est en retard, c'est-à-dire si l'IDE courant est plus récent que toutes ses entrées ; si tel est le cas, revenir à la sélection auto.
-- Plafonner le résultat avec la table de compatibilité entre AGP et Gradle, afin de ne jamais dépasser ce que le Gradle courant peut charger.
+- Utiliser la table de la plateforme comme limite supérieure dans un IDE, y compris son repli lorsqu'elle est en retard ; pour Temurin et la ligne de commande, utiliser directement la compatibilité Gradle.
+- Plafonner à nouveau cette limite avec la table officielle de compatibilité AGP/Gradle, afin que le candidat soit chargeable par le Gradle en cours d'exécution.
+- Déduire les limites inférieures de compileSdk/targetSdk, de KSP et d'un minimum facultatif du projet, puis ne renvoyer AGP que si les limites se croisent.
 
 La version de Kotlin suit quant à elle Gradle et non l'IDE : c'est toujours la plus récente que le Gradle courant prend en charge.
 
@@ -116,14 +116,14 @@ La version de Kotlin suit quant à elle Gradle et non l'IDE : c'est toujours la 
 
 ******
 
-Pour contourner entièrement la décision automatique, indiquez directement les versions dans `version.properties`:
+Pour les tests ou un build déterministe, les versions exactes peuvent être figées directement dans `version.properties`:
 
 ```properties
 OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-La valeur `NONE` ou une valeur vide signifie qu'aucune version n'est figée et que le processus automatique s'applique.
+La valeur `NONE` ou une valeur vide signifie qu'aucune version n'est figée. Pour déclarer une limite inférieure sans imposer une version exacte, utilisez `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` ; les valeurs numériques de `COMPILE_SDK_VERSION` et `TARGET_SDK_VERSION` sont prises en compte automatiquement.
 
 ******
 
@@ -136,6 +136,7 @@ La décision s'appuie sur les fichiers de données suivants, distribués avec le
 ```text
 gradle/data/agp-releases.list
 gradle/data/agp-gradle-compat.properties
+gradle/data/android-api-agp-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
@@ -161,7 +162,7 @@ Les développeurs peuvent mettre à jour toutes les données de compatibilité e
 run-scrapers.bat
 ```
 
-Une future tâche CI planifiée peut utiliser ce point d'entrée de vérification en lecture seule:
+Le workflow planifié du dépôt utilise ce point d'entrée en lecture seule ; le mode update manuel ouvre une pull request de données après validation:
 
 ```bash
 npm --prefix .utils ci
