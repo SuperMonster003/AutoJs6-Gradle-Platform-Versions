@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
     }
 }
 
@@ -180,6 +180,18 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.0
+
+###### 2026/09/02
+
+* `提示` 一般建置應宣告 SDK 版本，並僅在必要時宣告 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`；`OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` 應保留給刻意進行的精確版本測試或特殊逃生用途
+* `新增` AGP 選擇現在會將 Android API、專案與 KSP 下界同目前 Gradle 和 IDE 上界求交集，沒有相容版本時會回報約束來源
+* `新增` 新增 GitHub Actions 工作流程，用於 Temurin 建置、定期相容性資料檢查或更新 PR，以及受標籤和人工審核保護的 Maven Central／Gradle Plugin Portal 發布
+* `修復` Temurin 與純命令列建置不再查詢舊有的 JDK 至 AGP 對應，因此 JDK `21.0.6+7` 不會再靜默選擇 AGP 8.7.3；Android API 36 現在會自動要求 AGP 8.9.1 或更新版本
+* `修復` 修復兩段式 IDE 對應繞過 Gradle 的 AGP 上限，以及舊 Gradle 回退至本身無法載入的平台版本問題
+* `優化` 新增獨立擷取的 Android API 至最低 AGP 官方資料，並更新 Android Studio、AGP 發行版及 AGP／Gradle 相容性資料
+* `優化` 驗證範圍擴充至 70 項 JVM 測試、Node 解析與冪等測試，以及在真實 Temurin 17 CI 中執行無介面自動選擇的範例建置
+
 # v1.6.0
 
 ###### 2026/08/29
@@ -196,13 +208,6 @@ npm --prefix .utils run check-data
 * `新增` 相容性資料更新工具已完整移入本儲存庫，新增供開發者手動更新的互動式 `run-scrapers.bat`，並預留跨平台更新與唯讀檢查命令供日後定期 CI 使用
 * `優化` 擷取器不再依賴 Puppeteer／Chrome，改為解析官方靜態來源；保留邊界與輸出驗證集中設定，並避免只因時間戳記變化而重寫檔案
 * `優化` 內建資料已更新至 Gradle 9.7／Kotlin 2.4、AGP 9.5.0-alpha03、9.4.0-rc02 與 9.3.2、Android Studio Rabbit 及 KSP 2.3.11
-
-# v1.4.1
-
-###### 2026/08/18
-
-* `優化` 對應表落後時不再向主控台輸出解釋性註記。版本行末尾的 [auto-specified] 後綴已足以說明來由，而該註記比它所解釋的摘要還長
-* `優化` 隨之移除 notes 相關介面：PlatformVersionsExtension.notes 與 Formatted 的 notes 參數不再存在，讀取過該屬性的取用端指令碼需一併調整
 
 ##### 更多發行歷史可參閱
 

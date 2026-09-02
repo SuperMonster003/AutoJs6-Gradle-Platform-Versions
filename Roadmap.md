@@ -188,7 +188,7 @@ plugins {
 - [x] M11.7 使用 GitHub 登录 Central Portal, 确认 `io.github.supermonster003` namespace 已验证。
 - [x] M11.8 生成 Central Portal token 并保存到受控凭据存储。
 - [x] M11.9 生成正式 PGP 主签名密钥、发布公钥, 并通过本机 `gpg-agent` 构建和逐项验证 Central bundle。
-- [ ] M11.10 将签名密钥与 Portal 凭据配置为受保护的 GitHub Actions secrets。
+- [x] M11.10 将 Central、Gradle Plugin Portal 与正式签名凭据配置为 `release` Environment 的六项 secrets, 并启用 `v*` 标签限制与发布前人工审批。
 - [x] M11.11 上传并发布首个 `USER_MANAGED` Central deployment `b7dda1bd-c9af-4782-9f46-a29a1378579d`; 公开仓库 60/60 个文件与本地 bundle 逐字节一致, 全新消费者仅通过 `mavenCentral()` 成功解析并应用 `1.6.0`。
 - [x] M11.12 提交并通过 Gradle Plugin Portal 首版审核; 公开页面、marker POM 与实现构件验证通过, 全新 Gradle User Home 仅配置 `gradlePluginPortal()` 即成功解析并应用 `1.6.0`, 完整缓存亦通过离线重放。
 - [x] M11.13 增加受保护的 GitHub Actions 手动发布入口、Temurin 无头构建验证与周期数据检查/按需更新 PR 入口。
@@ -241,6 +241,6 @@ plugins {
 
 ## 六. 后续展望 (不在本期范围)
 
-- 为后续版本启用 `release` Environment 审批与六项发布 secrets, 再用受保护工作流完成 Central / Plugin Portal 发行。
+- 以 `v1.7.0` 作为受保护发布工作流的首轮真实演练, 验证 Central `USER_MANAGED` 与 Gradle Plugin Portal 双目标发布及单目标恢复路径。
 - 观察周期数据检查的稳定性后, 再决定是否把当前的手动 update PR 提升为定时自动建 PR 或自动发版。
 - 模块脚本改用 plugins DSL 的批量改造 (迁移脚本的前置条件, 见第五节)。

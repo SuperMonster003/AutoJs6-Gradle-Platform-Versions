@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
     }
 }
 
@@ -180,6 +180,18 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.7.0
+
+###### 2026/09/02
+
+* `Aviso` Las compilaciones normales deben declarar sus niveles de SDK y, solo cuando sea necesario, `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; reserve `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` para pruebas deliberadas de una versión exacta o como vía de escape excepcional
+* `Función` La selección de AGP ahora cruza los límites inferiores de Android API, del proyecto y de KSP con los límites superiores del Gradle y el IDE activos, e indica el origen cuando no existe una versión compatible
+* `Función` Se añadieron flujos de GitHub Actions para compilaciones con Temurin, comprobaciones periódicas de datos de compatibilidad o PR de actualización y publicación protegida por etiqueta y aprobación en Maven Central y Gradle Plugin Portal
+* `Corrección` Las compilaciones con Temurin y desde la línea de comandos ya no consultan los antiguos mapeos de JDK a AGP, por lo que JDK `21.0.6+7` no puede elegir silenciosamente AGP 8.7.3; Android API 36 exige ahora automáticamente AGP 8.9.1 o posterior
+* `Corrección` Se corrigieron los mapeos de IDE de dos componentes que eludían el límite de AGP de Gradle y el retroceso de Gradle antiguos a una versión de plataforma que no podían cargar
+* `Mejora` Se añadieron datos oficiales de Android API a AGP mínimo obtenidos de forma independiente y se actualizaron los datos de Android Studio, versiones de AGP y compatibilidad AGP/Gradle
+* `Mejora` La verificación se amplió a 70 pruebas JVM, pruebas de análisis e idempotencia en Node y una compilación de ejemplo real en CI con Temurin 17 que ejercita la selección automática sin interfaz
+
 # v1.6.0
 
 ###### 2026/08/29
@@ -196,13 +208,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 * `Función` El conjunto completo para actualizar los datos de compatibilidad se trasladó a este repositorio, con un `run-scrapers.bat` interactivo para actualizaciones manuales y comandos multiplataforma de actualización y comprobación de solo lectura preparados para futuras ejecuciones periódicas en CI
 * `Mejora` Los scrapers ya no dependen de Puppeteer ni Chrome: analizan fuentes oficiales estáticas, centralizan los límites de conservación y la validación de salida, y evitan reescrituras causadas solo por marcas de tiempo
 * `Mejora` Los datos integrados se actualizaron a Gradle 9.7 con Kotlin 2.4, las líneas más recientes de AGP hasta 9.5.0-alpha03, 9.4.0-rc02 y 9.3.2, Android Studio Rabbit y KSP 2.3.11
-
-# v1.4.1
-
-###### 2026/08/18
-
-* `Mejora` Ya no se imprime en la consola ninguna nota explicativa cuando la tabla de correspondencias se ha quedado atrás. El sufijo [auto-specified] al final de la línea de versión ya indica cómo se llegó a ella, y la nota resultaba más larga que el resumen que explicaba
-* `Mejora` Con ello se elimina la API de notas: PlatformVersionsExtension.notes y el parámetro notes de Formatted dejan de existir, de modo que un script consumidor que leyera esa propiedad debe ajustarse
 
 ##### Para consultar un historial más completo, véase
 

@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
     }
 }
 
@@ -180,6 +180,18 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.0
+
+###### 2026/09/02
+
+* `ヒント` 通常のビルドでは SDK レベルを宣言し、必要な場合に限って `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` を指定してください。`OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` は、意図した厳密なバージョンテストや例外的な回避用途のために残してください
+* `機能` AGP 選択で Android API、プロジェクト、KSP の下限と、使用中の Gradle および IDE の上限を交差させ、互換バージョンが存在しない場合は制約元を報告するように変更
+* `機能` Temurin ビルド、互換性データの定期検査または更新 PR、タグと承認で保護された Maven Central／Gradle Plugin Portal 公開のための GitHub Actions ワークフローを追加
+* `修正` Temurin および純粋なコマンドラインビルドで旧 JDK→AGP マッピングを参照しないようにし、JDK `21.0.6+7` が AGP 8.7.3 を暗黙に選ぶ問題を解消。Android API 36 は AGP 8.9.1 以上を自動的に要求
+* `修正` 2 要素の IDE マッピングが Gradle の AGP 上限を迂回する問題と、古い Gradle が読み込めないプラットフォームバージョンへフォールバックする問題を修正
+* `改善` Android API と最小 AGP の公式データを独立スクレイピング対象として追加し、Android Studio、AGP リリース、AGP／Gradle 互換性データを更新
+* `改善` 検証を 70 件の JVM テスト、Node の解析・冪等性テスト、およびヘッドレス自動選択を実行する実際の Temurin 17 CI サンプルビルドまで拡充
+
 # v1.6.0
 
 ###### 2026/08/29
@@ -196,13 +208,6 @@ npm --prefix .utils run check-data
 * `機能` 互換性データ更新スイートをこのリポジトリへ全面移行し、手動更新用の対話型 `run-scrapers.bat` と、将来の定期 CI 実行に備えたクロスプラットフォームの更新・読み取り専用検査コマンドを追加
 * `改善` スクレイパーの Puppeteer／Chrome 依存を除去し、公式の静的ソース解析、保持下限、出力検証を一元化。タイムスタンプだけが変わる不要な再書き込みも抑制
 * `改善` 組み込みデータを Gradle 9.7／Kotlin 2.4、AGP 9.5.0-alpha03・9.4.0-rc02・9.3.2、Android Studio Rabbit、KSP 2.3.11 まで更新
-
-# v1.4.1
-
-###### 2026/08/18
-
-* `改善` マッピング表が古くなっている場合に、説明用の注記をコンソールへ出力しないようにした。バージョン行の末尾に付く [auto-specified] だけで由来は分かるうえ、注記はそれが説明する概要よりも長かった
-* `改善` あわせて notes の API を削除。PlatformVersionsExtension.notes と Formatted の notes 引数はなくなったため、このプロパティを読んでいた利用側のスクリプトは修正が必要である
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

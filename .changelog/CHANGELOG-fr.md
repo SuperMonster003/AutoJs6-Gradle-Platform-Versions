@@ -23,6 +23,18 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.7.0
+
+###### 2026/09/02
+
+* `Note` Les builds ordinaires doivent déclarer leurs niveaux de SDK et, uniquement si nécessaire, `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` ; réservez `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` aux tests volontaires d'une version exacte ou à un usage exceptionnel comme échappatoire
+* `Fonctionnalité` La sélection d'AGP croise désormais les bornes inférieures d'Android API, du projet et de KSP avec les bornes supérieures du Gradle et de l'IDE actifs, et indique la source lorsqu'aucune version compatible n'existe
+* `Fonctionnalité` Ajout de workflows GitHub Actions pour les builds Temurin, les contrôles planifiés des données de compatibilité ou les PR de mise à jour, et la publication protégée par tag et approbation vers Maven Central et le Gradle Plugin Portal
+* `Correctif` Les builds Temurin et en ligne de commande pure ne consultent plus les anciens mappages JDK vers AGP : le JDK `21.0.6+7` ne peut donc plus choisir silencieusement AGP 8.7.3 ; Android API 36 exige maintenant automatiquement AGP 8.9.1 ou plus récent
+* `Correctif` Correction des mappages d'IDE à deux composantes qui contournaient le plafond AGP de Gradle et du repli des anciens Gradle vers une version de plateforme qu'ils ne peuvent pas charger
+* `Amélioration` Ajout de données officielles Android API vers AGP minimal collectées indépendamment et actualisation des données Android Studio, des versions AGP et de compatibilité AGP/Gradle
+* `Amélioration` Validation étendue à 70 tests JVM, aux tests Node d'analyse et d'idempotence, ainsi qu'à un véritable build d'exemple sous Temurin 17 en CI exerçant la sélection automatique sans interface
+
 # v1.6.0
 
 ###### 2026/08/29
