@@ -6,11 +6,13 @@ package org.autojs.build.platform
  * The IntelliJ IDEA map is maintained by hand here, whereas the Android Studio
  * map comes from scraped data. Temurin is explicitly headless and therefore uses
  * Gradle compatibility directly instead of pretending that an empty IDE map is a
- * compatibility policy.
+ * compatibility policy. The oldest key in each IDE map defines the global support
+ * floor; a consumer property can raise that floor for a project, but cannot lower it.
  *
  * zh-CN: 识别构建宿主并解析其版本. IntelliJ IDEA 映射表在此手动维护, Android Studio
  * 映射表来自抓取数据. Temurin 被显式建模为无头环境, 直接按 Gradle 兼容性选择,
- * 不再借助一个空的 IDE 映射表间接表达策略.
+ * 不再借助一个空的 IDE 映射表间接表达策略. 各 IDE 映射表最早的 key 定义全局支持
+ * 下界; 消费仓属性可为项目提高该下界, 但不能将它降低.
  */
 class PlatformDetector(
     private val systemProperties: SystemProperties,
@@ -36,14 +38,18 @@ class PlatformDetector(
     )
 
     private val androidStudio by lazy {
+        val agpVersionMap = dataSource.props("android-studio-agp-compat")
         object : Platform(
             name = "AndroidStudio",
             vendor = "Google",
-            agpVersionMap = dataSource.props("android-studio-agp-compat"),
+            agpVersionMap = agpVersionMap,
             agpSelectionMode = AgpSelectionMode.PLATFORM_COMPATIBILITY,
             weight = Int.MAX_VALUE,
             gradleSettingsName = "Gradle JDK",
-            minSupportedVersion = versionProps["MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION"] ?: Consts.DEFAULT_VERSION,
+            minSupportedVersion = effectiveMinimumIdeVersion(
+                agpVersionMap,
+                "MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION",
+            ),
         ) {
             override val fullName: String
                 get() {
@@ -71,7 +77,10 @@ class PlatformDetector(
             agpSelectionMode = AgpSelectionMode.PLATFORM_COMPATIBILITY,
             weight = 10,
             gradleSettingsName = "Gradle JVM",
-            minSupportedVersion = versionProps["MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION"] ?: Consts.DEFAULT_VERSION,
+            minSupportedVersion = effectiveMinimumIdeVersion(
+                intelliJIdeaAgpVersionMap,
+                "MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION",
+            ),
             displayName = "IntelliJ IDEA",
         )
     }
@@ -124,6 +133,32 @@ class PlatformDetector(
         return raw.substring(platform.name.length)
             .replace(Regex("^\\W*"), "")
             .replace(Regex("^Preview", RegexOption.IGNORE_CASE), "")
+    }
+
+    /**
+     * Resolves the IDE support floor without letting a consumer widen the central range.
+     *
+     * The oldest key in the central IDE-to-AGP map is the platform-wide baseline. A
+     * consumer property is still useful for a project that deliberately supports fewer
+     * IDE releases, but an older value cannot make an IDE outside the central map look
+     * supported and fall through to Gradle-only AGP selection.
+     *
+     * zh-CN: 中央 IDE -> AGP 映射表的最早 key 是全局支持下界. 消费仓属性仍可为特定
+     * 项目收紧范围, 但不能用更旧的值放宽中央下界, 让映射范围外的 IDE 落入仅由 Gradle
+     * 决定 AGP 的回退路径.
+     */
+    private fun effectiveMinimumIdeVersion(
+        agpVersionMap: Map<String, String>,
+        consumerPropertyName: String,
+    ): String {
+        val centralMinimum = agpVersionMap.keys.minWithOrNull(VersionComparator::compareVersionStrings)
+        val consumerMinimum = versionProps[consumerPropertyName]
+            ?.trim()
+            ?.takeUnless { it.isBlank() || it.equals("NONE", ignoreCase = true) || it == Consts.DEFAULT_VERSION }
+
+        return listOfNotNull(centralMinimum, consumerMinimum)
+            .maxWithOrNull(VersionComparator::compareVersionStrings)
+            ?: Consts.DEFAULT_VERSION
     }
 
     /**
