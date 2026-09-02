@@ -13,7 +13,7 @@ import org.gradle.kotlin.dsl.extra
  * ```kotlin
  * pluginManagement {
  *     repositories { gradlePluginPortal(); mavenCentral(); google() }
- *     plugins { id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0" }
+ *     plugins { id("io.github.supermonster003.autojs6-platform-versions") version "x.y.z" }
  * }
  *
  * plugins { id("io.github.supermonster003.autojs6-platform-versions") }

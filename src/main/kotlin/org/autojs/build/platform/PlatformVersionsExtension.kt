@@ -4,7 +4,7 @@ package org.autojs.build.platform
  * The decisions this plugin made, readable from the consuming settings script.
  *
  * ```kotlin
- * plugins { id("io.github.supermonster003.autojs6-platform-versions") version "1.6.0" }
+ * plugins { id("io.github.supermonster003.autojs6-platform-versions") version "x.y.z" }
  * println(extensions.getByType<PlatformVersionsExtension>().agpVersion)
  * ```
  *

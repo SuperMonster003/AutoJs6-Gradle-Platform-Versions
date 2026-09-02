@@ -56,7 +56,7 @@
 - Temurin と素のコマンドラインを明示的にヘッドレス環境として扱い、IDE バージョン表ではなく Gradle の互換性から AGP を選択。
 - IDE/Gradle の上限と、Android API レベル、KSP、プロジェクトが要求する AGP の下限を交差させ、互換バージョンがなければ早期にエラー。
 - R8 バージョンを決定し、AGP に同梱された R8 が十分に新しくない場合にのみ外部の R8 を導入。
-- 互換性データはプラグインに同梱して配布し、利用側プロジェクトに `gradle/data` ディレクトリがあればそちらを優先するため、緊急のデータ修正が容易。
+- 互換性データをプラグインに同梱し、既定の唯一のデータソースとします。AutoJs6 の公式ホストおよびプラグインプロジェクトは、利用側の `gradle/data` にコピーを保持しません。
 - `version.properties` の `OVERRIDDEN_*` という避難口を用意しており、決定性のあるビルドが必要な場合はバージョンを直接固定可能。
 - README と CHANGELOG はスペイン語、フランス語、ロシア語、アラビア語、日本語、韓国語、英語、簡体中国語、繁体中国語 (香港)、繁体中国語 (台湾) に対応。
 
@@ -104,7 +104,7 @@ plugins {
 
 AGP バージョンの決定は次の 3 ステップで行われます:
 
-- IDE ではプラットフォーム表を上限とし、表が古い場合のフォールバックも適用する。Temurin と素のコマンドラインでは Gradle の互換上限を直接使う。
+- IDE ではプラットフォーム表の最古のキーを中央のサポート下限、対応する AGP を上限とする。利用側の IDE 最低バージョンはこの下限を厳しくすることしかできない。新しい IDE に対して表が古い場合のフォールバックを維持し、Temurin と素のコマンドラインでは Gradle の互換上限を直接使う。
 - 公式の AGP/Gradle 互換表でもう一度上限を設定し、実行中の Gradle が候補をロードできるようにする。
 - compileSdk/targetSdk、KSP、任意のプロジェクト最小値から下限を導き、上下限が交差する場合にのみ AGP を返す。
 
@@ -123,7 +123,7 @@ OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-値が `NONE` または空の場合は固定されません。正確なバージョンを固定せず下限だけを示すには `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` を使います。数値形式の `COMPILE_SDK_VERSION` と `TARGET_SDK_VERSION` は自動的に考慮されます.
+値が `NONE` または空の場合は固定されません。`MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` は、中央の仕組みで推論できない実際のプロジェクト固有の下限にのみ使用します。AutoJs6 の公式利用側リポジトリは、プラットフォームが保証済みの共通 AGP 9 下限をこの値で重複して宣言してはいけません。数値形式の `COMPILE_SDK_VERSION` と `TARGET_SDK_VERSION` は自動的に考慮されます。同様に、`MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION` と `MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION` は任意のプロジェクト固有の制限です。各中央 IDE 表の最古のキーが引き下げ不能な基準となるため、実際により新しい IDE が必要な場合を除いて、これらのプロパティは省略してください.
 
 ******
 
@@ -134,21 +134,22 @@ OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 決定の根拠となるデータファイルは以下のとおりで、プラグインとともに配布されます:
 
 ```text
-gradle/data/agp-releases.list
-gradle/data/agp-gradle-compat.properties
-gradle/data/android-api-agp-compat.properties
-gradle/data/gradle-kotlin-compat.properties
-gradle/data/java-gradle-compat.properties
-gradle/data/android-studio-agp-compat.properties
-gradle/data/android-studio-build-version.properties
-gradle/data/android-studio-codename-version.properties
-gradle/data/android-studio-codename.properties
-gradle/data/kotlin-r8-compat.properties
-gradle/data/ksp-agp-compat.properties
-gradle/data/ksp-releases.properties
+src/main/resources/org/autojs/build/platform/data/
+  agp-releases.list
+  agp-gradle-compat.properties
+  android-api-agp-compat.properties
+  gradle-kotlin-compat.properties
+  java-gradle-compat.properties
+  android-studio-agp-compat.properties
+  android-studio-build-version.properties
+  android-studio-codename-version.properties
+  android-studio-codename.properties
+  kotlin-r8-compat.properties
+  ksp-agp-compat.properties
+  ksp-releases.properties
 ```
 
-利用側プロジェクトが自身の `gradle/data` ディレクトリに同名のファイルを置いた場合は、そちらが優先されます.
+利用側の `gradle/data` にある同名ファイルは、従来互換または一時的な診断のために限り引き続き優先されますが、公式の運用形態ではありません。AutoJs6 の公式ホストおよびプラグインプロジェクトは、このような上書きをコミットしてはいけません。互換性データはこの中央リポジトリで更新し、新しい不変のプラグインバージョンとして公開します.
 
 ******
 

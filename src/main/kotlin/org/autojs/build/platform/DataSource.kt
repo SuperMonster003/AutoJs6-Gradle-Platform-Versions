@@ -7,13 +7,15 @@ import java.util.Properties
  * Loads the compatibility data that drives the version decisions.
  *
  * Each dataset is looked up in the consuming project first (`gradle/data/<name>`),
- * falling back to the copy bundled inside this plugin's jar. That lets a project fix
- * stale data locally without waiting for a plugin release, while everyone else just
- * gets the shipped defaults.
+ * falling back to the copy bundled inside this plugin's jar. The local path remains
+ * only for legacy compatibility and temporary diagnostics. Official AutoJs6 consumers
+ * must use the bundled resources and ship compatibility fixes in a new immutable
+ * central-plugin release instead of committing local copies.
  *
  * zh-CN: 加载驱动版本决策的兼容性数据. 每份数据优先读取消费端项目的 `gradle/data/<name>`,
- * 缺失时回退到本插件 jar 内置的副本. 这样某个项目可以本地紧急修数据而不必等插件发版,
- * 其余项目则直接使用随插件分发的默认数据.
+ * 缺失时回退到本插件 jar 内置的副本. 本地路径仅为旧版兼容和临时诊断保留; AutoJs6
+ * 官方消费仓必须使用内置资源, 兼容性修复必须随新的不可变中央插件版本发布, 不得提交
+ * 本地副本.
  */
 class DataSource(private val localDataDir: File?) {
 

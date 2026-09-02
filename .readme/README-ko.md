@@ -56,7 +56,7 @@
 - Temurin과 순수 명령줄을 명시적인 헤드리스 환경으로 취급하여, IDE 버전 표가 아니라 Gradle 호환성에 따라 AGP를 선택합니다.
 - IDE/Gradle 상한과 Android API 수준, KSP 및 프로젝트가 요구하는 AGP 하한의 교집합을 구하고, 호환 버전이 없으면 일찍 오류를 냅니다.
 - R8 버전을 결정하며, AGP에 포함된 R8이 충분히 새롭지 않을 때만 외부 R8을 도입합니다.
-- 호환성 데이터는 플러그인과 함께 배포되며, 소비 측 프로젝트에 `gradle/data` 디렉터리가 있으면 그쪽을 우선 사용하므로 데이터를 급히 수정하기 좋습니다.
+- 호환성 데이터는 플러그인과 함께 기본 단일 데이터 원본으로 배포됩니다; 공식 AutoJs6 호스트 및 플러그인 프로젝트는 소비 측 `gradle/data` 복사본을 유지하지 않습니다.
 - `version.properties`의 `OVERRIDDEN_*` 비상구를 그대로 남겨 두어, 결정적인 빌드가 필요할 때 버전을 직접 고정할 수 있습니다.
 - README와 CHANGELOG는 스페인어/프랑스어/러시아어/아랍어/일본어/한국어/영어/중국어 간체/홍콩 번체/대만 번체를 지원합니다.
 
@@ -104,7 +104,7 @@ plugins {
 
 AGP 버전을 결정하는 과정은 세 단계로 나뉩니다:
 
-- IDE에서는 플랫폼 표를 상한으로 사용하고 표가 뒤처졌을 때의 대체 경로도 적용합니다. Temurin과 순수 명령줄에서는 Gradle 호환 상한을 직접 사용합니다.
+- IDE에서는 플랫폼 표의 가장 오래된 키를 중앙 지원 하한으로, 일치한 AGP를 상한으로 사용합니다. 소비 저장소의 IDE 최저 버전은 이 하한을 더 엄격하게 만들 수만 있습니다. 더 새로운 IDE에서 표가 뒤처졌을 때의 대체 경로를 유지하고, Temurin과 순수 명령줄에서는 Gradle 호환 상한을 직접 사용합니다.
 - 공식 AGP/Gradle 호환 표로 상한을 다시 제한하여 실행 중인 Gradle이 후보를 로드할 수 있게 합니다.
 - compileSdk/targetSdk, KSP 및 선택적 프로젝트 최솟값에서 하한을 구하고, 상하한이 교차할 때만 AGP를 반환합니다.
 
@@ -123,7 +123,7 @@ OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-값이 `NONE`이거나 비어 있으면 고정하지 않습니다. 정확한 버전을 고정하지 않고 하한만 선언하려면 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`을 사용합니다. 숫자 형식의 `COMPILE_SDK_VERSION`과 `TARGET_SDK_VERSION`은 자동으로 고려됩니다.
+값이 `NONE`이거나 비어 있으면 고정하지 않습니다. `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`은 중앙 메커니즘이 추론할 수 없는 실제 프로젝트별 하한에만 사용합니다; 공식 AutoJs6 소비 저장소는 플랫폼이 이미 보장하는 공통 AGP 9 하한을 이 값으로 중복 선언하면 안 됩니다. 숫자 형식의 `COMPILE_SDK_VERSION`과 `TARGET_SDK_VERSION`은 자동으로 고려됩니다. 마찬가지로 `MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION`과 `MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION`은 선택적인 프로젝트별 제한입니다. 각 중앙 IDE 표의 가장 오래된 키가 낮출 수 없는 기준이므로 실제로 더 새로운 IDE가 필요한 경우가 아니면 이 속성들을 생략하십시오.
 
 ******
 
@@ -134,21 +134,22 @@ OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 결정의 근거가 되는 데이터 파일은 다음과 같으며, 플러그인과 함께 배포됩니다:
 
 ```text
-gradle/data/agp-releases.list
-gradle/data/agp-gradle-compat.properties
-gradle/data/android-api-agp-compat.properties
-gradle/data/gradle-kotlin-compat.properties
-gradle/data/java-gradle-compat.properties
-gradle/data/android-studio-agp-compat.properties
-gradle/data/android-studio-build-version.properties
-gradle/data/android-studio-codename-version.properties
-gradle/data/android-studio-codename.properties
-gradle/data/kotlin-r8-compat.properties
-gradle/data/ksp-agp-compat.properties
-gradle/data/ksp-releases.properties
+src/main/resources/org/autojs/build/platform/data/
+  agp-releases.list
+  agp-gradle-compat.properties
+  android-api-agp-compat.properties
+  gradle-kotlin-compat.properties
+  java-gradle-compat.properties
+  android-studio-agp-compat.properties
+  android-studio-build-version.properties
+  android-studio-codename-version.properties
+  android-studio-codename.properties
+  kotlin-r8-compat.properties
+  ksp-agp-compat.properties
+  ksp-releases.properties
 ```
 
-소비 측 프로젝트가 자신의 `gradle/data` 디렉터리에 같은 이름의 파일을 두면 그 파일이 우선 적용됩니다.
+소비 측 `gradle/data`의 같은 이름 파일은 레거시 호환 또는 임시 진단에 한해서만 계속 우선 적용되며 공식 운영 방식은 아닙니다. 공식 AutoJs6 호스트 및 플러그인 프로젝트는 이러한 재정의를 커밋하면 안 됩니다; 호환성 데이터는 이 중앙 저장소에서 갱신하고 새로운 변경 불가능한 플러그인 버전과 함께 게시해야 합니다.
 
 ******
 
