@@ -21,9 +21,9 @@ npm --prefix .utils ci
 npm --prefix .utils run update-data
 ```
 
-## CI 预留入口
+## CI 与自动发行入口
 
-定时 CI 建议调用只读检查模式. 它会拉取并解析全部上游数据, 显示语义差异, 但不会修改工作区:
+只读检查模式会拉取并解析全部上游数据, 显示语义差异, 但不会修改工作区:
 
 ```bash
 npm --prefix .utils ci
@@ -37,7 +37,9 @@ npm --prefix .utils run check-data
 - `2`: 发现数据更新, 但检查模式未修改文件.
 - `1`: 网络、上游格式、数据校验或脚本执行失败.
 
-未来的 GitHub Actions 可以把退出码 `2` 用作提醒, 也可以改为运行 `update-data`, 再根据 Git diff 创建提交或拉取请求. GitHub API 请求会自动使用可选的 `GITHUB_TOKEN`, 以提高 API 限额.
+仓库的 `Platform data` GitHub Actions 每日北京时间 09:17 运行 `update-data`. 无语义变化时不做任何远端修改; 发现变化时会严格校验生成范围, 自动准备下一 patch 版本及多语言发行日志, 完成 Node/Gradle/sample/隔离 Maven 验证, 然后原子推送发行提交与注释标签并启动受保护的双仓库发布链. Maven Central、Gradle Plugin Portal 与 GitHub Release 的最终发布仍需维护者批准 `release` Environment, 凭据在批准前不可见.
+
+工作流也保留三种手动模式: `check` 调用上述只读入口; `update-pr` 只提交数据资源并创建审阅 PR; `release` 立即执行与定时器相同的自动补丁发行路径. 完整安全边界和恢复步骤见 [`docs/github-actions.md`](../docs/github-actions.md). GitHub API 请求会自动使用可选的 `GITHUB_TOKEN`, 以提高 API 限额.
 
 ## 数据范围
 

@@ -163,7 +163,7 @@ src/main/resources/org/autojs/build/platform/data/
 run-scrapers.bat
 ```
 
-يستخدم workflow الدوري للمستودع نقطة الدخول التالية للفحص فقط، بينما ينشئ وضع update اليدوي pull request للبيانات بعد التحقق:
+يُحدّث workflow اليومي البيانات ويتحقق منها، ولا ينشئ التزامًا ووسمًا لإصدار تصحيحي إلا عند وجود تغييرات دلالية، ثم يبدأ سلسلة النشر المحمية إلى المستودعين وGitHub Release؛ وتظل وضعيّتا check وupdate-pr اليدويتان متاحتين:
 
 ```bash
 npm --prefix .utils ci

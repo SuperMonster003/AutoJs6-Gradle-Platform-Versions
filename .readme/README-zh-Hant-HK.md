@@ -163,7 +163,7 @@ src/main/resources/org/autojs/build/platform/data/
 run-scrapers.bat
 ```
 
-倉庫的週期 CI 使用以下只讀檢查入口; 手動 update 模式會在驗證後建立數據 PR:
+每日工作流程會刷新並驗證數據, 僅在語義數據有變化時建立修訂版本提交和標籤, 隨後啟動受保護的雙倉庫與 GitHub Release 發佈鏈; 仍可手動使用 check 和 update-pr 模式:
 
 ```bash
 npm --prefix .utils ci

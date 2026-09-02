@@ -163,7 +163,7 @@ src/main/resources/org/autojs/build/platform/data/
 run-scrapers.bat
 ```
 
-儲存庫的排程 CI 使用下列唯讀檢查進入點；手動 update 模式會在驗證後建立資料 PR:
+每日工作流程會更新並驗證資料，僅在語意資料有變化時建立修訂版提交與標籤，接著啟動受保護的雙儲存庫及 GitHub Release 發布鏈；仍可手動使用 check 與 update-pr 模式:
 
 ```bash
 npm --prefix .utils ci

@@ -163,7 +163,7 @@ Developers can update all compatibility data by running the interactive batch en
 run-scrapers.bat
 ```
 
-The scheduled repository workflow uses this read-only check entry point; manual update mode opens a data pull request after validation:
+The daily workflow refreshes and validates the data, creates a patch-release commit and tag only for semantic changes, and then starts the protected dual-registry and GitHub Release chain; manual check and update-pr modes remain available:
 
 ```bash
 npm --prefix .utils ci

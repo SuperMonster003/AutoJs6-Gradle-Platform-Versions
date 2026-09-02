@@ -40,7 +40,7 @@
   "p_data_outro": "消费端 `gradle/data` 中的同名文件仍会优先生效, 但该能力只为旧版兼容或临时诊断保留, 不是官方常态. AutoJs6 官方宿主和插件项目不得提交这类覆盖; 应在本中央仓库更新兼容数据, 并随新的不可变插件版本发布",
   "h3_data_updates": "数据更新",
   "p_data_updates_intro": "开发者可从仓库根目录运行交互式批处理来更新全部兼容数据",
-  "p_data_updates_ci": "仓库的周期 CI 使用以下只读检查入口; 手动 update 模式会在验证后创建数据 PR",
+  "p_data_updates_ci": "每日工作流会刷新并验证数据, 仅在语义数据有变化时创建补丁版本提交和标签, 随后启动受保护的双仓库与 GitHub Release 发布链; 仍可手动使用 check 和 update-pr 模式",
   "p_data_updates_exit_codes": "`check-data` 不修改工作区: 退出码 `0` 表示数据最新, `2` 表示发现更新, `1` 表示任务失败",
   "text_data_updates_details": "完整的更新范围与运行约定见",
   "h3_release_history": "发行历史",

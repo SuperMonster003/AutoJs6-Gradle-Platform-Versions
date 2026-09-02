@@ -163,7 +163,7 @@ src/main/resources/org/autojs/build/platform/data/
 run-scrapers.bat
 ```
 
-저장소의 예약 workflow는 다음 읽기 전용 검사를 사용하며, 수동 update 모드는 검증 후 데이터 pull request를 만듭니다:
+매일 실행되는 workflow는 데이터를 갱신하고 검증한 뒤 의미 있는 변경이 있을 때만 패치 릴리스 커밋과 태그를 만들고 보호된 두 레지스트리 및 GitHub Release 게시 체인을 시작합니다. 수동 check 및 update-pr 모드도 계속 사용할 수 있습니다:
 
 ```bash
 npm --prefix .utils ci

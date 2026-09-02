@@ -40,7 +40,7 @@
   "p_data_outro": "A same-named file under a consumer's `gradle/data` directory still takes precedence for legacy compatibility or temporary diagnostics only; it is not the official operating model. Official AutoJs6 host and plugin projects must not commit such overrides. Update compatibility data in this central repository and publish it with a new immutable plugin version instead",
   "h3_data_updates": "Data Updates",
   "p_data_updates_intro": "Developers can update all compatibility data by running the interactive batch entry point from the repository root",
-  "p_data_updates_ci": "The scheduled repository workflow uses this read-only check entry point; manual update mode opens a data pull request after validation",
+  "p_data_updates_ci": "The daily workflow refreshes and validates the data, creates a patch-release commit and tag only for semantic changes, and then starts the protected dual-registry and GitHub Release chain; manual check and update-pr modes remain available",
   "p_data_updates_exit_codes": "`check-data` does not modify the workspace: exit code `0` means the data is current, `2` means updates were found, and `1` means the task failed",
   "text_data_updates_details": "For the complete update scope and execution contract, see",
   "h3_release_history": "Release History",

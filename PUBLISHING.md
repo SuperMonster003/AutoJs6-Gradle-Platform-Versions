@@ -84,9 +84,16 @@ The task publishes both Maven components into a clean staging directory, checks 
 JAR/POM/module files and their `.asc`, `.md5`, and `.sha1` companions, excludes repository-level `maven-metadata.xml`,
 and then creates a reproducible ZIP in Maven repository layout.
 
-For the first release, upload this bundle as a `USER_MANAGED` deployment in the Central Publisher Portal. Inspect the
-validation result and test the validated deployment before choosing Publish. A published Maven Central version is
-immutable and cannot be replaced.
+The protected `Publish release` GitHub Actions workflow is the canonical remote publisher. It always uploads this
+bundle as `USER_MANAGED`, waits for `VALIDATED`, verifies the returned deployment UUID, name, and every PURL, then
+calls the official Central Publisher API to finalize it and waits for both `PUBLISHED` and public Maven resolution.
+This preserves a distinct validation checkpoint without depending on Central Portal login. A published Maven Central
+version is immutable and cannot be replaced.
+
+If an earlier run stopped after upload, use the protected `Finalize Central deployment` workflow with the existing
+UUID and matching release tag. Its `inspect` operation is read-only; `publish` performs the same identity checks and
+API finalization, waits for public artifacts, and can complete a missing GitHub Release after both registries resolve.
+Never upload the same immutable version again merely because the Portal UI or OAuth login is unavailable.
 
 ## Gradle Plugin Portal
 
@@ -114,15 +121,21 @@ the VCS URL points to the public GitHub repository.
 
 ## Release checklist
 
-1. Choose a version that has never been published to Maven Central or the Plugin Portal.
-2. Update `VERSION_NAME`, `VERSION_BUILD`, and `.readme/common.json`, then regenerate all Markdown files.
-3. Run translation checks, scraper tests, `clean check`, and the isolated Maven consumer smoke test.
-4. Generate the signed Central bundle and inspect its contents.
-5. Commit and push the exact release source; create an annotated Git tag for the version.
-6. Upload to Central as `USER_MANAGED`, wait for `VALIDATED`, and test the staged artifacts.
-7. Publish the Central deployment and verify public resolution from `mavenCentral()`.
-8. Validate and publish the same version to the Gradle Plugin Portal.
-9. Verify a fresh consumer using only public repositories before updating downstream projects.
+1. Choose a version that has never been used by a Git tag, GitHub Release, Maven Central, or the Plugin Portal.
+2. Update `VERSION_NAME`, `VERSION_BUILD`, `.readme/common.json`, and every localized changelog, then regenerate all
+   Markdown files. Pure scheduled data releases perform this step automatically and increment the patch component.
+3. Run translation checks, scraper tests, `clean check`, the headless sample, and the isolated Maven publication test.
+4. Commit the exact release source and create an annotated `v<version>` Git tag. For scheduled data releases, the
+   workflow verifies that `master` has not advanced and pushes the commit and tag atomically.
+5. Run `Publish release` from that tag with `targets=both` and approve its protected `release` Environment deployment.
+6. Let the workflow build and sign the Central bundle, upload it as `USER_MANAGED`, verify `VALIDATED`, finalize it
+   through the official API, and wait for public Maven Central resolution.
+7. Let the same protected job publish the Gradle plugin and wait for public Plugin Portal resolution.
+8. Confirm that the workflow creates the GitHub Release only after both public registries expose the marker and
+   implementation artifacts.
+9. If a target fails after the other is immutable, rerun only that target. If Central already has a validated upload,
+   finalize its UUID instead of creating a duplicate deployment.
+10. Verify a fresh consumer using only public repositories before updating downstream projects.
 
 Official references:
 
