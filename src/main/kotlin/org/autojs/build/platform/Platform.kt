@@ -3,11 +3,14 @@ package org.autojs.build.platform
 /**
  * A build host: an IDE, a JDK vendor, or a bare operating system.
  *
- * IDE platforms constrain AGP through a compatibility map. Headless platforms
- * instead select directly from the versions supported by the running Gradle.
+ * IDE platforms constrain AGP through a compatibility map. Its oldest key is
+ * also their central support floor; a project may tighten, but never lower, that
+ * boundary. Headless platforms instead select directly from the versions supported
+ * by the running Gradle.
  *
  * zh-CN: 构建宿主, 可以是 IDE / JDK 发行方 / 裸操作系统.
- * IDE 平台通过兼容映射表约束 AGP; 无头平台则直接按当前 Gradle 的能力自动选择.
+ * IDE 平台通过兼容映射表约束 AGP, 且表中最早的 key 同时构成不可由项目降低的中央
+ * 支持下界; 无头平台则直接按当前 Gradle 的能力自动选择.
  */
 open class Platform(
     var name: String,
@@ -34,12 +37,13 @@ open class Platform(
         systemProperties.platform?.startsWith(name) == true
                 || systemProperties.vendorName?.contains(vendor, true) == true
 
-    /** Fails when the IDE predates the minimum this project supports. */
+    /** Fails when the IDE predates the effective central/project support floor. */
     fun ensureMinimalIdeVersion() {
         if (minSupportedVersion == Consts.DEFAULT_VERSION) return
         if (VersionComparator.compareVersionStrings(version, minSupportedVersion) >= 0) return
         throw IllegalStateException(
-            "Current IDE ($fullName) version $version does not meet the minimum requirement which $minSupportedVersion is needed"
+            "Current IDE ($fullName) version $version does not meet the effective minimum requirement " +
+                    "$minSupportedVersion from the central compatibility range and any stricter project requirement."
         )
     }
 

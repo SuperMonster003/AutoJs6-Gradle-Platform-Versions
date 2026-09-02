@@ -3,14 +3,18 @@ package org.autojs.build.platform
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 class PlatformDetectorTest {
 
     private val dataSource = DataSource(localDataDir = null)
 
-    private fun detect(vararg properties: Pair<String, String>): Platform {
+    private fun detect(
+        vararg properties: Pair<String, String>,
+        versionProps: Map<String, String> = emptyMap(),
+    ): Platform {
         val values = mapOf(*properties)
-        return PlatformDetector(SystemProperties(values::get), dataSource, emptyMap()).determine()
+        return PlatformDetector(SystemProperties(values::get), dataSource, versionProps).determine()
     }
 
     @Test
@@ -32,5 +36,49 @@ class PlatformDetectorTest {
 
         assertEquals("Linux", platform.fullName)
         assertEquals(AgpSelectionMode.GRADLE_COMPATIBILITY, platform.agpSelectionMode)
+    }
+
+    @Test
+    fun `Android Studio support floor comes from the oldest central map entry`() {
+        val platform = detect(
+            "idea.paths.selector" to "AndroidStudio2023.3",
+            "idea.version" to "2023.3",
+            versionProps = mapOf("MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION" to "2023.3"),
+        )
+
+        assertEquals("2025.2.3", platform.minSupportedVersion)
+        val error = assertThrows<IllegalStateException>(platform::ensureMinimalIdeVersion)
+        assertTrue(error.message!!.contains("effective minimum requirement 2025.2.3"))
+    }
+
+    @Test
+    fun `IntelliJ IDEA support floor cannot be widened by a consumer`() {
+        val platform = detect(
+            "idea.paths.selector" to "IntelliJIdea2023.3",
+            "idea.version" to "2023.3",
+            versionProps = mapOf("MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION" to "2023.3"),
+        )
+
+        assertEquals("2026.1.2", platform.minSupportedVersion)
+        assertThrows<IllegalStateException>(platform::ensureMinimalIdeVersion)
+    }
+
+    @Test
+    fun `a project may tighten but not disable the central IDE support floor`() {
+        val stricter = detect(
+            "idea.paths.selector" to "AndroidStudio2025.3.4",
+            "idea.version" to "2025.3.4",
+            versionProps = mapOf("MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION" to "2026.1"),
+        )
+        val none = detect(
+            "idea.paths.selector" to "AndroidStudio2025.3.4",
+            "idea.version" to "2025.3.4",
+            versionProps = mapOf("MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION" to "NONE"),
+        )
+
+        assertEquals("2026.1", stricter.minSupportedVersion)
+        assertThrows<IllegalStateException>(stricter::ensureMinimalIdeVersion)
+        assertEquals("2025.2.3", none.minSupportedVersion)
+        none.ensureMinimalIdeVersion()
     }
 }
