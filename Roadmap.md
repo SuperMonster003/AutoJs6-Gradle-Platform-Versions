@@ -192,6 +192,7 @@ plugins {
 - [x] M11.11 上传并发布首个 `USER_MANAGED` Central deployment `b7dda1bd-c9af-4782-9f46-a29a1378579d`; 公开仓库 60/60 个文件与本地 bundle 逐字节一致, 全新消费者仅通过 `mavenCentral()` 成功解析并应用 `1.6.0`。
 - [x] M11.12 提交并通过 Gradle Plugin Portal 首版审核; 公开页面、marker POM 与实现构件验证通过, 全新 Gradle User Home 仅配置 `gradlePluginPortal()` 即成功解析并应用 `1.6.0`, 完整缓存亦通过离线重放。
 - [x] M11.13 增加受保护的 GitHub Actions 手动发布入口、Temurin 无头构建验证与周期数据检查/按需更新 PR 入口。
+- [x] M11.14 增加已验证 Central deployment 的受保护查询/最终发布恢复入口, Portal UI 不可用时不必重复上传同一不可变版本。
 
 ### M12 — AGP 约束求交与无头环境完善
 

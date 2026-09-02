@@ -1,10 +1,11 @@
 # GitHub Actions 配置与使用
 
-仓库内置三条自动化链路:
+仓库内置四条自动化链路:
 
 - `Build and test`: 每次推送及拉取请求均在 Temurin 17 上运行抓取器单元测试、Gradle 测试和无头 sample 决策.
 - `Platform data`: 每周一北京时间 09:17 只读检查官方上游数据; 手动选择 `update` 时更新数据、复验并创建拉取请求.
 - `Publish release`: 只允许从版本标签手动触发, 经 `release` Environment 审批后发布 Maven Central 和/或 Gradle Plugin Portal.
+- `Finalize Central deployment`: 查询或发布一个已上传的 Central deployment, 用于 `USER_MANAGED` 最终确认及 Portal UI 不可用时的安全恢复.
 
 ## 一次性配置 release Environment
 
@@ -51,6 +52,19 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 7. `validate` job 全部通过后, 在等待中的 `release` Environment deployment 上人工批准; secrets 只会在批准后的 publish job 中读取.
 
 发布工作流要求所选引用是 `v<version>` 标签, 且标签中的 `VERSION_NAME` 与输入一致、`VERSION_BUILD` 与提交总数一致. 任一条件不满足都会在接触发布凭据前停止.
+
+## Central 最终确认与恢复
+
+`USER_MANAGED` deployment 到达 `VALIDATED` 后, 首选在 Central Portal 审阅并点击 Publish. 若 Portal 登录或界面暂时不可用, 不要重跑上传步骤, 否则会为同一不可变版本产生重复 deployment.
+
+可改用 `Actions` → `Finalize Central deployment`:
+
+1. 从原 `Publish release` 运行的 Summary 复制 `Maven Central deployment` UUID.
+2. 在分支/标签选择器中选择包含该恢复工作流的相同发行标签.
+3. `deployment_id` 填写 UUID, `expected_version` 填写不带 `v` 的版本号; 先选 `inspect` 可只读核验.
+4. 确认 UUID、名称和状态无误后, 再以 `publish` 运行并批准 `release` Environment.
+
+恢复工作流会通过 Central token 重新读取 deployment, 严格核对 UUID、`autojs6-gradle-platform-versions-<version>` 名称、全部 PURL 版本与 `VALIDATED` 状态, 随后调用 Sonatype 官方 `POST /api/v1/publisher/deployment/<deploymentId>` 并等待 `PUBLISHED`. 已为 `PUBLISHED` 时会幂等成功, 其他状态不会执行发布.
 
 ## 数据更新
 
