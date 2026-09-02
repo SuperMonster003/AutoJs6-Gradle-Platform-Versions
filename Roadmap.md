@@ -1,6 +1,6 @@
 # AutoJs6 Gradle Platform Versions — 开发路线图 (Roadmap)
 
-> 修订日期: 2026-09-01
+> 修订日期: 2026-09-02
 
 ## 一. 项目定位
 
@@ -191,7 +191,16 @@ plugins {
 - [ ] M11.10 将签名密钥与 Portal 凭据配置为受保护的 GitHub Actions secrets。
 - [x] M11.11 上传并发布首个 `USER_MANAGED` Central deployment `b7dda1bd-c9af-4782-9f46-a29a1378579d`; 公开仓库 60/60 个文件与本地 bundle 逐字节一致, 全新消费者仅通过 `mavenCentral()` 成功解析并应用 `1.6.0`。
 - [x] M11.12 提交并通过 Gradle Plugin Portal 首版审核; 公开页面、marker POM 与实现构件验证通过, 全新 Gradle User Home 仅配置 `gradlePluginPortal()` 即成功解析并应用 `1.6.0`, 完整缓存亦通过离线重放。
-- [ ] M11.13 增加受保护的 GitHub Actions 手动发布入口与周期数据检查/更新入口。
+- [x] M11.13 增加受保护的 GitHub Actions 手动发布入口、Temurin 无头构建验证与周期数据检查/按需更新 PR 入口。
+
+### M12 — AGP 约束求交与无头环境完善
+
+- [x] M12.1 将 Temurin 与裸命令行显式建模为 `GRADLE_COMPATIBILITY`, 不再用空的 AGP 映射表间接表达 auto 选择。
+- [x] M12.2 新增 Android API/最低 AGP 官方数据集及独立抓取器, 从消费端 `COMPILE_SDK_VERSION` / `TARGET_SDK_VERSION` 自动推导下界。
+- [x] M12.3 新增 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` 项目下界入口, 用于 AAR 元数据或预览 SDK 等 settings 阶段无法自动观察的要求, 但不把 AGP 钉死为固定版本。
+- [x] M12.4 将 Android API、项目声明与 KSP 的 AGP 下界同 IDE/Gradle 上界求交, 交集为空时在 settings 阶段给出来源明确的错误, 不再越过 IDE 上限事后抬升。
+- [x] M12.5 强制 AGP 仍可绕过 IDE 映射用于特殊测试, 但会验证 Gradle 与项目硬要求; 同时修复两段式平台映射绕过 Gradle 封顶及旧 Gradle 回落到不可加载平台版本的边界。
+- [x] M12.6 在 Temurin 17 CI 与单元测试中锁定旧 `21.0.6+7 -> AGP 8.7.3` 映射不再生效, API 36 自动要求 AGP 8.9.1 以上。
 
 ## 四. 迁移期间发现的上游缺陷
 
@@ -232,6 +241,6 @@ plugins {
 
 ## 六. 后续展望 (不在本期范围)
 
-- 发布到 GitHub Packages / Gradle Plugin Portal, 下游用动态版本自动跟进。
-- 主项目 CI cron 定时跑 scraper 并自动发版。
+- 为后续版本启用 `release` Environment 审批与六项发布 secrets, 再用受保护工作流完成 Central / Plugin Portal 发行。
+- 观察周期数据检查的稳定性后, 再决定是否把当前的手动 update PR 提升为定时自动建 PR 或自动发版。
 - 模块脚本改用 plugins DSL 的批量改造 (迁移脚本的前置条件, 见第五节)。

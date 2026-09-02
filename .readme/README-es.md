@@ -53,8 +53,8 @@ Convertido en un plugin de Settings publicable, a los proyectos que lo consumen 
 - Detección del entorno de compilación: Android Studio, IntelliJ IDEA, Temurin JDK y la línea de comandos sin IDE.
 - Selección de una versión de AGP compatible con el IDE actual, tomando la entrada inmediatamente inferior cuando no hay coincidencia exacta.
 - Retorno automático a la selección auto cuando el IDE es más reciente que todas las entradas de la tabla de correspondencias, evitando una degradación silenciosa a un AGP demasiado antiguo.
-- Límite superior según la compatibilidad entre AGP y Gradle, de modo que la versión elegida siempre pueda cargarla el Gradle actual.
-- Decisión de la versión de KSP, con elevación automática de la versión de AGP cuando el KSP elegido exige un AGP más reciente.
+- Tratamiento explícito de Temurin y la línea de comandos como entornos sin IDE, eligiendo AGP según la compatibilidad con Gradle y no mediante una tabla de versiones de IDE.
+- Intersección del límite superior de IDE/Gradle con los requisitos mínimos de AGP derivados del nivel de API de Android, KSP y el proyecto, con error temprano si no hay una versión compatible.
 - Decisión de la versión de R8, incorporando un R8 externo solo cuando el que trae AGP no es lo bastante reciente.
 - Los datos de compatibilidad se distribuyen con el plugin, pero un directorio `gradle/data` en el proyecto consumidor tiene prioridad, lo que facilita las correcciones urgentes.
 - Se conserva la vía de escape `OVERRIDDEN_*` de `version.properties`, para fijar versiones concretas cuando se necesita una compilación determinista.
@@ -104,9 +104,9 @@ El resultado de la decisión también puede leerse como objeto mediante `gradle.
 
 La versión de AGP se decide en tres pasos:
 
-- Buscar la versión de la plataforma actual en la tabla de correspondencias de AGP de esa plataforma, tomando la entrada inmediatamente inferior.
-- Comprobar si la tabla está desactualizada, es decir, si el IDE actual es más reciente que todas sus entradas; en ese caso se vuelve a la selección auto.
-- Limitar el resultado con la tabla de compatibilidad entre AGP y Gradle, de forma que nunca supere lo que el Gradle actual puede cargar.
+- Usar la tabla de la plataforma como límite superior en un IDE, incluido el retorno cuando queda desactualizada; para Temurin y la línea de comandos, usar directamente la compatibilidad con Gradle.
+- Limitar de nuevo ese máximo con la tabla oficial de compatibilidad entre AGP y Gradle, para que el candidato pueda cargarlo el Gradle en ejecución.
+- Derivar los límites inferiores de compileSdk/targetSdk, KSP y un mínimo opcional del proyecto, y devolver AGP solo si ambos límites se intersectan.
 
 La versión de Kotlin, en cambio, sigue a Gradle y no al IDE: siempre se toma la más reciente que admite el Gradle actual.
 
@@ -116,14 +116,14 @@ La versión de Kotlin, en cambio, sigue a Gradle y no al IDE: siempre se toma la
 
 ******
 
-Si quieres omitir por completo la decisión automática, indica las versiones directamente en `version.properties`:
+Para pruebas o una compilación determinista, las versiones exactas pueden fijarse directamente en `version.properties`:
 
 ```properties
 OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-El valor `NONE` o un valor vacío significa que no se fija nada y se aplica el proceso de decisión automática.
+El valor `NONE` o un valor vacío significa que no se fija nada. Para declarar un límite inferior sin fijar una versión exacta, usa `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; los valores numéricos de `COMPILE_SDK_VERSION` y `TARGET_SDK_VERSION` se tienen en cuenta automáticamente.
 
 ******
 
@@ -136,6 +136,7 @@ La decisión se basa en los siguientes archivos de datos, que se distribuyen jun
 ```text
 gradle/data/agp-releases.list
 gradle/data/agp-gradle-compat.properties
+gradle/data/android-api-agp-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
@@ -161,7 +162,7 @@ Los desarrolladores pueden actualizar todos los datos de compatibilidad ejecutan
 run-scrapers.bat
 ```
 
-Una futura tarea de CI programada puede usar este punto de entrada de comprobación de solo lectura:
+El workflow programado del repositorio usa este punto de entrada de solo lectura; el modo update manual abre un pull request de datos después de validarlo:
 
 ```bash
 npm --prefix .utils ci

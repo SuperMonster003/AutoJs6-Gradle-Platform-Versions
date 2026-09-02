@@ -53,8 +53,8 @@
 - ビルドホストの識別: Android Studio、IntelliJ IDEA、Temurin JDK、および素のコマンドライン環境。
 - 現在の IDE バージョンが対応できる AGP バージョンを選択し、完全に一致しない場合は直近の下位バージョンを採用。
 - IDE のバージョンがマッピング表のすべての項目より新しい場合は auto 選択へ自動的にフォールバックし、古すぎる AGP への暗黙のダウングレードを回避。
-- AGP と Gradle の互換関係を上限として適用し、選ばれたバージョンを現在の Gradle が必ずロードできることを保証。
-- KSP バージョンを決定し、選択された KSP がより新しい AGP を要求する場合は AGP バージョンを自動的に引き上げ。
+- Temurin と素のコマンドラインを明示的にヘッドレス環境として扱い、IDE バージョン表ではなく Gradle の互換性から AGP を選択。
+- IDE/Gradle の上限と、Android API レベル、KSP、プロジェクトが要求する AGP の下限を交差させ、互換バージョンがなければ早期にエラー。
 - R8 バージョンを決定し、AGP に同梱された R8 が十分に新しくない場合にのみ外部の R8 を導入。
 - 互換性データはプラグインに同梱して配布し、利用側プロジェクトに `gradle/data` ディレクトリがあればそちらを優先するため、緊急のデータ修正が容易。
 - `version.properties` の `OVERRIDDEN_*` という避難口を用意しており、決定性のあるビルドが必要な場合はバージョンを直接固定可能。
@@ -104,9 +104,9 @@ plugins {
 
 AGP バージョンの決定は次の 3 ステップで行われます:
 
-- 現在のプラットフォームバージョンを使い、そのプラットフォームの AGP マッピング表で直近の下位一致を探す。
-- マッピング表が古くなっていないか、つまり現在の IDE が表のすべての項目より新しいかを判定し、そうであれば auto 選択へフォールバックする。
-- AGP と Gradle の互換表を上限として適用し、現在の Gradle がロードできる範囲を超えないようにする。
+- IDE ではプラットフォーム表を上限とし、表が古い場合のフォールバックも適用する。Temurin と素のコマンドラインでは Gradle の互換上限を直接使う。
+- 公式の AGP/Gradle 互換表でもう一度上限を設定し、実行中の Gradle が候補をロードできるようにする。
+- compileSdk/targetSdk、KSP、任意のプロジェクト最小値から下限を導き、上下限が交差する場合にのみ AGP を返す。
 
 一方 Kotlin のバージョンは IDE ではなく Gradle に追従し、常に現在の Gradle が対応する最新バージョンを選択します.
 
@@ -116,14 +116,14 @@ AGP バージョンの決定は次の 3 ステップで行われます:
 
 ******
 
-自動決定をすべてスキップしたい場合は、`version.properties` でバージョンを直接指定できます:
+テストまたは決定性のあるビルドでは、`version.properties` で正確なバージョンを直接固定できます:
 
 ```properties
 OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-値が `NONE` または空の場合は未指定とみなされ、自動決定フローに従います.
+値が `NONE` または空の場合は固定されません。正確なバージョンを固定せず下限だけを示すには `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` を使います。数値形式の `COMPILE_SDK_VERSION` と `TARGET_SDK_VERSION` は自動的に考慮されます.
 
 ******
 
@@ -136,6 +136,7 @@ OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```text
 gradle/data/agp-releases.list
 gradle/data/agp-gradle-compat.properties
+gradle/data/android-api-agp-compat.properties
 gradle/data/gradle-kotlin-compat.properties
 gradle/data/java-gradle-compat.properties
 gradle/data/android-studio-agp-compat.properties
@@ -161,7 +162,7 @@ gradle/data/ksp-releases.properties
 run-scrapers.bat
 ```
 
-将来の定期 CI ジョブでは、次の読み取り専用チェックエントリを利用できます:
+リポジトリの定期 workflow は次の読み取り専用チェックを使い、手動の update モードは検証後にデータの pull request を作成します:
 
 ```bash
 npm --prefix .utils ci
