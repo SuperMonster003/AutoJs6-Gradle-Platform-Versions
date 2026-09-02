@@ -3,6 +3,7 @@ package org.autojs.build.platform
 import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
+import org.junit.jupiter.api.assertThrows
 
 /**
  * Covers the three scenarios that matter downstream: a map that covers the IDE,
@@ -26,10 +27,15 @@ class VersionDeciderTest {
         name = "IntelliJIdea",
         vendor = "Jetbrains",
         agpVersionMap = map,
+        agpSelectionMode = AgpSelectionMode.PLATFORM_COMPATIBILITY,
         displayName = "IntelliJ IDEA",
     ).also { it.version = version }
 
-    private fun commandLine() = Platform(name = "Windows 11", vendor = "unknown")
+    private fun commandLine() = Platform(
+        name = "Windows 11",
+        vendor = "unknown",
+        agpSelectionMode = AgpSelectionMode.GRADLE_COMPATIBILITY,
+    )
 
     private fun decider(platform: Platform, gradleVersion: String = "9.3.0") =
         VersionDecider(platform, dataSource, gradleVersion)
@@ -40,6 +46,7 @@ class VersionDeciderTest {
         assertTrue(dataSource.props("agp-gradle-compat").isNotEmpty())
         assertTrue(dataSource.props("gradle-kotlin-compat").isNotEmpty())
         assertTrue(dataSource.props("java-gradle-compat").isNotEmpty())
+        assertTrue(dataSource.props("android-api-agp-compat").isNotEmpty())
     }
 
     @Test
@@ -67,12 +74,12 @@ class VersionDeciderTest {
 
     @Test
     fun `the stale-map fallback stays within one line of what the map knows`() {
-        // Auto selection alone would reach the AGP 9.3 line here, past what an IDE topping out at
+        // Auto selection alone would reach the AGP 9.4 line here, past what an IDE topping out at
         // 9.1.0 accepts. The fallback is held to the line just above the newest entry.
         val map = mapOf("2026.2" to "9.1.0")
         val commandLineMaximum = decider(commandLine(), gradleVersion = "9.6.1").maxSupportedAgpVersion()
-        assertTrue(commandLineMaximum != null && commandLineMaximum.startsWith("9.3.")) {
-            "Gradle 9.6.1 should reach the latest published AGP on the 9.3 line, got $commandLineMaximum"
+        assertTrue(commandLineMaximum != null && commandLineMaximum.startsWith("9.4.")) {
+            "Gradle 9.6.1 should reach the latest published AGP on the 9.4 line, got $commandLineMaximum"
         }
 
         val decision = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
@@ -138,6 +145,39 @@ class VersionDeciderTest {
     }
 
     @Test
+    fun `Temurin ignores the obsolete host-version map and follows Gradle compatibility`() {
+        val legacyTemurinMap = mapOf(
+            "21.0.10+7" to "8.9.3",
+            "21.0.6+7" to "8.7.3",
+            "20.0.2+9" to "8.2.2",
+        )
+        val temurin = Platform(
+            name = "Temurin",
+            vendor = "temurin",
+            agpVersionMap = legacyTemurinMap,
+            agpSelectionMode = AgpSelectionMode.GRADLE_COMPATIBILITY,
+        ).also { it.version = "21.0.6+7" }
+
+        val decision = decider(temurin).decideAgpVersion(
+            listOf(AgpRequirement("8.9.1", "compileSdk 36")),
+        )
+        assertEquals("9.0.1", decision.version) { "Temurin must not select the historical AGP 8.7.3 entry" }
+        assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix)
+    }
+
+    @Test
+    fun `a project minimum remains a lower boundary instead of becoming an exact pin`() {
+        val decider = decider(commandLine(), gradleVersion = "9.6.1")
+        val decision = decider.decideAgpVersion(
+            listOf(AgpRequirement("9.1.1", AgpRequirementResolver.MIN_SUPPORTED_AGP_PROPERTY)),
+        )
+
+        assertEquals("9.4.0", decision.version) {
+            "the newest Gradle-compatible AGP should win even though the project minimum is 9.1.1"
+        }
+    }
+
+    @Test
     fun `caps AGP against the running Gradle version`() {
         // AGP 9.1 needs Gradle 9.3.1, so on 9.3.0 a map promising it must be capped.
         val decision = decider(idea("2026.1.2", mapOf("2026.1.2" to "9.1.1"))).decideAgpVersion()
@@ -159,6 +199,59 @@ class VersionDeciderTest {
     fun `resolves a two-segment map value to a released patch version`() {
         val decision = decider(idea("2026.2", mapOf("2026.1" to "9.0"))).decideAgpVersion()
         assertEquals("9.0.1", decision.version)
+    }
+
+    @Test
+    fun `a two-segment map value is still capped by the running Gradle`() {
+        val decision = decider(
+            idea("2026.2", mapOf("2026.2" to "9.2")),
+            gradleVersion = "9.3.0",
+        ).decideAgpVersion()
+
+        assertEquals("9.0.1", decision.version)
+        assertTrue(decision.hintSuffix.contains(Identifier.DOWNGRADED))
+    }
+
+    @Test
+    fun `an empty AGP constraint intersection fails with its source`() {
+        val error = assertThrows<IllegalStateException> {
+            decider(idea("2026.1.2")).decideAgpVersion(
+                listOf(AgpRequirement("9.1.1", "compileSdk 37.0")),
+            )
+        }
+
+        assertTrue(error.message!!.contains("compileSdk 37.0"))
+        assertTrue(error.message!!.contains("AGP 9.1.1 or higher"))
+    }
+
+    @Test
+    fun `a user override must satisfy Gradle and project minimums`() {
+        val decider = decider(commandLine(), gradleVersion = "9.3.0")
+
+        assertThrows<IllegalStateException> {
+            decider.validateUserSpecifiedAgpVersion("9.2.1")
+        }
+        assertThrows<IllegalStateException> {
+            decider.validateUserSpecifiedAgpVersion(
+                "9.0.1",
+                listOf(AgpRequirement("9.1.1", "compileSdk 37.0")),
+            )
+        }
+
+        // The explicit escape hatch may intentionally go beyond an IDE map when the
+        // running Gradle and hard project requirements can still support the version.
+        decider(idea("2026.1.2"), gradleVersion = "9.4.1")
+            .validateUserSpecifiedAgpVersion("9.2.1")
+    }
+
+    @Test
+    fun `an unsupported Gradle cannot fall through to an IDE map value`() {
+        val decision = decider(
+            idea("2026.1.2", mapOf("2026.1.2" to "9.0.1")),
+            gradleVersion = "9.0.0",
+        ).decideAgpVersion()
+
+        assertEquals(null, decision.version)
     }
 
     @Test

@@ -13,6 +13,7 @@ const SCRAPERS = [
     'scrapers/update-android-studio-agp-compatibility.mjs',
     'scrapers/update-java-gradle-compatibility.mjs',
     'scrapers/update-agp-gradle-compatibility.mjs',
+    'scrapers/update-android-api-agp-compatibility.mjs',
     'scrapers/update-agp-releases.mjs',
     'scrapers/update-ksp-releases.mjs',
     'scrapers/update-ksp-agp-compatibility.mjs',

@@ -3,11 +3,11 @@ package org.autojs.build.platform
 /**
  * A build host: an IDE, a JDK vendor, or a bare operating system.
  *
- * The platform in use decides which AGP version map applies, since each IDE only
- * supports AGP up to a given version.
+ * IDE platforms constrain AGP through a compatibility map. Headless platforms
+ * instead select directly from the versions supported by the running Gradle.
  *
  * zh-CN: 构建宿主, 可以是 IDE / JDK 发行方 / 裸操作系统.
- * 当前平台决定适用哪张 AGP 版本映射表, 因为每个 IDE 支持的 AGP 版本有上限.
+ * IDE 平台通过兼容映射表约束 AGP; 无头平台则直接按当前 Gradle 的能力自动选择.
  */
 open class Platform(
     var name: String,
@@ -18,6 +18,10 @@ open class Platform(
     val minSupportedVersion: String = Consts.DEFAULT_VERSION,
     val shouldPrintProgress: Boolean = true,
     val displayName: String? = null,
+    val agpSelectionMode: AgpSelectionMode = when {
+        agpVersionMap.isEmpty() -> AgpSelectionMode.GRADLE_COMPATIBILITY
+        else -> AgpSelectionMode.PLATFORM_COMPATIBILITY
+    },
 ) {
 
     var version: String = Consts.DEFAULT_VERSION
@@ -63,6 +67,22 @@ open class Platform(
         consoleInfo.add(0, "Platform: $fullName$versionSuffix")
     }
 
+}
+
+/**
+ * Defines where the upper AGP compatibility boundary comes from.
+ *
+ * [PLATFORM_COMPATIBILITY] is used by IDEs whose bundled Android integration has
+ * its own AGP ceiling. [GRADLE_COMPATIBILITY] is used by Temurin and bare command
+ * line builds, where no IDE imposes an additional ceiling.
+ *
+ * zh-CN: 定义 AGP 兼容上界的来源. IDE 使用 [PLATFORM_COMPATIBILITY], 因为其内置
+ * Android 集成有独立的 AGP 上限; Temurin 与裸命令行使用 [GRADLE_COMPATIBILITY],
+ * 因为此时不存在额外的 IDE 上限.
+ */
+enum class AgpSelectionMode {
+    PLATFORM_COMPATIBILITY,
+    GRADLE_COMPATIBILITY,
 }
 
 /** The subset of system properties that identifies the build host. */

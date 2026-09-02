@@ -2,6 +2,7 @@ package org.autojs.build.platform
 
 import java.io.File
 import java.util.Properties
+import org.gradle.util.GradleVersion
 
 /**
  * Entry point for consuming settings scripts, callable from the script body.
@@ -31,12 +32,21 @@ import java.util.Properties
 object PlatformVersionsFacade {
 
     /** Runs the full decision for the project rooted at [rootDir]. */
-    fun decide(rootDir: File, gradleVersion: String): PlatformVersionsExtension {
+    fun decide(rootDir: File, gradleVersion: String): PlatformVersionsExtension =
+        decide(rootDir, gradleVersion, SystemProperties.ofSystem())
+
+    /** Injectable counterpart used to verify host-specific decisions deterministically. */
+    internal fun decide(
+        rootDir: File,
+        gradleVersion: String,
+        systemProperties: SystemProperties,
+    ): PlatformVersionsExtension {
         val versionProps = loadProperties(rootDir.resolve("version.properties"))
         val dataSource = DataSource(rootDir.resolve("gradle/data").takeIf { it.isDirectory })
-        val platform = PlatformDetector(SystemProperties.ofSystem(), dataSource, versionProps).determine()
+        val platform = PlatformDetector(systemProperties, dataSource, versionProps).determine()
 
         platform.ensureMinimalIdeVersion()
+        ensureMinimalGradleVersion(gradleVersion, versionProps["MIN_SUPPORTED_GRADLE_VERSION"])
         versionProps["JAVA_VERSION_MIN_SUPPORTED"]?.toIntOrNull()?.let { minSupported ->
             platform.ensureMinimalGradleJdkVersion(currentJavaMajorVersion(), minSupported)
         }
@@ -61,19 +71,31 @@ object PlatformVersionsFacade {
         val kspDecider = KspDecider(dataSource, gradleVersion)
         val kspVersion = overriddenKspVersion ?: kspDecider.decideKspVersion(kotlinVersion).version
 
+        val agpRequirementResolver = AgpRequirementResolver(dataSource, versionProps)
+        val agpRequirements = buildList {
+            addAll(agpRequirementResolver.projectRequirements())
+            kspVersion
+                ?.let(kspDecider::minimumAgpVersionForKsp)
+                ?.let { add(AgpRequirement(it, "KSP $kspVersion")) }
+        }
+        val minimumAgpVersion = agpRequirementResolver.highestMinimum(agpRequirements)
+        minimumAgpVersion?.let { minimum ->
+            val sources = agpRequirements
+                .filter { it.minimumVersion == minimum }
+                .joinToString { it.source }
+            versionInfo += "Minimum: \"com.android.tools.build:gradle:$minimum\" [$sources]"
+        }
+
+        overriddenAgpVersion?.let {
+            decider.validateUserSpecifiedAgpVersion(it, agpRequirements)
+        }
+
         val agpVersion = resolve(
             overridden = overriddenAgpVersion,
-            decide = { decider.decideAgpVersion() },
-            fallback = { decider.agpFallbackVersion() },
+            decide = { decider.decideAgpVersion(agpRequirements) },
+            fallback = { null },
             label = "com.android.tools.build:gradle",
             versionInfo = versionInfo,
-            postProcess = { candidate ->
-                kspDecider.refineAgpVersionForKsp(
-                    agpVersion = candidate,
-                    kspVersion = kspVersion,
-                    isUserSpecified = overriddenAgpVersion != null,
-                )
-            },
         )
 
         val r8Decider = R8Decider(dataSource)
@@ -117,6 +139,8 @@ object PlatformVersionsFacade {
         return PlatformVersionsExtension(
             platform = platform,
             agpVersion = agpVersion,
+            minimumAgpVersion = minimumAgpVersion,
+            agpRequirements = agpRequirements,
             kotlinVersion = kotlinVersion,
             kspVersion = kspVersion,
             r8Version = r8Version,
@@ -167,6 +191,15 @@ object PlatformVersionsFacade {
 
     private fun Map<String, String>.escapeHatch(key: String): String? =
         get(key)?.takeUnless { it.isBlank() || it == "NONE" }
+
+    private fun ensureMinimalGradleVersion(gradleVersion: String, minimumVersion: String?) {
+        val minimum = minimumVersion?.takeUnless { it.isBlank() || it == "NONE" } ?: return
+        if (GradleVersion.version(gradleVersion) >= GradleVersion.version(minimum)) return
+        throw IllegalStateException(
+            "Current Gradle version $gradleVersion does not meet the minimum requirement $minimum. " +
+                    "Update the Gradle Wrapper before applying the platform-versions plugin."
+        )
+    }
 
     /** Major version of the running JVM, handling both "1.8.0_311" and "21.0.1" forms. */
     private fun currentJavaMajorVersion(): Int {

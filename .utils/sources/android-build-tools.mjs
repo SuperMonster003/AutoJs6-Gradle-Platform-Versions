@@ -19,6 +19,21 @@ export function parseAgpGradleCompatibility(html, minimumVersions) {
     return [ ...result ];
 }
 
+export function parseAndroidApiAgpCompatibility(html) {
+    const result = new Map();
+    for (const cells of tableRows(html, [ /API level/i, /Minimum AGP version/i ])) {
+        const androidApi = String(cells[0] || '').match(/\b\d+(?:\.\d+)?\b/)?.[0];
+        const agp = firstVersionIn(cells.at(-1), 2);
+        if (!androidApi || !agp) continue;
+        if (result.has(androidApi) && result.get(androidApi) !== agp) {
+            throw new Error(`Conflicting minimum AGP versions for Android API ${androidApi}: ${result.get(androidApi)} vs ${agp}`);
+        }
+        result.set(androidApi, agp);
+    }
+    if (result.size < 5) throw new Error(`Parsed too few Android API/AGP compatibility rows: ${result.size}`);
+    return [ ...result ];
+}
+
 export function parseKotlinR8Compatibility(html) {
     const result = new Map();
     for (const cells of tableRows(html, [ /Kotlin version/i, /Required R8 version/i ])) {
