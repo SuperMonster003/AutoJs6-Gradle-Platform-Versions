@@ -56,7 +56,7 @@
 - معاملة Temurin وسطر الأوامر المجرد صراحةً كبيئتين بلا IDE، واختيار AGP وفق توافق Gradle بدل جدول مرتبط بإصدار IDE.
 - تقاطع الحد الأعلى الذي يفرضه IDE وGradle مع الحدود الدنيا لـ AGP المستمدة من مستوى Android API وKSP والمشروع، والفشل مبكرًا عند غياب إصدار متوافق.
 - تحديد إصدار R8، فلا يُجلب R8 خارجي إلا إذا كان R8 المرافق لـ AGP غير حديث بما يكفي.
-- تُوزَّع بيانات التوافق مع الإضافة نفسها، وإذا وُجد المجلد `gradle/data` في المشروع المستهلك فله الأولوية؛ ما يسهّل تصحيح البيانات على وجه السرعة.
+- تُوزَّع بيانات التوافق مع الإضافة بوصفها مصدر البيانات الوحيد افتراضيًا؛ ولا تحتفظ مشاريع مضيف AutoJs6 وإضافاته الرسمية بنسخ داخل `gradle/data` لدى المستهلك.
 - الإبقاء على مخرج الطوارئ `OVERRIDDEN_*` في `version.properties`، إذ يمكن تثبيت الإصدار مباشرة عند الحاجة إلى بناء حتمي.
 - يدعم ملفا README وCHANGELOG الإسبانية والفرنسية والروسية والعربية واليابانية والكورية والإنجليزية والصينية المبسطة والصينية التقليدية (هونغ كونغ) والصينية التقليدية (تايوان).
 
@@ -104,7 +104,7 @@ plugins {
 
 تمر عملية تحديد إصدار AGP بثلاث خطوات:
 
-- استخدام جدول المنصة حدًا أعلى داخل IDE مع مسار الرجوع عند تأخره؛ أما Temurin وسطر الأوامر المجرد فيستخدمان حد توافق Gradle مباشرةً.
+- استخدام أقدم مفتاح في جدول المنصة حدًا أدنى مركزيًا لدعم IDE، واستخدام AGP المطابق حدًا أعلى؛ ولا يستطيع الحد الأدنى لـ IDE في المشروع المستهلك إلا تشديد ذلك الحد. ويظل مسار الرجوع متاحًا لبيئات IDE الأحدث عند تأخر الجدول، أما Temurin وسطر الأوامر المجرد فيستخدمان حد توافق Gradle مباشرةً.
 - تقييد ذلك الحد مرة أخرى بجدول التوافق الرسمي بين AGP وGradle، كي يستطيع Gradle الجاري تحميل الإصدار المرشح.
 - اشتقاق الحدود الدنيا من compileSdk/targetSdk وKSP ومن حد أدنى اختياري للمشروع، وعدم إرجاع AGP إلا عند وجود تقاطع بين الحدود.
 
@@ -123,7 +123,7 @@ OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-وتعني القيمة `NONE` أو القيمة الفارغة عدم تثبيت أي إصدار. وللتصريح بحد أدنى دون تثبيت إصدار دقيق استخدم `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`؛ وتدخل القيم الرقمية لـ `COMPILE_SDK_VERSION` و`TARGET_SDK_VERSION` في القرار تلقائيًا.
+وتعني القيمة `NONE` أو القيمة الفارغة عدم تثبيت أي إصدار. ولا يُستخدم `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` إلا لحد أدنى فعلي خاص بالمشروع لا تستطيع الآلية المركزية استنتاجه؛ ويجب ألا تكرر به مشاريع AutoJs6 الرسمية حد AGP 9 العام الذي تضمنه المنصة. وتدخل القيم الرقمية لـ `COMPILE_SDK_VERSION` و`TARGET_SDK_VERSION` في القرار تلقائيًا. وبالمثل، فإن `MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION` و`MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION` قيدان اختياريان خاصان بالمشروع؛ فأقدم مفتاح في كل جدول IDE مركزي هو خط أساس لا يستطيع المستهلك خفضه، لذا ينبغي حذف الخاصيتين ما لم يحتج المشروع فعلًا إلى IDE أحدث.
 
 ******
 
@@ -134,21 +134,22 @@ OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 فيما يلي ملفات البيانات التي يستند إليها التحديد، وهي تُوزَّع مع الإضافة:
 
 ```text
-gradle/data/agp-releases.list
-gradle/data/agp-gradle-compat.properties
-gradle/data/android-api-agp-compat.properties
-gradle/data/gradle-kotlin-compat.properties
-gradle/data/java-gradle-compat.properties
-gradle/data/android-studio-agp-compat.properties
-gradle/data/android-studio-build-version.properties
-gradle/data/android-studio-codename-version.properties
-gradle/data/android-studio-codename.properties
-gradle/data/kotlin-r8-compat.properties
-gradle/data/ksp-agp-compat.properties
-gradle/data/ksp-releases.properties
+src/main/resources/org/autojs/build/platform/data/
+  agp-releases.list
+  agp-gradle-compat.properties
+  android-api-agp-compat.properties
+  gradle-kotlin-compat.properties
+  java-gradle-compat.properties
+  android-studio-agp-compat.properties
+  android-studio-build-version.properties
+  android-studio-codename-version.properties
+  android-studio-codename.properties
+  kotlin-r8-compat.properties
+  ksp-agp-compat.properties
+  ksp-releases.properties
 ```
 
-وإذا وضع المشروع المستهلك ملفًا بالاسم نفسه في مجلد `gradle/data` الخاص به، فإن هذا الملف هو الذي يسري.
+ويبقى الملف المطابق في `gradle/data` لدى المستهلك ذا أولوية للتوافق مع الإصدارات القديمة أو للتشخيص المؤقت فقط، وليس ذلك أسلوب التشغيل الرسمي. ويجب ألا تُودع مشاريع مضيف AutoJs6 وإضافاته الرسمية هذه التجاوزات؛ بل تُحدَّث بيانات التوافق في هذا المستودع المركزي وتُنشر ضمن إصدار جديد غير قابل للتغيير من الإضافة.
 
 ******
 

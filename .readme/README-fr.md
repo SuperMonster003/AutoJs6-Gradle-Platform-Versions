@@ -56,7 +56,7 @@ Désormais publié comme plugin Settings, il ne demande plus qu'une dizaine de l
 - Traitement explicite de Temurin et de la ligne de commande comme environnements sans IDE, avec sélection d'AGP selon la compatibilité Gradle plutôt que selon une table de versions d'IDE.
 - Intersection de la limite supérieure IDE/Gradle avec les versions minimales d'AGP requises par le niveau d'API Android, KSP et le projet, avec échec anticipé lorsqu'aucune version n'est compatible.
 - Détermination de la version de R8, un R8 externe n'étant introduit que lorsque celui fourni avec AGP n'est pas assez récent.
-- Données de compatibilité distribuées avec le plugin, un répertoire `gradle/data` présent dans le projet consommateur restant prioritaire, ce qui facilite les corrections urgentes.
+- Distribue les données de compatibilité avec le plugin comme source de données unique par défaut ; les projets officiels de l'hôte et des plugins AutoJs6 ne conservent aucune copie de `gradle/data` côté consommateur.
 - Porte de sortie `OVERRIDDEN_*` conservée dans `version.properties`, pour figer directement les versions lorsqu'un build déterministe est requis.
 - README et CHANGELOG disponibles en espagnol/français/russe/arabe/japonais/coréen/anglais/chinois simplifié/chinois traditionnel de Hong Kong/chinois traditionnel de Taïwan.
 
@@ -104,7 +104,7 @@ Le résultat de la décision est également lisible sous forme d'objet via `grad
 
 La version d'AGP est déterminée en trois étapes:
 
-- Utiliser la table de la plateforme comme limite supérieure dans un IDE, y compris son repli lorsqu'elle est en retard ; pour Temurin et la ligne de commande, utiliser directement la compatibilité Gradle.
+- Utiliser la clé la plus ancienne de la table de plateforme comme limite inférieure centrale de l'IDE et l'AGP correspondant comme limite supérieure ; un minimum d'IDE déclaré par le consommateur ne peut que resserrer cette limite. Conserver le repli pour les IDE plus récents lorsque la table est en retard ; pour Temurin et la ligne de commande, utiliser directement la compatibilité Gradle.
 - Plafonner à nouveau cette limite avec la table officielle de compatibilité AGP/Gradle, afin que le candidat soit chargeable par le Gradle en cours d'exécution.
 - Déduire les limites inférieures de compileSdk/targetSdk, de KSP et d'un minimum facultatif du projet, puis ne renvoyer AGP que si les limites se croisent.
 
@@ -123,7 +123,7 @@ OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-La valeur `NONE` ou une valeur vide signifie qu'aucune version n'est figée. Pour déclarer une limite inférieure sans imposer une version exacte, utilisez `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` ; les valeurs numériques de `COMPILE_SDK_VERSION` et `TARGET_SDK_VERSION` sont prises en compte automatiquement.
+La valeur `NONE` ou une valeur vide signifie qu'aucune version n'est figée. Utilisez `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` uniquement pour une véritable limite inférieure propre au projet que le mécanisme central ne peut pas déduire ; les consommateurs officiels AutoJs6 ne doivent pas répéter ainsi la limite générale AGP 9 déjà garantie par la plateforme. Les valeurs numériques de `COMPILE_SDK_VERSION` et `TARGET_SDK_VERSION` sont prises en compte automatiquement. De même, `MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION` et `MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION` sont des restrictions facultatives propres au projet : la clé la plus ancienne de chaque table IDE centrale est une base impossible à abaisser, donc omettez ces propriétés sauf si le projet exige réellement un IDE plus récent.
 
 ******
 
@@ -134,21 +134,22 @@ La valeur `NONE` ou une valeur vide signifie qu'aucune version n'est figée. Pou
 La décision s'appuie sur les fichiers de données suivants, distribués avec le plugin:
 
 ```text
-gradle/data/agp-releases.list
-gradle/data/agp-gradle-compat.properties
-gradle/data/android-api-agp-compat.properties
-gradle/data/gradle-kotlin-compat.properties
-gradle/data/java-gradle-compat.properties
-gradle/data/android-studio-agp-compat.properties
-gradle/data/android-studio-build-version.properties
-gradle/data/android-studio-codename-version.properties
-gradle/data/android-studio-codename.properties
-gradle/data/kotlin-r8-compat.properties
-gradle/data/ksp-agp-compat.properties
-gradle/data/ksp-releases.properties
+src/main/resources/org/autojs/build/platform/data/
+  agp-releases.list
+  agp-gradle-compat.properties
+  android-api-agp-compat.properties
+  gradle-kotlin-compat.properties
+  java-gradle-compat.properties
+  android-studio-agp-compat.properties
+  android-studio-build-version.properties
+  android-studio-codename-version.properties
+  android-studio-codename.properties
+  kotlin-r8-compat.properties
+  ksp-agp-compat.properties
+  ksp-releases.properties
 ```
 
-Si le projet consommateur place un fichier du même nom dans son propre répertoire `gradle/data`, c'est ce fichier qui prévaut.
+Un fichier de même nom dans le répertoire `gradle/data` du consommateur reste prioritaire uniquement pour la compatibilité historique ou un diagnostic temporaire ; ce n'est pas le modèle officiel. Les projets officiels de l'hôte et des plugins AutoJs6 ne doivent pas placer ces substitutions sous contrôle de version. Les données de compatibilité doivent être mises à jour dans ce dépôt central et publiées avec une nouvelle version immuable du plugin.
 
 ******
 

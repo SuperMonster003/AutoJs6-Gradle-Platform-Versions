@@ -56,7 +56,7 @@
 - Temurin 与裸命令行不再使用平台版本映射, 而是显式按 Gradle 兼容性自动选择 AGP.
 - 把 Android API、KSP 及项目声明的最低 AGP 作为下界, 与 IDE/Gradle 上界求交; 无兼容交集时提前报错.
 - 决定 R8 版本, 仅在 AGP 自带的 R8 不够新时才引入外部 R8.
-- 兼容数据随插件分发, 消费端项目若存在 `gradle/data` 目录则优先使用, 便于紧急修数据.
+- 兼容数据随插件分发并作为默认的唯一数据源; AutoJs6 官方宿主和插件项目不在消费端重复维护 `gradle/data` 副本.
 - 保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生门, 需要确定性构建时可直接钉死版本.
 - README 与 CHANGELOG 支持西班牙语/法语/俄语/阿拉伯语/日语/韩语/英语/简体中文/香港繁体/台湾繁体.
 
@@ -104,7 +104,7 @@ plugins {
 
 AGP 版本的决定过程分为三步:
 
-- IDE 环境用平台映射表确定上界并保留滞后回退; Temurin 与裸命令行直接采用 Gradle 兼容上界.
+- IDE 环境以平台映射表的最早 key 作为中央支持下界, 以匹配到的 AGP 作为上界; 消费仓 IDE 最低版本只能收紧该下界. 对更新的 IDE 保留映射滞后回退; Temurin 与裸命令行直接采用 Gradle 兼容上界.
 - 按 AGP 与 Gradle 的官方兼容表再次封顶, 保证候选版本可由当前 Gradle 加载.
 - 从 compileSdk/targetSdk、KSP 及可选的项目最低版本推导下界, 仅在上下界存在交集时返回 AGP.
 
@@ -123,7 +123,7 @@ OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=9.0.1
 OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 ```
 
-值为 `NONE` 或留空时表示不固定. 若只想声明下界而不钉死版本, 可使用 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; 数字形式的 `COMPILE_SDK_VERSION` 与 `TARGET_SDK_VERSION` 会自动参与判断.
+值为 `NONE` 或留空时表示不固定. 仅当存在中央机制无法推导的真实项目专用下界时, 才使用 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; AutoJs6 官方消费仓不得用它重复声明平台已保证的通用 AGP 9 下界. 数字形式的 `COMPILE_SDK_VERSION` 与 `TARGET_SDK_VERSION` 会自动参与判断. 同理, `MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION` 与 `MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION` 只是可选的项目专用收紧项: 各中央 IDE 映射表的最早 key 是不可降低的基线, 项目没有更高要求时应省略这两个属性.
 
 ******
 
@@ -134,21 +134,22 @@ OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 决策依据的数据文件如下, 它们随插件一同分发:
 
 ```text
-gradle/data/agp-releases.list
-gradle/data/agp-gradle-compat.properties
-gradle/data/android-api-agp-compat.properties
-gradle/data/gradle-kotlin-compat.properties
-gradle/data/java-gradle-compat.properties
-gradle/data/android-studio-agp-compat.properties
-gradle/data/android-studio-build-version.properties
-gradle/data/android-studio-codename-version.properties
-gradle/data/android-studio-codename.properties
-gradle/data/kotlin-r8-compat.properties
-gradle/data/ksp-agp-compat.properties
-gradle/data/ksp-releases.properties
+src/main/resources/org/autojs/build/platform/data/
+  agp-releases.list
+  agp-gradle-compat.properties
+  android-api-agp-compat.properties
+  gradle-kotlin-compat.properties
+  java-gradle-compat.properties
+  android-studio-agp-compat.properties
+  android-studio-build-version.properties
+  android-studio-codename-version.properties
+  android-studio-codename.properties
+  kotlin-r8-compat.properties
+  ksp-agp-compat.properties
+  ksp-releases.properties
 ```
 
-消费端项目如果在自己的 `gradle/data` 目录下放了同名文件, 则该文件优先生效.
+消费端 `gradle/data` 中的同名文件仍会优先生效, 但该能力只为旧版兼容或临时诊断保留, 不是官方常态. AutoJs6 官方宿主和插件项目不得提交这类覆盖; 应在本中央仓库更新兼容数据, 并随新的不可变插件版本发布.
 
 ******
 

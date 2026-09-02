@@ -115,18 +115,19 @@ OVERRIDDEN_KOTLIN_GRADLE_PLUGIN_VERSION=2.2.21
 {{ p_data_intro }}:
 
 ```text
-gradle/data/agp-releases.list
-gradle/data/agp-gradle-compat.properties
-gradle/data/android-api-agp-compat.properties
-gradle/data/gradle-kotlin-compat.properties
-gradle/data/java-gradle-compat.properties
-gradle/data/android-studio-agp-compat.properties
-gradle/data/android-studio-build-version.properties
-gradle/data/android-studio-codename-version.properties
-gradle/data/android-studio-codename.properties
-gradle/data/kotlin-r8-compat.properties
-gradle/data/ksp-agp-compat.properties
-gradle/data/ksp-releases.properties
+src/main/resources/org/autojs/build/platform/data/
+  agp-releases.list
+  agp-gradle-compat.properties
+  android-api-agp-compat.properties
+  gradle-kotlin-compat.properties
+  java-gradle-compat.properties
+  android-studio-agp-compat.properties
+  android-studio-build-version.properties
+  android-studio-codename-version.properties
+  android-studio-codename.properties
+  kotlin-r8-compat.properties
+  ksp-agp-compat.properties
+  ksp-releases.properties
 ```
 
 {{ p_data_outro }}.
