@@ -142,9 +142,13 @@ class VersionDecider(
             VersionComparator.compareVersionStrings(left.minimumVersion, right.minimumVersion)
         }!!.minimumVersion
         val sources = unmet.joinToString { "${it.source} requires AGP ${it.minimumVersion}+" }
+        val platformDescription = platform.version
+            .takeUnless { it.isBlank() || it == Consts.DEFAULT_VERSION }
+            ?.let { "${platform.fullName} $it" }
+            ?: platform.fullName
         val subject = when (isUserSpecified) {
             true -> "User specified AGP version $agpVersion"
-            false -> "The highest AGP available to ${platform.fullName} on Gradle $gradleVersion is $agpVersion"
+            false -> "The highest AGP available to $platformDescription on Gradle $gradleVersion is $agpVersion"
         }
         throw IllegalStateException(
             "$subject, but this project requires AGP $highestMinimum or higher ($sources). " +

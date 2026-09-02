@@ -18,7 +18,7 @@ import org.gradle.util.GradleVersion
  *
  * buildscript {
  *     repositories { mavenCentral(); google() }
- *     dependencies { classpath("io.github.supermonster003:autojs6-gradle-platform-versions:1.6.0") }
+ *     dependencies { classpath("io.github.supermonster003:autojs6-gradle-platform-versions:x.y.z") }
  * }
  *
  * val versions = PlatformVersionsFacade.decide(rootDir, gradle.gradleVersion)
@@ -79,12 +79,9 @@ object PlatformVersionsFacade {
                 ?.let { add(AgpRequirement(it, "KSP $kspVersion")) }
         }
         val minimumAgpVersion = agpRequirementResolver.highestMinimum(agpRequirements)
-        minimumAgpVersion?.let { minimum ->
-            val sources = agpRequirements
-                .filter { it.minimumVersion == minimum }
-                .joinToString { it.source }
-            versionInfo += "Minimum: \"com.android.tools.build:gradle:$minimum\" [$sources]"
-        }
+        // The lower boundary remains part of the machine-readable result and is enforced below.
+        // Keep the successful-build summary focused on the versions that were actually selected;
+        // the detailed boundary and its sources are reported if the constraint cannot be satisfied.
 
         overriddenAgpVersion?.let {
             decider.validateUserSpecifiedAgpVersion(it, agpRequirements)
