@@ -3,14 +3,14 @@ package org.autojs.build.platform
 /**
  * Identifies the build host and resolves its version.
  *
- * The IntelliJ IDEA and Temurin maps are maintained by hand here, whereas the
- * Android Studio map comes from scraped data. All three benefit from the
- * stale-map fallback in [VersionDecider], so a missing entry degrades to auto
- * selection rather than to a silent downgrade.
+ * The IntelliJ IDEA map is maintained by hand here, whereas the Android Studio
+ * map comes from scraped data. Temurin is explicitly headless and therefore uses
+ * Gradle compatibility directly instead of pretending that an empty IDE map is a
+ * compatibility policy.
  *
- * zh-CN: 识别构建宿主并解析其版本. IntelliJ IDEA 与 Temurin 的映射表在此手动维护,
- * Android Studio 的映射表来自抓取数据. 三者都受益于 [VersionDecider] 的 stale-map 回退:
- * 条目缺失时退化为 auto 选择, 而不是静默降级.
+ * zh-CN: 识别构建宿主并解析其版本. IntelliJ IDEA 映射表在此手动维护, Android Studio
+ * 映射表来自抓取数据. Temurin 被显式建模为无头环境, 直接按 Gradle 兼容性选择,
+ * 不再借助一个空的 IDE 映射表间接表达策略.
  */
 class PlatformDetector(
     private val systemProperties: SystemProperties,
@@ -35,23 +35,12 @@ class PlatformDetector(
         "2026.1.2" to "9.0.1",
     )
 
-    /**
-     * Eclipse Adoptium, more commonly known as Temurin.
-     *
-     * Empty since dropping Gradle 8: every entry this map ever held pointed at an AGP
-     * on the 8.x line. An IDE-less build therefore takes the auto-selection path, which
-     * lands on the newest AGP the running Gradle can load.
-     *
-     * zh-CN: 移除 Gradle 8 支持后此表为空: 其历史条目全部指向 8.x 线的 AGP.
-     * 因此无 IDE 的构建会走 auto 选择, 得到当前 Gradle 能加载的最新 AGP.
-     */
-    private val temurinAgpVersionMap = emptyMap<String, String>()
-
     private val androidStudio by lazy {
         object : Platform(
             name = "AndroidStudio",
             vendor = "Google",
             agpVersionMap = dataSource.props("android-studio-agp-compat"),
+            agpSelectionMode = AgpSelectionMode.PLATFORM_COMPATIBILITY,
             weight = Int.MAX_VALUE,
             gradleSettingsName = "Gradle JDK",
             minSupportedVersion = versionProps["MIN_SUPPORTED_ANDROID_STUDIO_IDE_VERSION"] ?: Consts.DEFAULT_VERSION,
@@ -79,6 +68,7 @@ class PlatformDetector(
             name = "IntelliJIdea",
             vendor = "Jetbrains",
             agpVersionMap = intelliJIdeaAgpVersionMap,
+            agpSelectionMode = AgpSelectionMode.PLATFORM_COMPATIBILITY,
             weight = 10,
             gradleSettingsName = "Gradle JVM",
             minSupportedVersion = versionProps["MIN_SUPPORTED_INTELLIJ_IDEA_IDE_VERSION"] ?: Consts.DEFAULT_VERSION,
@@ -90,13 +80,19 @@ class PlatformDetector(
         Platform(
             name = "Temurin",
             vendor = "temurin",
-            agpVersionMap = temurinAgpVersionMap,
+            agpSelectionMode = AgpSelectionMode.GRADLE_COMPATIBILITY,
             weight = 5,
             shouldPrintProgress = false,
         )
     }
 
-    private val unknown by lazy { Platform(name = "Unknown", vendor = "unknown") }
+    private val unknown by lazy {
+        Platform(
+            name = "Unknown",
+            vendor = "unknown",
+            agpSelectionMode = AgpSelectionMode.GRADLE_COMPATIBILITY,
+        )
+    }
 
     /** All known platforms, most specific first. */
     private val candidates by lazy { listOf(androidStudio, intelliJIdea, temurin) }

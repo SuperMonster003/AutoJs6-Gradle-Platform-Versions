@@ -13,6 +13,7 @@ tasks.register("printPlatformVersions") {
     val platformName = platformVersions.platform.fullName
     val platformVersion = platformVersions.platform.version
     val agpVersion = platformVersions.agpVersion
+    val minimumAgpVersion = platformVersions.minimumAgpVersion
     val kotlinVersion = platformVersions.kotlinVersion
     val kspVersion = platformVersions.kspVersion
     val r8Version = platformVersions.r8Version
@@ -22,6 +23,7 @@ tasks.register("printPlatformVersions") {
     doLast {
         println("platform=$platformName $platformVersion")
         println("agp=$agpVersion")
+        println("minimumAgp=${minimumAgpVersion ?: "none"}")
         println("kotlin=$kotlinVersion")
         println("ksp=$kspVersion")
         println("r8=${r8Version ?: "bundled with AGP"}")

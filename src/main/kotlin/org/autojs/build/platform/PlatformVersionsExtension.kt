@@ -39,6 +39,12 @@ class PlatformVersionsExtension(
 
     /** Console lines describing how each version was decided. */
     val versionInfo: List<String>,
+
+    /** Highest project-derived minimum AGP version, or null when no lower boundary is declared. */
+    val minimumAgpVersion: String? = null,
+
+    /** Project inputs that contributed minimum AGP boundaries. */
+    val agpRequirements: List<AgpRequirement> = emptyList(),
 ) {
 
     /** The buildscript classpath notation for AGP, ready to be passed to `classpath(...)`. */

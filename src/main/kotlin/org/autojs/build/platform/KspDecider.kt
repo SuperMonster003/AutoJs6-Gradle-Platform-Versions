@@ -3,18 +3,16 @@ package org.autojs.build.platform
 import org.gradle.util.GradleVersion
 
 /**
- * Decides the KSP plugin version and keeps AGP compatible with it.
+ * Decides the KSP plugin version and exposes its minimum AGP requirement.
  *
  * KSP releases are versioned after the Kotlin release they target, e.g. KSP
  * `2.2.21-2.0.4` targets Kotlin 2.2.21. Newer KSP releases also demand a minimum
- * AGP, so a project whose IDE only permits an older AGP would otherwise fail at
- * configuration time. This raises AGP to the lowest release that satisfies KSP
- * and the running Gradle both.
+ * AGP. [PlatformVersionsFacade] feeds that lower boundary into [VersionDecider],
+ * where it is intersected with the IDE and Gradle upper boundaries.
  *
  * zh-CN: 决定 KSP 插件版本, 并保证 AGP 与之兼容. KSP 的版本号跟随其目标 Kotlin 版本,
  * 如 KSP `2.2.21-2.0.4` 对应 Kotlin 2.2.21. 较新的 KSP 还要求最低 AGP 版本,
- * 若 IDE 只允许较旧的 AGP 就会在配置阶段失败; 此处会把 AGP 抬到同时满足 KSP
- * 与当前 Gradle 的最低发行版.
+ * 该下界会由 [PlatformVersionsFacade] 交给 [VersionDecider], 与 IDE、Gradle 的上界求交.
  */
 class KspDecider(
     private val dataSource: DataSource,

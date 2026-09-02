@@ -12,6 +12,7 @@ import {
 import {
     parseAgpGradleCompatibility,
     parseAgpReleases,
+    parseAndroidApiAgpCompatibility,
     parseKotlinR8Compatibility,
 } from '../sources/android-build-tools.mjs';
 import {
@@ -69,6 +70,20 @@ test('Android build-tool parsers select official compatibility rows and latest l
     assert.deepEqual(parseAgpGradleCompatibility(agpHtml, minimumVersions), [
         [ '9.1', '9.3.1' ],
         [ '9.0', '9.1.0' ],
+    ]);
+
+    const apiHtml = `<table><tr><th>API level</th><th>Minimum Android Studio version</th><th>Minimum AGP version</th></tr>
+      <tr><td>37.0</td><td>Panda 3 | 2025.3.3 Patch 1</td><td>9.1.1</td></tr>
+      <tr><td>36.1</td><td>Narwhal 3 | 2025.1.3</td><td>8.13.0</td></tr>
+      <tr><td>36</td><td>Meerkat | 2024.3.1 Patch 1</td><td>8.9.1</td></tr>
+      <tr><td>35</td><td>Koala | 2024.2.1</td><td>8.6.0</td></tr>
+      <tr><td>34</td><td>Hedgehog | 2023.1.1</td><td>8.1.1</td></tr></table>`;
+    assert.deepEqual(parseAndroidApiAgpCompatibility(apiHtml), [
+        [ '37.0', '9.1.1' ],
+        [ '36.1', '8.13.0' ],
+        [ '36', '8.9.1' ],
+        [ '35', '8.6.0' ],
+        [ '34', '8.1.1' ],
     ]);
 
     const metadata = '<metadata><versioning><versions><version>9.0.1</version><version>9.1.0-alpha01</version><version>9.1.0</version><version>9.2.0-alpha02</version></versions></versioning></metadata>';

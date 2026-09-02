@@ -9,17 +9,13 @@ data class Decision(val version: String?, val hintSuffix: String)
 /**
  * Decides which AGP and Kotlin Gradle plugin versions to put on the buildscript classpath.
  *
- * The AGP decision runs in three steps:
- * 1. nearest-lower match of the platform version against the platform's AGP map;
- * 2. a staleness check, so an IDE newer than the whole map falls back to auto selection
- *    instead of being downgraded to the newest known entry;
- * 3. capping against the AGP-to-Gradle compatibility table, so the result never exceeds
- *    what the running Gradle can load.
+ * The AGP decision combines an upper boundary (Gradle plus, for IDE builds, the
+ * platform map) with project lower boundaries such as Android API and KSP
+ * requirements. A version is returned only when that intersection is non-empty.
  *
- * zh-CN: 决定放到 buildscript classpath 上的 AGP 与 Kotlin Gradle 插件版本. AGP 决策分三步:
- * 1. 用平台版本对该平台的 AGP 映射表做就近向下匹配;
- * 2. 滞后判定: 若 IDE 比整张映射表都新, 回退到 auto 选择, 而不是降级到映射表中最新的已知条目;
- * 3. 按 AGP-Gradle 兼容表封顶, 保证结果不超出当前 Gradle 能加载的范围.
+ * zh-CN: 决定放到 buildscript classpath 上的 AGP 与 Kotlin Gradle 插件版本. AGP 决策
+ * 将 Gradle (以及 IDE 构建时的平台映射表) 给出的上界, 与 Android API、KSP 等项目
+ * 下界求交; 只有交集非空时才会返回版本.
  */
 class VersionDecider(
     private val platform: Platform,
@@ -32,8 +28,51 @@ class VersionDecider(
     private val gradleKotlinCompatProps by lazy { dataSource.props("gradle-kotlin-compat") }
     private val javaGradleCompatProps by lazy { dataSource.props("java-gradle-compat") }
 
-    /** Decides the AGP version for the current platform and Gradle version. */
-    fun decideAgpVersion(): Decision {
+    /** Decides AGP while satisfying every project-level [minimumRequirements] entry. */
+    fun decideAgpVersion(
+        minimumRequirements: Collection<AgpRequirement> = emptyList(),
+    ): Decision {
+        val maxSupportedAgpVersion = maxSupportedAgpVersion()
+            ?: return Decision(null, Identifier.AUTO_SPECIFIED_SUFFIX)
+
+        val decision = when (platform.agpSelectionMode) {
+            AgpSelectionMode.GRADLE_COMPATIBILITY ->
+                Decision(maxSupportedAgpVersion, Identifier.AUTO_SPECIFIED_SUFFIX)
+            AgpSelectionMode.PLATFORM_COMPATIBILITY ->
+                decideAgpVersionForPlatform(maxSupportedAgpVersion)
+        }
+
+        decision.version?.let { ensureMinimumAgpRequirements(it, minimumRequirements, isUserSpecified = false) }
+        return decision
+    }
+
+    /**
+     * Validates an exact user pin against hard project and Gradle requirements.
+     *
+     * The platform ceiling is deliberately not applied: the override is the escape
+     * hatch for testing a version the IDE map does not yet know. Requirements derived
+     * from the actual project and the running Gradle still apply, because violating
+     * either cannot produce a usable build.
+     */
+    fun validateUserSpecifiedAgpVersion(
+        agpVersion: String,
+        minimumRequirements: Collection<AgpRequirement> = emptyList(),
+    ) {
+        val minimumGradleVersion = minimumGradleVersionForAgp(agpVersion)
+            ?: throw IllegalStateException(
+                "User specified AGP version $agpVersion is outside the known supported AGP lines. " +
+                        "Update agp-gradle-compat.properties before testing a newer line."
+            )
+        if (gradleVersion.toGradleVersion() < minimumGradleVersion.toGradleVersion()) {
+            throw IllegalStateException(
+                "User specified AGP version $agpVersion requires Gradle $minimumGradleVersion or higher, " +
+                        "but the running Gradle version is $gradleVersion."
+            )
+        }
+        ensureMinimumAgpRequirements(agpVersion, minimumRequirements, isUserSpecified = true)
+    }
+
+    private fun decideAgpVersionForPlatform(maxSupportedAgpVersion: String): Decision {
         val map = platform.agpVersionMap
         val matchedKey = VersionMapMatcher.findBestMatchingMapKey(map, platform.version)
         val matchedValue = matchedKey?.let { map[it] }
@@ -41,9 +80,6 @@ class VersionDecider(
             true -> Identifier.NEAREST_LOWER_MATCHED_SUFFIX
             else -> ""
         }
-
-        val maxSupportedAgpVersion = maxSupportedAgpVersion()
-            ?: return Decision(matchedValue, hintSuffix)
 
         if (matchedValue != null && VersionMapMatcher.isPlatformNewerThanVersionMap(map, platform.version)) {
             // The platform is newer than every entry of the manually maintained agpVersionMap,
@@ -79,17 +115,42 @@ class VersionDecider(
 
         matchedValue ?: return Decision(maxSupportedAgpVersion, hintSuffix + Identifier.AUTO_SPECIFIED_SUFFIX)
 
-        if (!matchedValue.contains("\\d+\\.\\d+\\.\\d+".toRegex())) {
+        val releasedValue = if (!matchedValue.contains("\\d+\\.\\d+\\.\\d+".toRegex())) {
             hintSuffix += Identifier.AUTO_SPECIFIED_SUFFIX
-            return Decision(getAgpReleasedVersion(matchedValue) ?: "$matchedValue.0", hintSuffix)
-        }
+            getAgpReleasedVersion(matchedValue) ?: "$matchedValue.0"
+        } else matchedValue
 
-        if (VersionComparator.compareVersionStrings(matchedValue, maxSupportedAgpVersion) > 0) {
+        if (VersionComparator.compareVersionStrings(releasedValue, maxSupportedAgpVersion) > 0) {
             hintSuffix += Identifier.DOWNGRADED_SUFFIX
             return Decision(maxSupportedAgpVersion, hintSuffix)
         }
 
-        return Decision(matchedValue, hintSuffix)
+        return Decision(releasedValue, hintSuffix)
+    }
+
+    private fun ensureMinimumAgpRequirements(
+        agpVersion: String,
+        requirements: Collection<AgpRequirement>,
+        isUserSpecified: Boolean,
+    ) {
+        val unmet = requirements.filter {
+            VersionComparator.compareVersionStrings(agpVersion, it.minimumVersion) < 0
+        }
+        if (unmet.isEmpty()) return
+
+        val highestMinimum = unmet.maxWithOrNull { left, right ->
+            VersionComparator.compareVersionStrings(left.minimumVersion, right.minimumVersion)
+        }!!.minimumVersion
+        val sources = unmet.joinToString { "${it.source} requires AGP ${it.minimumVersion}+" }
+        val subject = when (isUserSpecified) {
+            true -> "User specified AGP version $agpVersion"
+            false -> "The highest AGP available to ${platform.fullName} on Gradle $gradleVersion is $agpVersion"
+        }
+        throw IllegalStateException(
+            "$subject, but this project requires AGP $highestMinimum or higher ($sources). " +
+                    "Update the Gradle/IDE environment or adjust the project requirement; " +
+                    "an exact OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION cannot bypass this incompatibility."
+        )
     }
 
     /**
@@ -203,12 +264,28 @@ class VersionDecider(
      * 支持范围自 AGP 9.0 起后这一点尤为重要: 给 Gradle 8 构建返回已知最低的 AGP,
      * 只会把一个它加载不了的版本放到 classpath 上, 失败得更晚也更难懂.
      */
-    fun maxSupportedAgpVersion(): String? {
-        val currentGradleVersion = gradleVersion.toGradleVersion()
-        return agpGradleCompatProps.entries
-            .sortedByDescending { it.value.toGradleVersion() }
-            .firstOrNull { currentGradleVersion >= it.value.toGradleVersion() }
-            ?.let { getAgpReleasedVersion(it.key) }
+    fun maxSupportedAgpVersion(): String? = agpReleases
+        .asSequence()
+        .filterNot { it.contains("-") }
+        .sortedWith(VersionComparator::compareVersionStringsDesc)
+        .firstOrNull(::canUseAgpWithCurrentGradle)
+
+    /** Tells whether the running Gradle satisfies the official minimum for [agpVersion]. */
+    fun canUseAgpWithCurrentGradle(agpVersion: String): Boolean {
+        val minimumGradleVersion = minimumGradleVersionForAgp(agpVersion) ?: return false
+        return gradleVersion.toGradleVersion() >= minimumGradleVersion.toGradleVersion()
+    }
+
+    /** Official minimum Gradle for the AGP minor line, or null when the data does not cover it. */
+    fun minimumGradleVersionForAgp(agpVersion: String): String? {
+        val matchedKey = VersionMapMatcher.findBestMatchingMapKey(agpGradleCompatProps, agpVersion)
+            ?: return null
+        val agpParts = runCatching { VersionComparator.toVersionParts(agpVersion).first }.getOrNull()
+            ?: return null
+        val keyParts = runCatching { VersionComparator.toVersionParts(matchedKey).first }.getOrNull()
+            ?: return null
+        if (VersionComparator.compareVersionParts(agpParts.take(2), keyParts.take(2)) != 0) return null
+        return agpGradleCompatProps[matchedKey]
     }
 
     /** Newest stable AGP release carrying the given prefix, e.g. "9.0" resolves to "9.0.1". */
