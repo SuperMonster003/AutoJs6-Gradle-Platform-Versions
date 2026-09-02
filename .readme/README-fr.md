@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
     }
 }
 
@@ -181,6 +181,14 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.7.1
+
+###### 2026/09/02
+
+* `Correctif` La plus ancienne entrée de chaque table de compatibilité IDE est désormais imposée comme borne inférieure centrale de support ; les valeurs `MIN_SUPPORTED_*_IDE_VERSION` du consommateur ne peuvent que la resserrer et ne peuvent plus faire basculer un ancien IDE non pris en charge vers le repli fondé uniquement sur Gradle
+* `Amélioration` Les contraintes minimales AGP satisfaites restent disponibles sous forme exploitable par machine sans apparaître dans les résumés ordinaires des builds réussis ; les erreurs d'incompatibilité incluent maintenant la version d'IDE détectée et toutes les sources d'exigences
+* `Amélioration` Précision que les données de compatibilité embarquées constituent la source de référence des consommateurs AutoJs6 officiels ; les substitutions dans `gradle/data` ne subsistent que pour la compatibilité historique ou les diagnostics temporaires
+
 # v1.7.0
 
 ###### 2026/09/02
@@ -201,14 +209,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 * `Fonctionnalité` Première chaîne de publication publique en ligne pour Maven Central et le Gradle Plugin Portal, avec des artefacts signés pour l'implémentation, les sources, le Javadoc, les métadonnées de module et le marqueur du plugin
 * `Amélioration` Ajout du dépôt GitHub public, des métadonnées POM complètes pour Central, d'un bundle Portal reproductible, d'une validation isolée côté consommateur et de voies de signature sécurisées distinctes pour GPG local et la CI
 * `Amélioration` L'utilisation officielle se résout désormais uniquement depuis les dépôts publics sans `mavenLocal()` ; l'outil de migration reconnaît et met également à jour l'ancien identifiant du plugin
-
-# v1.5.0
-
-###### 2026/08/28
-
-* `Fonctionnalité` La suite complète de mise à jour des données de compatibilité réside désormais dans ce dépôt, avec un `run-scrapers.bat` interactif pour les mises à jour manuelles et des commandes multiplateformes de mise à jour et de contrôle en lecture seule prêtes pour de futures exécutions CI planifiées
-* `Amélioration` Les scrapers ne dépendent plus de Puppeteer ni de Chrome : ils analysent les sources officielles statiques, centralisent les limites de conservation et la validation des sorties, et évitent les réécritures dues uniquement aux horodatages
-* `Amélioration` Les données embarquées ont été actualisées jusqu'à Gradle 9.7 avec Kotlin 2.4, aux dernières lignes AGP jusqu'à 9.5.0-alpha03, 9.4.0-rc02 et 9.3.2, à Android Studio Rabbit et à KSP 2.3.11
 
 ##### Pour un historique plus complet, voir
 

@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
     }
 }
 
@@ -181,6 +181,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.1
+
+###### 2026/09/02
+
+* `수정` 각 IDE 호환성 매핑의 가장 오래된 항목을 중앙 지원 하한으로 강제함. 소비 측 `MIN_SUPPORTED_*_IDE_VERSION` 값은 이 범위를 더 좁힐 수만 있으며, 지원되지 않는 이전 IDE를 Gradle 전용 대체 경로로 보낼 수 없도록 수정
+* `개선` 충족된 AGP 최소 제약은 기계 판독 가능한 결과로 유지하되 일반적인 성공 빌드 요약에는 표시하지 않도록 변경. 비호환 오류에는 감지된 IDE 버전과 모든 요구 사항 출처를 포함
+* `개선` 내장 호환성 데이터를 AutoJs6 공식 소비 프로젝트의 권위 있는 출처로 명확히 함. `gradle/data` 재정의는 이전 버전 호환성 또는 임시 진단 용도로만 유지
+
 # v1.7.0
 
 ###### 2026/09/02
@@ -201,14 +209,6 @@ npm --prefix .utils run check-data
 * `기능` Maven Central과 Gradle Plugin Portal을 위한 첫 공개 온라인 릴리스 경로를 추가하고 구현, 소스, Javadoc, 모듈 메타데이터 및 플러그인 마커 산출물에 정식 서명을 적용
 * `개선` 공개 GitHub 저장소, 완전한 Central POM 메타데이터, 재현 가능한 Portal bundle, 격리된 소비자 검증, 로컬 GPG와 CI용으로 분리된 안전한 서명 경로를 추가
 * `개선` 공식 사용 예제는 이제 `mavenLocal()` 없이 공개 저장소만으로 해석되며 마이그레이션 도구도 기존 플러그인 ID를 인식하고 갱신
-
-# v1.5.0
-
-###### 2026/08/28
-
-* `기능` 호환성 데이터 갱신 도구 전체를 이 저장소로 이전하고, 수동 갱신용 대화형 `run-scrapers.bat`와 향후 정기 CI 실행을 위한 크로스 플랫폼 갱신 및 읽기 전용 검사 명령을 추가
-* `개선` 스크레이퍼에서 Puppeteer와 Chrome 의존성을 제거하고 공식 정적 소스 분석, 보존 경계 및 출력 검증을 한곳에 모았으며 타임스탬프만 바뀐 경우의 불필요한 재작성을 방지
-* `개선` 내장 데이터를 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03, 9.4.0-rc02 및 9.3.2, Android Studio Rabbit, KSP 2.3.11까지 갱신
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

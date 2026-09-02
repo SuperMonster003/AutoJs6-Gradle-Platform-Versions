@@ -5,6 +5,16 @@
   "changelog_label_improvement": "개선",
   "changelog_label_dependency": "의존성",
   "$data": {
+    "v1.7.1": {
+      "released_date": "2026/09/02",
+      "fix": [
+        "각 IDE 호환성 매핑의 가장 오래된 항목을 중앙 지원 하한으로 강제함. 소비 측 `MIN_SUPPORTED_*_IDE_VERSION` 값은 이 범위를 더 좁힐 수만 있으며, 지원되지 않는 이전 IDE를 Gradle 전용 대체 경로로 보낼 수 없도록 수정"
+      ],
+      "improvement": [
+        "충족된 AGP 최소 제약은 기계 판독 가능한 결과로 유지하되 일반적인 성공 빌드 요약에는 표시하지 않도록 변경. 비호환 오류에는 감지된 IDE 버전과 모든 요구 사항 출처를 포함",
+        "내장 호환성 데이터를 AutoJs6 공식 소비 프로젝트의 권위 있는 출처로 명확히 함. `gradle/data` 재정의는 이전 버전 호환성 또는 임시 진단 용도로만 유지"
+      ]
+    },
     "v1.7.0": {
       "released_date": "2026/09/02",
       "hint": [

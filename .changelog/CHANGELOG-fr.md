@@ -23,6 +23,14 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.7.1
+
+###### 2026/09/02
+
+* `Correctif` La plus ancienne entrée de chaque table de compatibilité IDE est désormais imposée comme borne inférieure centrale de support ; les valeurs `MIN_SUPPORTED_*_IDE_VERSION` du consommateur ne peuvent que la resserrer et ne peuvent plus faire basculer un ancien IDE non pris en charge vers le repli fondé uniquement sur Gradle
+* `Amélioration` Les contraintes minimales AGP satisfaites restent disponibles sous forme exploitable par machine sans apparaître dans les résumés ordinaires des builds réussis ; les erreurs d'incompatibilité incluent maintenant la version d'IDE détectée et toutes les sources d'exigences
+* `Amélioration` Précision que les données de compatibilité embarquées constituent la source de référence des consommateurs AutoJs6 officiels ; les substitutions dans `gradle/data` ne subsistent que pour la compatibilité historique ou les diagnostics temporaires
+
 # v1.7.0
 
 ###### 2026/09/02
