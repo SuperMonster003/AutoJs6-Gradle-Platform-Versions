@@ -40,7 +40,7 @@
   "p_data_outro": "Un fichier de même nom dans le répertoire `gradle/data` du consommateur reste prioritaire uniquement pour la compatibilité historique ou un diagnostic temporaire ; ce n'est pas le modèle officiel. Les projets officiels de l'hôte et des plugins AutoJs6 ne doivent pas placer ces substitutions sous contrôle de version. Les données de compatibilité doivent être mises à jour dans ce dépôt central et publiées avec une nouvelle version immuable du plugin",
   "h3_data_updates": "Mise à jour des données",
   "p_data_updates_intro": "Les développeurs peuvent mettre à jour toutes les données de compatibilité en exécutant le point d'entrée interactif depuis la racine du dépôt",
-  "p_data_updates_ci": "Le workflow planifié du dépôt utilise ce point d'entrée en lecture seule ; le mode update manuel ouvre une pull request de données après validation",
+  "p_data_updates_ci": "Le workflow quotidien actualise et valide les données, ne crée un commit et un tag de version corrective qu'en cas de changement sémantique, puis lance la chaîne protégée des deux registres et de GitHub Release ; les modes manuels check et update-pr restent disponibles",
   "p_data_updates_exit_codes": "`check-data` ne modifie pas l'espace de travail : le code de sortie `0` indique des données à jour, `2` indique des mises à jour disponibles et `1` indique un échec",
   "text_data_updates_details": "Pour la portée complète et les conventions d'exécution, consultez",
   "h3_release_history": "Historique des versions",

@@ -163,7 +163,7 @@ Los desarrolladores pueden actualizar todos los datos de compatibilidad ejecutan
 run-scrapers.bat
 ```
 
-El workflow programado del repositorio usa este punto de entrada de solo lectura; el modo update manual abre un pull request de datos después de validarlo:
+El workflow diario actualiza y valida los datos, crea un commit y una etiqueta de versión de parche solo cuando hay cambios semánticos y después inicia la cadena protegida de ambos registros y GitHub Release; siguen disponibles los modos manuales check y update-pr:
 
 ```bash
 npm --prefix .utils ci

@@ -163,7 +163,7 @@ src/main/resources/org/autojs/build/platform/data/
 run-scrapers.bat
 ```
 
-リポジトリの定期 workflow は次の読み取り専用チェックを使い、手動の update モードは検証後にデータの pull request を作成します:
+毎日の workflow はデータを更新して検証し、意味のある変更がある場合にのみパッチリリースのコミットとタグを作成して、保護された 2 つのレジストリと GitHub Release の公開チェーンを開始します。手動の check と update-pr モードも引き続き利用できます:
 
 ```bash
 npm --prefix .utils ci

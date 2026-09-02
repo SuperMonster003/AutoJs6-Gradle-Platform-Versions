@@ -205,6 +205,16 @@ plugins {
 - [x] M12.7 通过受保护工作流发布 `1.7.0`: Central deployment `1ad2cc8b-e5d7-49f8-898c-5252aff59a28` 在 Portal GitHub OAuth 返回 400 时改由官方 API 最终发布; Maven Central 与 Gradle Plugin Portal 的全新隔离消费者均成功在线解析并离线重放。
 - [x] M12.8 发布 `1.7.1`, 强制中央 IDE 支持下界并精简 AGP 约束摘要; Central deployment `6ad3643a-fa2c-4908-9bce-5df287f65321` 在 Portal GitHub OAuth 再次返回 400 后由受保护 API 工作流发布至 `PUBLISHED`, Maven Central-only 与 Plugin Portal-only 全新消费者均成功在线解析。
 
+### M13 — 受保护发布统一与周期数据自动发行
+
+- [x] M13.1 将 Maven Central 正式发行统一为 `USER_MANAGED` 上传、等待 `VALIDATED`、核对 UUID/名称/PURL、调用官方 API、等待 `PUBLISHED` 与公共解析的一条受保护工作流, 不再依赖 Portal 登录或人工选择 publishing type。
+- [x] M13.2 将平台数据定时任务提升为北京时间每日 09:17 自动刷新; 无语义变化时零修改结束, 发现本次生成或自最新标签后已合并的数据变化时进入补丁发行链。
+- [x] M13.3 增加稳定版本 patch 递增与 10 种语言发行元数据生成器; 自动对齐 `VERSION_BUILD`、`VERSION_NAME`、README 公共数据及全部 CHANGELOG, 并验证 Markdown 二次生成幂等。
+- [x] M13.4 为自动发行增加数据/文档白名单、未发行产品代码阻断、完整 Node/Gradle/sample/隔离 Maven 验证、版本坐标占用检查及远端 `master` 并发检查。
+- [x] M13.5 以单次原子 push 提交发行提交和注释标签, 再通过 `GITHUB_TOKEN` 显式触发标签上的受保护双仓库发布; 两端公共 marker 与实现构件均可解析后自动创建 GitHub Release。
+- [x] M13.6 保留 `check`、`update-pr`、`release` 三种手动数据模式, 并将 Central UUID 恢复表单扩展为检查、API 发布、公共同步及缺失 GitHub Release 补全的一站式入口。
+- [x] M13.7 补齐维护者文档、多语言 README 说明、发布恢复矩阵与本地 release-metadata 测试, 并使用 actionlint 验证全部工作流语法、表达式和嵌入式 shell。
+
 ## 四. 迁移期间发现的上游缺陷
 
 抽取过程中发现的原始 settings.gradle.kts 缺陷, 本项目已修正, 并已回移主项目:
@@ -244,6 +254,6 @@ plugins {
 
 ## 六. 后续展望 (不在本期范围)
 
-- 后续发行沿用已由 `v1.7.0` 与 `v1.7.1` 验证的受保护双目标工作流; Central Portal UI 不可用时使用 `Finalize Central deployment`, 仅在明确不需要最终人工门禁时选择 `AUTOMATIC`。
-- 观察周期数据检查的稳定性后, 再决定是否把当前的手动 update PR 提升为定时自动建 PR 或自动发版。
+- 观察每日自动数据链的运行时间、上游格式波动与发行频率, 必要时调整 cron 周期或增加连续失败通知; 正式仓库发布继续保留 `release` Environment 人工门禁。
+- 若未来需要完全无人值守发布, 应单独评估并明确决定是否移除 Required reviewer, 而不是在工作流代码中绕过现有保护。
 - 模块脚本改用 plugins DSL 的批量改造 (迁移脚本的前置条件, 见第五节)。
