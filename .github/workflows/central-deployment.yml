@@ -81,7 +81,10 @@ jobs:
             echo "::error title=Central name mismatch::Expected $expected_name but Central returned $deployment_name."
             exit 1
           fi
-          if ! jq -e --arg suffix "@${EXPECTED_VERSION}" '(.purls // []) | all(.[]; endswith($suffix))' <<< "$status_json" >/dev/null; then
+          jq -r '.purls[]? | "Central component: \(.)"' <<< "$status_json"
+          if ! jq -e --arg suffix "@${EXPECTED_VERSION}" \
+            '(.purls // []) | length > 0 and all(.[]; (split("?")[0] | endswith($suffix)))' \
+            <<< "$status_json" >/dev/null; then
             echo "::error title=Central version mismatch::At least one component does not match $EXPECTED_VERSION."
             exit 1
           fi
