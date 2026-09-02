@@ -16,14 +16,11 @@ on:
           - both
           - maven-central
           - gradle-plugin-portal
-      central_publishing_type:
-        description: USER_MANAGED waits for a final confirmation in Central Portal
+      complete_github_release:
+        description: Create the GitHub Release after both public registries can resolve this version
         required: true
-        default: USER_MANAGED
-        type: choice
-        options:
-          - USER_MANAGED
-          - AUTOMATIC
+        default: true
+        type: boolean
 
 permissions:
   contents: read
@@ -94,7 +91,7 @@ jobs:
   publish:
     needs: validate
     runs-on: ubuntu-latest
-    timeout-minutes: 45
+    timeout-minutes: 150
     environment:
       name: release
 
@@ -145,13 +142,11 @@ jobs:
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         run: bash ./gradlew centralBundle --no-daemon --stacktrace
 
-      - name: Upload and validate Maven Central deployment
+      - name: Upload, validate, and publish Maven Central deployment through the API
         if: inputs.targets == 'both' || inputs.targets == 'maven-central'
-        id: central
         env:
           CENTRAL_USERNAME: ${{ secrets.CENTRAL_USERNAME }}
           CENTRAL_PASSWORD: ${{ secrets.CENTRAL_PASSWORD }}
-          CENTRAL_PUBLISHING_TYPE: ${{ inputs.central_publishing_type }}
           RELEASE_VERSION: ${{ inputs.version }}
         shell: bash
         run: |
@@ -164,46 +159,125 @@ jobs:
 
           central_auth="$(printf '%s:%s' "$CENTRAL_USERNAME" "$CENTRAL_PASSWORD" | base64 | tr -d '\n')"
           echo "::add-mask::$central_auth"
-          upload_url="https://central.sonatype.com/api/v1/publisher/upload?name=autojs6-gradle-platform-versions-${RELEASE_VERSION}&publishingType=${CENTRAL_PUBLISHING_TYPE}"
+          expected_name="autojs6-gradle-platform-versions-${RELEASE_VERSION}"
+          upload_url="https://central.sonatype.com/api/v1/publisher/upload?name=${expected_name}&publishingType=USER_MANAGED"
           deployment_id="$(curl --fail-with-body --silent --show-error \
             --request POST \
             --header "Authorization: Bearer $central_auth" \
             --form "bundle=@${bundles[0]};type=application/octet-stream" \
             "$upload_url")"
 
-          if [[ ! "$deployment_id" =~ ^[0-9a-fA-F-]{36}$ ]]; then
+          if [[ ! "$deployment_id" =~ ^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$ ]]; then
             echo "::error title=Unexpected Central response::The upload did not return a deployment UUID."
             exit 1
           fi
-          echo "deployment_id=$deployment_id" >> "$GITHUB_OUTPUT"
           echo "Maven Central deployment: $deployment_id" >> "$GITHUB_STEP_SUMMARY"
+          echo "Central deployment UUID: $deployment_id"
 
-          expected_state="VALIDATED"
-          if [[ "$CENTRAL_PUBLISHING_TYPE" == "AUTOMATIC" ]]; then
-            expected_state="PUBLISHED"
-          fi
-
-          for attempt in {1..120}; do
-            status_json="$(curl --fail-with-body --silent --show-error \
+          status_url="https://central.sonatype.com/api/v1/publisher/status?id=${deployment_id}"
+          read_status() {
+            curl --fail-with-body --silent --show-error \
               --request POST \
               --header "Authorization: Bearer $central_auth" \
-              "https://central.sonatype.com/api/v1/publisher/status?id=${deployment_id}")"
-            state="$(jq -r '.deploymentState' <<< "$status_json")"
-            echo "Central deployment state: $state"
-            if [[ "$state" == "$expected_state" ]]; then
-              if [[ "$state" == "VALIDATED" ]]; then
-                echo "Central validated the bundle. Publish deployment $deployment_id in the Portal after reviewing it." >> "$GITHUB_STEP_SUMMARY"
-              fi
-              exit 0
+              "$status_url"
+          }
+
+          deployment_state=""
+          for attempt in {1..160}; do
+            status_json="$(read_status)"
+            deployment_state="$(jq -r '.deploymentState' <<< "$status_json")"
+            echo "Central deployment state: $deployment_state"
+            if [[ "$deployment_state" == "VALIDATED" || "$deployment_state" == "PUBLISHED" ]]; then
+              break
             fi
-            if [[ "$state" == "FAILED" ]]; then
+            if [[ "$deployment_state" == "FAILED" ]]; then
               jq '.errors // .' <<< "$status_json"
               exit 1
             fi
             sleep 15
           done
+          if [[ "$deployment_state" != "VALIDATED" && "$deployment_state" != "PUBLISHED" ]]; then
+            echo "::error title=Central timeout::Deployment $deployment_id did not validate within 40 minutes."
+            exit 1
+          fi
 
-          echo "::error title=Central timeout::Deployment $deployment_id did not reach $expected_state within 30 minutes."
+          if ! jq -e --arg id "$deployment_id" '.deploymentId == $id' <<< "$status_json" >/dev/null; then
+            echo "::error title=Central identity mismatch::The status response did not contain the uploaded deployment ID."
+            exit 1
+          fi
+          deployment_name="$(jq -r '.deploymentName' <<< "$status_json")"
+          if [[ "$deployment_name" != "$expected_name" ]]; then
+            echo "::error title=Central name mismatch::Expected $expected_name but Central returned $deployment_name."
+            exit 1
+          fi
+          jq -r '.purls[]? | "Central component: \(.)"' <<< "$status_json"
+          if ! jq -e --arg suffix "@${RELEASE_VERSION}" \
+            '(.purls // []) | length > 0 and all(.[]; (split("?")[0] | endswith($suffix)))' \
+            <<< "$status_json" >/dev/null; then
+            echo "::error title=Central version mismatch::At least one uploaded component does not match $RELEASE_VERSION."
+            exit 1
+          fi
+
+          if [[ "$deployment_state" == "VALIDATED" ]]; then
+            publish_code="$(curl --silent --show-error \
+              --request POST \
+              --header "Authorization: Bearer $central_auth" \
+              --output /dev/null \
+              --write-out '%{http_code}' \
+              "https://central.sonatype.com/api/v1/publisher/deployment/${deployment_id}")"
+            if [[ "$publish_code" != "204" ]]; then
+              echo "::error title=Central publish rejected::Expected HTTP 204 but received $publish_code."
+              exit 1
+            fi
+          fi
+
+          for attempt in {1..160}; do
+            status_json="$(read_status)"
+            deployment_state="$(jq -r '.deploymentState' <<< "$status_json")"
+            echo "Central deployment state: $deployment_state"
+            if [[ "$deployment_state" == "PUBLISHED" ]]; then
+              echo "Central API final state: PUBLISHED" >> "$GITHUB_STEP_SUMMARY"
+              break
+            fi
+            if [[ "$deployment_state" == "FAILED" ]]; then
+              jq '.errors // .' <<< "$status_json"
+              exit 1
+            fi
+            sleep 15
+          done
+          if [[ "$deployment_state" != "PUBLISHED" ]]; then
+            echo "::error title=Central timeout::Deployment $deployment_id did not reach PUBLISHED within 40 minutes."
+            exit 1
+          fi
+
+      - name: Wait for public Maven Central artifacts
+        if: inputs.targets == 'both' || inputs.targets == 'maven-central'
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          base="https://repo.maven.apache.org/maven2/io/github/supermonster003"
+          implementation="$base/autojs6-gradle-platform-versions/$RELEASE_VERSION/autojs6-gradle-platform-versions-$RELEASE_VERSION"
+          marker="$base/autojs6-platform-versions/io.github.supermonster003.autojs6-platform-versions.gradle.plugin/$RELEASE_VERSION/io.github.supermonster003.autojs6-platform-versions.gradle.plugin-$RELEASE_VERSION.pom"
+          urls=("$implementation.pom" "$implementation.jar" "$marker")
+
+          for attempt in {1..120}; do
+            available=true
+            for url in "${urls[@]}"; do
+              if ! curl --fail --silent --output /dev/null "$url"; then
+                available=false
+                break
+              fi
+            done
+            if [[ "$available" == "true" ]]; then
+              printf 'Maven Central public artifact: %s\n' "${urls[@]}" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "Waiting for Maven Central public propagation (attempt $attempt/120)."
+            sleep 15
+          done
+
+          echo "::error title=Central propagation timeout::Release $RELEASE_VERSION is PUBLISHED but is not publicly resolvable after 30 minutes."
           exit 1
 
       - name: Publish to Gradle Plugin Portal
@@ -215,8 +289,123 @@ jobs:
           SIGNING_PASSWORD: ${{ secrets.SIGNING_PASSWORD }}
         run: bash ./gradlew publishPlugins --no-daemon --stacktrace
 
+      - name: Wait for public Gradle Plugin Portal artifacts
+        if: inputs.targets == 'both' || inputs.targets == 'gradle-plugin-portal'
+        env:
+          RELEASE_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          base="https://plugins.gradle.org/m2/io/github/supermonster003"
+          implementation="$base/autojs6-gradle-platform-versions/$RELEASE_VERSION/autojs6-gradle-platform-versions-$RELEASE_VERSION.jar"
+          marker="$base/autojs6-platform-versions/io.github.supermonster003.autojs6-platform-versions.gradle.plugin/$RELEASE_VERSION/io.github.supermonster003.autojs6-platform-versions.gradle.plugin-$RELEASE_VERSION.pom"
+          urls=("$implementation" "$marker")
+
+          for attempt in {1..80}; do
+            available=true
+            for url in "${urls[@]}"; do
+              if ! curl --fail --silent --output /dev/null "$url"; then
+                available=false
+                break
+              fi
+            done
+            if [[ "$available" == "true" ]]; then
+              printf 'Gradle Plugin Portal public artifact: %s\n' "${urls[@]}" >> "$GITHUB_STEP_SUMMARY"
+              exit 0
+            fi
+            echo "Waiting for Plugin Portal public propagation (attempt $attempt/80)."
+            sleep 15
+          done
+
+          echo "::error title=Plugin Portal propagation timeout::Release $RELEASE_VERSION is not publicly resolvable after 20 minutes."
+          exit 1
+
       - name: Summarize publication
         env:
           RELEASE_VERSION: ${{ inputs.version }}
           TARGETS: ${{ inputs.targets }}
         run: echo "Release $RELEASE_VERSION completed the protected $TARGETS publishing path." >> "$GITHUB_STEP_SUMMARY"
+
+  github-release:
+    needs:
+      - validate
+      - publish
+    if: inputs.complete_github_release && needs.validate.result == 'success' && needs.publish.result == 'success'
+    runs-on: ubuntu-latest
+    timeout-minutes: 35
+    permissions:
+      contents: write
+
+    steps:
+      - name: Check out selected release tag
+        uses: actions/checkout@de0fac2e4500dabe0009e67214ff5f5447ce83dd # v6.0.2
+        with:
+          fetch-depth: 0
+
+      - name: Verify both registries and create GitHub Release
+        env:
+          GH_TOKEN: ${{ github.token }}
+          RELEASE_VERSION: ${{ inputs.version }}
+        shell: bash
+        run: |
+          release_tag="v${RELEASE_VERSION}"
+          central_base="https://repo.maven.apache.org/maven2/io/github/supermonster003"
+          portal_base="https://plugins.gradle.org/m2/io/github/supermonster003"
+          marker_path="autojs6-platform-versions/io.github.supermonster003.autojs6-platform-versions.gradle.plugin/$RELEASE_VERSION/io.github.supermonster003.autojs6-platform-versions.gradle.plugin-$RELEASE_VERSION.pom"
+          implementation_path="autojs6-gradle-platform-versions/$RELEASE_VERSION/autojs6-gradle-platform-versions-$RELEASE_VERSION.jar"
+          urls=(
+            "$central_base/$marker_path"
+            "$central_base/$implementation_path"
+            "$portal_base/$marker_path"
+            "$portal_base/$implementation_path"
+          )
+
+          available=false
+          for attempt in {1..120}; do
+            available=true
+            for url in "${urls[@]}"; do
+              if ! curl --fail --silent --output /dev/null "$url"; then
+                available=false
+                break
+              fi
+            done
+            if [[ "$available" == "true" ]]; then
+              break
+            fi
+            echo "Waiting for all public registry artifacts (attempt $attempt/120)."
+            sleep 15
+          done
+          if [[ "$available" != "true" ]]; then
+            echo "::error title=Public registry verification failed::Both registries must resolve $RELEASE_VERSION before a GitHub Release is created."
+            exit 1
+          fi
+
+          if gh release view "$release_tag" --repo "$GITHUB_REPOSITORY" >/dev/null 2>&1; then
+            echo "GitHub Release $release_tag already exists; no mutation was necessary." >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+
+          notes_file="$(mktemp)"
+          awk -v heading="# ${release_tag}" '
+            $0 == heading { found = 1; next }
+            found && /^# v[0-9]/ { exit }
+            found { print }
+          ' .changelog/CHANGELOG-en.md > "$notes_file"
+          if ! grep -q '[^[:space:]]' "$notes_file"; then
+            echo "::error title=Release notes missing::Could not extract $release_tag from the English changelog."
+            exit 1
+          fi
+          cat >> "$notes_file" <<EOF
+
+          ## Published packages
+
+          - [Maven Central](https://central.sonatype.com/artifact/io.github.supermonster003/autojs6-gradle-platform-versions/$RELEASE_VERSION)
+          - [Gradle Plugin Portal](https://plugins.gradle.org/plugin/io.github.supermonster003.autojs6-platform-versions/$RELEASE_VERSION)
+          EOF
+
+          gh release create "$release_tag" \
+            --repo "$GITHUB_REPOSITORY" \
+            --title "$release_tag" \
+            --notes-file "$notes_file" \
+            --verify-tag \
+            --latest
+          echo "Created GitHub Release $release_tag after both registries became public." >> "$GITHUB_STEP_SUMMARY"
