@@ -21,7 +21,11 @@ import org.gradle.util.GradleVersion
  *     dependencies { classpath("io.github.supermonster003:autojs6-gradle-platform-versions:x.y.z") }
  * }
  *
- * val versions = PlatformVersionsFacade.decide(rootDir, gradle.gradleVersion)
+ * val versions = PlatformVersionsFacade.decide(
+ *     rootDir,
+ *     gradle.gradleVersion,
+ *     gradle.startParameter.projectProperties,
+ * )
  * ```
  *
  * zh-CN: 供消费端 settings 脚本在脚本体中直接调用的入口. 消费端需要把 AGP 放到自己的
@@ -34,6 +38,19 @@ object PlatformVersionsFacade {
     /** Runs the full decision for the project rooted at [rootDir]. */
     fun decide(rootDir: File, gradleVersion: String): PlatformVersionsExtension =
         decide(rootDir, gradleVersion, SystemProperties.ofSystem())
+
+    /**
+     * Runs the full decision while preserving IDE identity supplied as Gradle `-P` values.
+     *
+     * Existing consumers may keep using the two-argument overload. Settings scripts that
+     * call the facade directly should pass `gradle.startParameter.projectProperties` here.
+     */
+    fun decide(
+        rootDir: File,
+        gradleVersion: String,
+        gradleProjectProperties: Map<String, String>,
+    ): PlatformVersionsExtension =
+        decide(rootDir, gradleVersion, SystemProperties.ofSystem(gradleProjectProperties))
 
     /** Injectable counterpart used to verify host-specific decisions deterministically. */
     internal fun decide(

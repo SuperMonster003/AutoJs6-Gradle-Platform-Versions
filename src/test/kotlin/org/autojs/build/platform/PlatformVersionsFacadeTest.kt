@@ -116,4 +116,30 @@ class PlatformVersionsFacadeTest {
             assertTrue(error.message!!.contains("central compatibility range"))
         }
     }
+
+    @Test
+    fun `Gradle project properties select latest Quail 3 AGP patch`() {
+        rootDir.resolve("version.properties").writeText("")
+
+        val versions = PlatformVersionsFacade.decide(
+            rootDir = rootDir.toFile(),
+            gradleVersion = "9.5.0",
+            gradleProjectProperties = mapOf(
+                "idea.paths.selector" to "AndroidStudio2026.1",
+                "idea.version" to "2026.1",
+                "idea.vendor.name" to "Google",
+                "android.studio.version" to "261.26222.65.2613.16025427",
+                "android.ide.strict.version" to "2026.1.3.8",
+            ),
+        )
+
+        assertEquals("2026.1.3.8", versions.platform.version)
+        assertEquals("9.3.2", versions.agpVersion)
+        assertTrue(
+            versions.versionInfo.any {
+                it.contains("com.android.tools.build:gradle:9.3.2") &&
+                        it.contains(Identifier.NEAREST_LOWER_MATCHED_SUFFIX)
+            },
+        )
+    }
 }

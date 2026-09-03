@@ -31,7 +31,11 @@ import org.gradle.kotlin.dsl.extra
 class PlatformVersionsSettingsPlugin : Plugin<Settings> {
 
     override fun apply(settings: Settings) {
-        val versions = PlatformVersionsFacade.decide(settings.rootDir, settings.gradle.gradleVersion)
+        val versions = PlatformVersionsFacade.decide(
+            settings.rootDir,
+            settings.gradle.gradleVersion,
+            settings.gradle.startParameter.projectProperties,
+        )
 
         settings.extensions.add(PlatformVersionsExtension::class.java, EXTENSION_NAME, versions)
         settings.gradle.extra.set("platform", versions.platform)

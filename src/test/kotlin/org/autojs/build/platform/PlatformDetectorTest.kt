@@ -81,4 +81,30 @@ class PlatformDetectorTest {
         assertEquals("2025.2.3", none.minSupportedVersion)
         none.ensureMinimalIdeVersion()
     }
+
+    @Test
+    fun `Android Studio exact build wins over truncated IDEA version`() {
+        val platform = detect(
+            "idea.paths.selector" to "AndroidStudio2026.1",
+            "idea.version" to "2026.1",
+            "idea.vendor.name" to "Google",
+            "android.studio.version" to "261.26222.65.2613.16025427",
+        )
+
+        assertEquals("2026.1.3.8", platform.version)
+        assertEquals("Android Studio Quail", platform.fullName)
+    }
+
+    @Test
+    fun `Android Studio strict version preserves patch line for an unknown build`() {
+        val platform = detect(
+            "idea.paths.selector" to "AndroidStudio2026.1",
+            "idea.version" to "2026.1",
+            "idea.vendor.name" to "Google",
+            "android.studio.version" to "261.99999.999.2613.99999999",
+            "android.ide.strict.version" to "2026.1.3.8",
+        )
+
+        assertEquals("2026.1.3.8", platform.version)
+    }
 }
