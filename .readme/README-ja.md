@@ -63,6 +63,7 @@
 - Temurin と素のコマンドラインを明示的にヘッドレス環境として扱い、IDE バージョン表ではなく Gradle の互換性から AGP を選択。
 - IDE/Gradle の上限と、Android API レベル、KSP、プロジェクトが要求する AGP の下限を交差させ、互換バージョンがなければ早期にエラー。
 - R8 バージョンを決定し、AGP に同梱された R8 が十分に新しくない場合にのみ外部の R8 を導入。
+- 自動選択した KGP をルートプロジェクトの buildscript classpath に追加し、AGP 9 の組み込み Kotlin が古い同梱版ではなく、そのコンパイラと JVM target 対応を実際に使用。
 - 互換性データをプラグインに同梱し、既定の唯一のデータソースとします。AutoJs6 の公式ホストおよびプラグインプロジェクトは、利用側の `gradle/data` にコピーを保持しません。
 - `version.properties` の `OVERRIDDEN_*` という避難口を用意しており、決定性のあるビルドが必要な場合はバージョンを直接固定可能。
 - README と CHANGELOG はスペイン語、フランス語、ロシア語、アラビア語、日本語、韓国語、英語、簡体中国語、繁体中国語 (香港)、繁体中国語 (台湾) に対応。
@@ -97,11 +98,10 @@ plugins {
 ```kotlin
 plugins {
     id("com.android.application") version System.getProperty("gradle.agp.version")
-    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
 
-決定結果は `gradle.extra["platformVersions"]` からオブジェクトとして読み取ることもできます.
+Settings プラグインは選択した KGP をルートプロジェクトの buildscript classpath に自動追加します。AGP 9 の組み込み Kotlin を使う場合は `org.jetbrains.kotlin.android` を重ねて適用しないでください。決定結果は `gradle.extra["platformVersions"]` からオブジェクトとして読み取れます.
 
 ******
 

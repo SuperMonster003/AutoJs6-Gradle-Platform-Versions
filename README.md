@@ -63,6 +63,7 @@
 - Temurin 与裸命令行不再使用平台版本映射, 而是显式按 Gradle 兼容性自动选择 AGP.
 - 把 Android API、KSP 及项目声明的最低 AGP 作为下界, 与 IDE/Gradle 上界求交; 无兼容交集时提前报错.
 - 决定 R8 版本, 仅在 AGP 自带的 R8 不够新时才引入外部 R8.
+- 把自动选择的 KGP 注入根项目 buildscript classpath, 使 AGP 9 内置 Kotlin 实际使用该编译器及其 JVM target 能力, 而非较旧的捆绑版本.
 - 兼容数据随插件分发并作为默认的唯一数据源; AutoJs6 官方宿主和插件项目不在消费端重复维护 `gradle/data` 副本.
 - 保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生门, 需要确定性构建时可直接钉死版本.
 - README 与 CHANGELOG 支持西班牙语/法语/俄语/阿拉伯语/日语/韩语/英语/简体中文/香港繁体/台湾繁体.
@@ -97,11 +98,10 @@ plugins {
 ```kotlin
 plugins {
     id("com.android.application") version System.getProperty("gradle.agp.version")
-    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
 
-决策结果也可通过 `gradle.extra["platformVersions"]` 以对象形式读取.
+Settings 插件会自动把选定的 KGP 加入根项目 buildscript classpath; 使用 AGP 9 内置 Kotlin 时不要再应用 `org.jetbrains.kotlin.android`. 决策结果也可通过 `gradle.extra["platformVersions"]` 以对象形式读取.
 
 ******
 

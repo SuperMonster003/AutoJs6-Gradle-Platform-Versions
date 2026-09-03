@@ -63,6 +63,7 @@ Désormais publié comme plugin Settings, il ne demande plus qu'une dizaine de l
 - Traitement explicite de Temurin et de la ligne de commande comme environnements sans IDE, avec sélection d'AGP selon la compatibilité Gradle plutôt que selon une table de versions d'IDE.
 - Intersection de la limite supérieure IDE/Gradle avec les versions minimales d'AGP requises par le niveau d'API Android, KSP et le projet, avec échec anticipé lorsqu'aucune version n'est compatible.
 - Détermination de la version de R8, un R8 externe n'étant introduit que lorsque celui fourni avec AGP n'est pas assez récent.
+- Ajout automatique du KGP sélectionné au classpath buildscript du projet racine, afin que le Kotlin intégré d'AGP 9 utilise ce compilateur et sa prise en charge des cibles JVM plutôt qu'une version embarquée plus ancienne.
 - Distribue les données de compatibilité avec le plugin comme source de données unique par défaut ; les projets officiels de l'hôte et des plugins AutoJs6 ne conservent aucune copie de `gradle/data` côté consommateur.
 - Porte de sortie `OVERRIDDEN_*` conservée dans `version.properties`, pour figer directement les versions lorsqu'un build déterministe est requis.
 - README et CHANGELOG disponibles en espagnol/français/russe/arabe/japonais/coréen/anglais/chinois simplifié/chinois traditionnel de Hong Kong/chinois traditionnel de Taïwan.
@@ -97,11 +98,10 @@ Les scripts de module peuvent ensuite déclarer les plugins via le plugins DSL, 
 ```kotlin
 plugins {
     id("com.android.application") version System.getProperty("gradle.agp.version")
-    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
 
-Le résultat de la décision est également lisible sous forme d'objet via `gradle.extra["platformVersions"]`.
+Le plugin Settings ajoute automatiquement le KGP sélectionné au classpath buildscript du projet racine ; avec le Kotlin intégré d'AGP 9, n'appliquez pas également `org.jetbrains.kotlin.android`. Le résultat de la décision est lisible sous forme d'objet via `gradle.extra["platformVersions"]`.
 
 ******
 

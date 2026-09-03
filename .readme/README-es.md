@@ -63,6 +63,7 @@ Convertido en un plugin de Settings publicable, a los proyectos que lo consumen 
 - Tratamiento explícito de Temurin y la línea de comandos como entornos sin IDE, eligiendo AGP según la compatibilidad con Gradle y no mediante una tabla de versiones de IDE.
 - Intersección del límite superior de IDE/Gradle con los requisitos mínimos de AGP derivados del nivel de API de Android, KSP y el proyecto, con error temprano si no hay una versión compatible.
 - Decisión de la versión de R8, incorporando un R8 externo solo cuando el que trae AGP no es lo bastante reciente.
+- Incorpora automáticamente el KGP seleccionado al classpath buildscript del proyecto raíz, para que el Kotlin integrado de AGP 9 use ese compilador y su compatibilidad con destinos JVM en lugar de una versión incluida más antigua.
 - Distribuye los datos de compatibilidad con el plugin como fuente de datos predeterminada única; los proyectos oficiales del host y de los plugins de AutoJs6 no mantienen copias de `gradle/data` en el consumidor.
 - Se conserva la vía de escape `OVERRIDDEN_*` de `version.properties`, para fijar versiones concretas cuando se necesita una compilación determinista.
 - README y CHANGELOG están disponibles en español/francés/ruso/árabe/japonés/coreano/inglés/chino simplificado/chino tradicional de Hong Kong/chino tradicional de Taiwán.
@@ -97,11 +98,10 @@ Los scripts de módulo pueden declarar después los plugins mediante el plugins 
 ```kotlin
 plugins {
     id("com.android.application") version System.getProperty("gradle.agp.version")
-    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
 
-El resultado de la decisión también puede leerse como objeto mediante `gradle.extra["platformVersions"]`.
+El plugin de Settings añade automáticamente el KGP seleccionado al classpath buildscript del proyecto raíz; al usar el Kotlin integrado de AGP 9, no aplique también `org.jetbrains.kotlin.android`. El resultado de la decisión puede leerse como objeto mediante `gradle.extra["platformVersions"]`.
 
 ******
 

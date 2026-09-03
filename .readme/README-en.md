@@ -63,6 +63,7 @@ Now that it ships as a publishable Settings plugin, a downstream project needs l
 - Treats Temurin and the bare command line as explicitly headless, selecting AGP from Gradle compatibility instead of an IDE-version map.
 - Intersects the IDE/Gradle upper boundary with minimum AGP requirements from Android API levels, KSP and the project, failing early when no compatible version exists.
 - Decides the R8 version, pulling in an external R8 only when the R8 bundled with AGP is not new enough.
+- Places the automatically selected KGP on the root buildscript classpath, so AGP 9 built-in Kotlin uses that compiler and its JVM-target support instead of an older bundled version.
 - Ships compatibility data with the plugin as the single default data source; official AutoJs6 host and plugin projects do not maintain consumer-side `gradle/data` copies.
 - Keeps the `OVERRIDDEN_*` escape hatch in `version.properties`, so versions can be pinned outright whenever a deterministic build is needed.
 - README and CHANGELOG are available in Spanish/French/Russian/Arabic/Japanese/Korean/English/Simplified Chinese/Traditional Chinese (Hong Kong)/Traditional Chinese (Taiwan).
@@ -97,11 +98,10 @@ Module scripts can then declare the plugins through the plugins DSL, with the ve
 ```kotlin
 plugins {
     id("com.android.application") version System.getProperty("gradle.agp.version")
-    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
 
-The decision results can also be read as an object through `gradle.extra["platformVersions"]`.
+The Settings plugin automatically adds the selected KGP to the root buildscript classpath; do not also apply `org.jetbrains.kotlin.android` when using AGP 9 built-in Kotlin. The decision results can be read as an object through `gradle.extra["platformVersions"]`.
 
 ******
 

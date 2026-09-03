@@ -16,6 +16,7 @@
     "Temurin 與裸命令行不再使用平台版本映射, 而是明確按 Gradle 兼容性自動選擇 AGP.",
     "把 Android API、KSP 及項目聲明的最低 AGP 作為下界, 與 IDE/Gradle 上界求交; 無兼容交集時提前報錯.",
     "決定 R8 版本, 僅在 AGP 自帶的 R8 不夠新時才引入外部 R8.",
+    "把自動選擇的 KGP 注入根項目 buildscript classpath, 使 AGP 9 內置 Kotlin 實際使用該編譯器及其 JVM target 能力, 而非較舊的捆綁版本.",
     "兼容數據隨插件分發並作為默認的唯一數據源; AutoJs6 官方宿主和插件項目不在消費端重複維護 `gradle/data` 副本.",
     "保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生門, 需要確定性構建時可直接釘死版本.",
     "README 與 CHANGELOG 支援西班牙語/法語/俄語/阿拉伯語/日語/韓語/英語/簡體中文/香港繁體/台灣繁體."
@@ -23,7 +24,7 @@
   "h3_usage": "使用方法",
   "p_usage_intro": "在消費端項目的 `settings.gradle.kts` 裡應用插件, 位置需在 `includeBuild` 之前",
   "p_usage_consume": "模塊腳本隨後即可用 plugins DSL 聲明插件, 版本取自決策結果",
-  "p_usage_note": "決策結果也可通過 `gradle.extra[\"platformVersions\"]` 以對象形式讀取",
+  "p_usage_note": "Settings 插件會自動把選定的 KGP 加入根項目 buildscript classpath; 使用 AGP 9 內置 Kotlin 時不要再應用 `org.jetbrains.kotlin.android`. 決策結果也可通過 `gradle.extra[\"platformVersions\"]` 以對象形式讀取",
   "h3_decision_flow": "決策流程",
   "p_decision_flow_intro": "AGP 版本的決定過程分為三步",
   "decision_steps": [
