@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
     }
 }
 
@@ -188,6 +188,13 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `Corrección` El plugin de Settings ahora coloca el KGP seleccionado automáticamente en el classpath buildscript raíz antes de resolver los plugins del proyecto; así, el Kotlin integrado de AGP 9 deja de usar el KGP 2.2.10 incluido y de rechazar el destino JVM 25 con JDK 25
+* `Mejora` Se añadió una aserción de consumidor AGP sin plugin Kotlin explícito que comprueba que el KGP seleccionado sea el realmente resuelto en el classpath raíz; Accessibility Compat se verificó con Gradle 9.5/AGP 9.3.2 en JDK 25 y 26 mediante pruebas unitarias, lint, compilaciones APK y 28 pruebas en cuatro dispositivos
+
 # v1.7.2
 
 ###### 2026/09/03
@@ -202,18 +209,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 * `Corrección` Se impone la entrada más antigua de cada mapa de compatibilidad de IDE como límite inferior central de soporte; los valores `MIN_SUPPORTED_*_IDE_VERSION` del consumidor solo pueden restringirlo y ya no pueden desviar IDE antiguos no compatibles al retorno basado únicamente en Gradle
 * `Mejora` Los requisitos mínimos de AGP satisfechos siguen disponibles como resultado legible por máquinas sin aparecer en los resúmenes rutinarios de compilaciones correctas; los errores de incompatibilidad ahora incluyen la versión de IDE detectada y todas las fuentes de requisitos
 * `Mejora` Se aclara que los datos de compatibilidad integrados son la fuente autorizada para los consumidores oficiales de AutoJs6; las sustituciones en `gradle/data` se conservan solo por compatibilidad heredada o para diagnósticos temporales
-
-# v1.7.0
-
-###### 2026/09/02
-
-* `Aviso` Las compilaciones normales deben declarar sus niveles de SDK y, solo cuando sea necesario, `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; reserve `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` para pruebas deliberadas de una versión exacta o como vía de escape excepcional
-* `Función` La selección de AGP ahora cruza los límites inferiores de Android API, del proyecto y de KSP con los límites superiores del Gradle y el IDE activos, e indica el origen cuando no existe una versión compatible
-* `Función` Se añadieron flujos de GitHub Actions para compilaciones con Temurin, comprobaciones periódicas de datos de compatibilidad o PR de actualización y publicación protegida por etiqueta y aprobación en Maven Central y Gradle Plugin Portal
-* `Corrección` Las compilaciones con Temurin y desde la línea de comandos ya no consultan los antiguos mapeos de JDK a AGP, por lo que JDK `21.0.6+7` no puede elegir silenciosamente AGP 8.7.3; Android API 36 exige ahora automáticamente AGP 8.9.1 o posterior
-* `Corrección` Se corrigieron los mapeos de IDE de dos componentes que eludían el límite de AGP de Gradle y el retroceso de Gradle antiguos a una versión de plataforma que no podían cargar
-* `Mejora` Se añadieron datos oficiales de Android API a AGP mínimo obtenidos de forma independiente y se actualizaron los datos de Android Studio, versiones de AGP y compatibilidad AGP/Gradle
-* `Mejora` La verificación se amplió a 70 pruebas JVM, pruebas de análisis e idempotencia en Node y una compilación de ejemplo real en CI con Temurin 17 que ejercita la selección automática sin interfaz
 
 ##### Para consultar un historial más completo, véase
 

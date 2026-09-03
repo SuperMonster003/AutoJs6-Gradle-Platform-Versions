@@ -23,6 +23,13 @@ CHANGELOG.md está disponible actualmente en los siguientes idiomas:
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `Corrección` El plugin de Settings ahora coloca el KGP seleccionado automáticamente en el classpath buildscript raíz antes de resolver los plugins del proyecto; así, el Kotlin integrado de AGP 9 deja de usar el KGP 2.2.10 incluido y de rechazar el destino JVM 25 con JDK 25
+* `Mejora` Se añadió una aserción de consumidor AGP sin plugin Kotlin explícito que comprueba que el KGP seleccionado sea el realmente resuelto en el classpath raíz; Accessibility Compat se verificó con Gradle 9.5/AGP 9.3.2 en JDK 25 y 26 mediante pruebas unitarias, lint, compilaciones APK y 28 pruebas en cuatro dispositivos
+
 # v1.7.2
 
 ###### 2026/09/03

@@ -23,6 +23,13 @@
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `修正` Settings プラグインがプロジェクトのプラグイン解決前に、自動選択した KGP をルート buildscript classpath へ追加するよう修正。AGP 9 の組み込み Kotlin が同梱 KGP 2.2.10 に留まり、JDK 25 で JVM target 25 を拒否する問題を解消
+* `改善` Kotlin プラグインを明示しない AGP 利用側サンプルに、選択した KGP とルート classpath の実解決版が一致することを確認するアサーションを追加。Accessibility Compat を Gradle 9.5/AGP 9.3.2、JDK 25/26 で単体テスト、lint、APK ビルド、4 台計 28 テストまで検証
+
 # v1.7.2
 
 ###### 2026/09/03

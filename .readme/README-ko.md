@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
     }
 }
 
@@ -188,6 +188,13 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `수정` Settings 플러그인이 프로젝트 플러그인 해석 전에 자동 선택한 KGP를 루트 buildscript classpath에 추가하도록 수정했습니다. 이에 따라 AGP 9 내장 Kotlin이 번들 KGP 2.2.10에 머물러 JDK 25에서 JVM target 25를 거부하지 않습니다
+* `개선` Kotlin 플러그인을 명시하지 않은 AGP 소비자 예제에 선택된 KGP와 루트 classpath에서 실제 해석된 버전이 일치하는지 확인하는 단언을 추가했습니다. Accessibility Compat를 Gradle 9.5/AGP 9.3.2와 JDK 25/26에서 단위 테스트, lint, APK 빌드 및 4대 기기의 총 28개 테스트로 검증했습니다
+
 # v1.7.2
 
 ###### 2026/09/03
@@ -202,18 +209,6 @@ npm --prefix .utils run check-data
 * `수정` 각 IDE 호환성 매핑의 가장 오래된 항목을 중앙 지원 하한으로 강제함. 소비 측 `MIN_SUPPORTED_*_IDE_VERSION` 값은 이 범위를 더 좁힐 수만 있으며, 지원되지 않는 이전 IDE를 Gradle 전용 대체 경로로 보낼 수 없도록 수정
 * `개선` 충족된 AGP 최소 제약은 기계 판독 가능한 결과로 유지하되 일반적인 성공 빌드 요약에는 표시하지 않도록 변경. 비호환 오류에는 감지된 IDE 버전과 모든 요구 사항 출처를 포함
 * `개선` 내장 호환성 데이터를 AutoJs6 공식 소비 프로젝트의 권위 있는 출처로 명확히 함. `gradle/data` 재정의는 이전 버전 호환성 또는 임시 진단 용도로만 유지
-
-# v1.7.0
-
-###### 2026/09/02
-
-* `힌트` 일반 빌드는 SDK 수준을 선언하고 필요한 경우에만 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`을 지정해야 함. `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION`은 의도적인 정확한 버전 테스트나 예외적인 탈출 경로 용도로 남겨 둘 것
-* `기능` AGP 선택 시 Android API, 프로젝트 및 KSP 하한과 현재 Gradle 및 IDE 상한의 교집합을 구하고 호환 버전이 없으면 제약 조건의 출처를 보고하도록 변경
-* `기능` Temurin 빌드, 정기 호환성 데이터 검사 또는 갱신 PR, 태그와 승인으로 보호되는 Maven Central 및 Gradle Plugin Portal 게시를 위한 GitHub Actions 워크플로를 추가
-* `수정` Temurin 및 순수 명령줄 빌드에서 더 이상 이전 JDK→AGP 매핑을 조회하지 않으므로 JDK `21.0.6+7`이 AGP 8.7.3을 조용히 선택할 수 없음. Android API 36은 이제 AGP 8.9.1 이상을 자동으로 요구
-* `수정` 두 요소 IDE 매핑이 Gradle의 AGP 상한을 우회하던 문제와 오래된 Gradle이 로드할 수 없는 플랫폼 버전으로 대체되던 문제를 수정
-* `개선` Android API별 최소 AGP 공식 데이터를 독립 스크레이핑 대상으로 추가하고 Android Studio, AGP 릴리스 및 AGP/Gradle 호환성 데이터를 갱신
-* `개선` 검증 범위를 JVM 테스트 70개, Node 파서 및 멱등성 테스트, 헤드리스 자동 선택을 실행하는 실제 Temurin 17 CI 예제 빌드까지 확대
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

@@ -23,6 +23,13 @@
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `修復` 確保 Settings 插件在根項目插件解析前把自動選擇的 KGP 加入 buildscript classpath; AGP 9 內置 Kotlin 不再停留在捆綁的 KGP 2.2.10, 因而不會在 JDK 25 下拒絕 JVM target 25
+* `優化` 新增未顯式請求 Kotlin 插件的 AGP 取用端示例斷言, 核對選擇的 KGP 與根 classpath 實際版本一致; 已在 Accessibility Compat 的 Gradle 9.5/AGP 9.3.2 上以 JDK 25/26 完成單元測試、lint、APK 構建及 4 台裝置共 28 項測試
+
 # v1.7.2
 
 ###### 2026/09/03
