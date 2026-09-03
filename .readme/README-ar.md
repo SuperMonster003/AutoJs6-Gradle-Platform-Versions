@@ -63,6 +63,7 @@
 - معاملة Temurin وسطر الأوامر المجرد صراحةً كبيئتين بلا IDE، واختيار AGP وفق توافق Gradle بدل جدول مرتبط بإصدار IDE.
 - تقاطع الحد الأعلى الذي يفرضه IDE وGradle مع الحدود الدنيا لـ AGP المستمدة من مستوى Android API وKSP والمشروع، والفشل مبكرًا عند غياب إصدار متوافق.
 - تحديد إصدار R8، فلا يُجلب R8 خارجي إلا إذا كان R8 المرافق لـ AGP غير حديث بما يكفي.
+- إضافة KGP المحدد تلقائيًا إلى buildscript classpath للمشروع الجذر، كي يستخدم Kotlin المدمج في AGP 9 ذلك المترجم ودعمه لأهداف JVM بدلًا من إصدار مضمّن أقدم.
 - تُوزَّع بيانات التوافق مع الإضافة بوصفها مصدر البيانات الوحيد افتراضيًا؛ ولا تحتفظ مشاريع مضيف AutoJs6 وإضافاته الرسمية بنسخ داخل `gradle/data` لدى المستهلك.
 - الإبقاء على مخرج الطوارئ `OVERRIDDEN_*` في `version.properties`، إذ يمكن تثبيت الإصدار مباشرة عند الحاجة إلى بناء حتمي.
 - يدعم ملفا README وCHANGELOG الإسبانية والفرنسية والروسية والعربية واليابانية والكورية والإنجليزية والصينية المبسطة والصينية التقليدية (هونغ كونغ) والصينية التقليدية (تايوان).
@@ -97,11 +98,10 @@ plugins {
 ```kotlin
 plugins {
     id("com.android.application") version System.getProperty("gradle.agp.version")
-    id("org.jetbrains.kotlin.android") version System.getProperty("gradle.kotlin.version")
 }
 ```
 
-ويمكن أيضًا قراءة نتيجة التحديد بوصفها كائنًا عبر `gradle.extra["platformVersions"]`.
+تضيف إضافة Settings تلقائيًا KGP المحدد إلى buildscript classpath للمشروع الجذر؛ وعند استخدام Kotlin المدمج في AGP 9 لا تطبق أيضًا `org.jetbrains.kotlin.android`. ويمكن قراءة نتيجة التحديد بوصفها كائنًا عبر `gradle.extra["platformVersions"]`.
 
 ******
 
