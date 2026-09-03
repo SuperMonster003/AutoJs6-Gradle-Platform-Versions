@@ -120,10 +120,33 @@ class PlatformDetector(
             else -> matched.first()
         }
         platform.version = when (platform) {
-            androidStudio -> parseAndroidStudioBuildToVersion() ?: parseVersion(platform)
+            androidStudio -> parseAndroidStudioVersion() ?: parseVersion(platform)
             else -> parseVersion(platform)
         }
         return platform
+    }
+
+    /**
+     * Uses Android Studio's exact build identity before its strict marketing version.
+     *
+     * Recent IDEs pass both values as Gradle project properties. The build map is the
+     * most authoritative source because it comes from the same scraped release data;
+     * `android.ide.strict.version` keeps patch-level identity when an unrecognised build
+     * appears before the next data refresh.
+     */
+    private fun parseAndroidStudioVersion(): String? {
+        val build = systemProperties.androidStudioVersion?.trim()?.takeIf { it.isNotEmpty() }
+
+        build
+            ?.let { dataSource.props("android-studio-build-version")[it] }
+            ?.let { return it }
+
+        systemProperties.androidIdeStrictVersion
+            ?.trim()
+            ?.takeIf(::isVersionLike)
+            ?.let { return it }
+
+        return build?.let(::parseAndroidStudioBuildNumber)
     }
 
     private fun parseVersion(platform: Platform): String {
@@ -167,10 +190,14 @@ class PlatformDetector(
      * e.g. "251.26094.121.2513.13991806" becomes "2025.1.3".
      */
     fun parseAndroidStudioBuildToVersion(): String? {
-        val build = systemProperties.androidStudioVersion ?: return null
+        val build = systemProperties.androidStudioVersion?.trim()?.takeIf { it.isNotEmpty() } ?: return null
 
         dataSource.props("android-studio-build-version")[build]?.let { return it }
 
+        return parseAndroidStudioBuildNumber(build)
+    }
+
+    private fun parseAndroidStudioBuildNumber(build: String): String? {
         val parts = build.split('.')
         val baseStr = parts.getOrNull(0) ?: return null
         val base = baseStr.toIntOrNull() ?: return null
@@ -189,5 +216,8 @@ class PlatformDetector(
 
         return if (patch != null && patch > 0) "$year.$minor.$patch" else "$year.$minor"
     }
+
+    private fun isVersionLike(value: String): Boolean =
+        value.matches(Regex("\\d+(?:\\.\\d+){1,3}(?:[-+][0-9A-Za-z.-]+)?"))
 
 }

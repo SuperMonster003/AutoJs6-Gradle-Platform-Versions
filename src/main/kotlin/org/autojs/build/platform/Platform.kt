@@ -89,7 +89,19 @@ enum class AgpSelectionMode {
     GRADLE_COMPATIBILITY,
 }
 
-/** The subset of system properties that identifies the build host. */
+/**
+ * The subset of JVM system and Gradle project properties that identifies the build host.
+ *
+ * Android Studio supplies some of its most precise identity values as Gradle `-P`
+ * arguments rather than JVM `-D` arguments. Callers using [ofSystem] with Gradle's
+ * project properties therefore get the complete IDE identity while existing callers
+ * that only need JVM properties retain the same behaviour.
+ *
+ * zh-CN: 用于识别构建宿主的 JVM 系统属性与 Gradle 项目属性子集. Android Studio
+ * 会把部分最精确的身份信息作为 Gradle `-P` 参数而不是 JVM `-D` 参数传入;
+ * 将 Gradle 项目属性交给 [ofSystem] 后即可保留完整 IDE 身份, 原有仅依赖 JVM
+ * 系统属性的调用方式则保持兼容.
+ */
 class SystemProperties(private val lookup: (String) -> String?) {
 
     val version: String? get() = lookup("idea.version")
@@ -108,9 +120,21 @@ class SystemProperties(private val lookup: (String) -> String?) {
 
     val androidStudioVersion: String? get() = lookup("android.studio.version")
 
+    val androidIdeStrictVersion: String? get() = lookup("android.ide.strict.version")
+
     companion object {
         /** Reads from the real JVM system properties. */
         fun ofSystem() = SystemProperties { System.getProperty(it) }
+
+        /**
+         * Reads Gradle project properties first, then falls back to JVM system properties.
+         *
+         * The precedence matches explicit `-P` input: if an IDE supplies a value through
+         * Gradle, a shorter JVM fallback (for example `idea.version=2026.1`) must not hide it.
+         */
+        fun ofSystem(gradleProjectProperties: Map<String, String>) = SystemProperties { key ->
+            gradleProjectProperties[key] ?: System.getProperty(key)
+        }
     }
 
 }
