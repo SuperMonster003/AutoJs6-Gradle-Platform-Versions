@@ -1,6 +1,13 @@
 <!--suppress HtmlDeprecatedAttribute, HttpUrlsUsage -->
 
 <div align="center">
+  <p>
+    <picture>
+      <source srcset="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/src/main/res/mipmap-night/banner.png?raw=true" media="(prefers-color-scheme: dark)" />
+      <img src="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/src/main/res/mipmap/banner.png?raw=true" alt="banner" border="0" width="512" />
+    </picture>
+  </p>
+
   <p>AutoJs6 생태계를 위해 AGP와 Kotlin 플러그인 버전을 자동으로 결정하는 Gradle Settings 플러그인</p>
 
   <p>
