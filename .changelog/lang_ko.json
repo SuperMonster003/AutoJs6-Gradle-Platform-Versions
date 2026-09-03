@@ -5,6 +5,15 @@
   "changelog_label_improvement": "개선",
   "changelog_label_dependency": "의존성",
   "$data": {
+    "v1.7.2": {
+      "released_date": "2026/09/03",
+      "fix": [
+        "Android Studio가 Gradle `-P`로 제공하는 식별 속성을 JVM 시스템 속성과 병합하여 Quail 3가 `2026.1`로 축약되고 AGP 9.2.1을 잘못 선택하거나 자동 JVM 대상 25를 거부하는 문제를 수정함"
+      ],
+      "improvement": [
+        "Gradle 프로젝트 속성을 명시적으로 전달하는 바이너리 호환 Facade 오버로드와 아직 수집되지 않은 IDE build를 위한 strict 버전 폴백을 추가함; Gradle 9.5/9.7 및 JDK 25/26의 Quail 3에서 AGP 9.3.2 자동 선택과 Kotlin/KSP 작업 생성을 검증함"
+      ]
+    },
     "v1.7.1": {
       "released_date": "2026/09/02",
       "fix": [

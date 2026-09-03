@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
     }
 }
 
@@ -181,6 +181,13 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.7.2
+
+###### 2026/09/03
+
+* `Corrección` Se combinaron las propiedades de identidad que Android Studio proporciona mediante Gradle `-P` con las propiedades del sistema JVM, por lo que Quail 3 ya no se reduce a `2026.1`, selecciona AGP 9.2.1 por error ni rechaza el objetivo JVM 25 elegido automáticamente
+* `Mejora` Se añadió una sobrecarga de Facade compatible a nivel binario para proporcionar propiedades de proyecto de Gradle explícitas y un respaldo de versión strict para builds de IDE aún no recopilados; se verificó que Quail 3 con Gradle 9.5/9.7 y JDK 25/26 selecciona AGP 9.3.2 y crea correctamente las tareas Kotlin/KSP
+
 # v1.7.1
 
 ###### 2026/09/02
@@ -200,15 +207,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 * `Corrección` Se corrigieron los mapeos de IDE de dos componentes que eludían el límite de AGP de Gradle y el retroceso de Gradle antiguos a una versión de plataforma que no podían cargar
 * `Mejora` Se añadieron datos oficiales de Android API a AGP mínimo obtenidos de forma independiente y se actualizaron los datos de Android Studio, versiones de AGP y compatibilidad AGP/Gradle
 * `Mejora` La verificación se amplió a 70 pruebas JVM, pruebas de análisis e idempotencia en Node y una compilación de ejemplo real en CI con Temurin 17 que ejercita la selección automática sin interfaz
-
-# v1.6.0
-
-###### 2026/08/29
-
-* `Aviso` El ID permanente del plugin de Gradle ahora es `io.github.supermonster003.autojs6-platform-versions` en lugar de `org.autojs.build.platform-versions`, y las coordenadas de Maven son `io.github.supermonster003:autojs6-gradle-platform-versions`; el paquete Java/Kotlin sigue siendo `org.autojs.build.platform`
-* `Función` Primera cadena de publicación pública en línea para Maven Central y Gradle Plugin Portal, con artefactos firmados de implementación, fuentes, Javadoc, metadatos de módulo y marcador del plugin
-* `Mejora` Se añadieron el repositorio público de GitHub, los metadatos POM completos para Central, un bundle reproducible para el Portal, la validación aislada del consumidor y rutas de firma seguras separadas para GPG local y CI
-* `Mejora` El uso oficial ahora resuelve únicamente desde repositorios públicos sin `mavenLocal()`; la herramienta de migración también reconoce y actualiza el ID antiguo del plugin
 
 ##### Para consultar un historial más completo, véase
 

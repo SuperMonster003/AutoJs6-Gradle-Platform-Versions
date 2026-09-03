@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
     }
 }
 
@@ -181,6 +181,13 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.2
+
+###### 2026/09/03
+
+* `إصلاح` دُمجت خصائص تعريف Android Studio الممررة عبر Gradle `-P` مع خصائص نظام JVM، وبذلك لم يعد Quail 3 يُختصر إلى `2026.1` أو يختار AGP 9.2.1 بالخطأ أو يرفض هدف JVM 25 المحدد تلقائيا
+* `تحسين` أضيف تحميل زائد متوافق ثنائيا في Facade لتمرير خصائص مشروع Gradle صراحة مع رجوع إلى إصدار strict لبنيات IDE التي لم تُجمع بعد؛ وتم التحقق من أن Quail 3 مع Gradle 9.5/9.7 وJDK 25/26 يختار AGP 9.3.2 وينشئ مهام Kotlin/KSP بنجاح
+
 # v1.7.1
 
 ###### 2026/09/02
@@ -200,15 +207,6 @@ npm --prefix .utils run check-data
 * `إصلاح` أصلحت خرائط IDE ثنائية الأجزاء التي كانت تتجاوز سقف AGP الخاص بـ Gradle، وارتداد إصدارات Gradle القديمة إلى إصدار منصة لا يمكنها تحميله
 * `تحسين` أضيفت بيانات رسمية مستقلة الجمع لربط Android API بالحد الأدنى من AGP، وحُدثت بيانات Android Studio وإصدارات AGP وتوافق AGP مع Gradle
 * `تحسين` وُسع التحقق ليشمل 70 اختبار JVM واختبارات Node للتحليل وثبات النتيجة، وبناء مثال حقيقي على Temurin 17 في CI يختبر الاختيار التلقائي دون IDE
-
-# v1.6.0
-
-###### 2026/08/29
-
-* `تلميح` أصبح معرف إضافة Gradle الدائم `io.github.supermonster003.autojs6-platform-versions` بدلا من `org.autojs.build.platform-versions`، وصارت إحداثيات Maven هي `io.github.supermonster003:autojs6-gradle-platform-versions`؛ فيما تبقى حزمة Java/Kotlin باسم `org.autojs.build.platform`
-* `ميزة` أول مسار إصدار عام عبر الإنترنت إلى Maven Central وGradle Plugin Portal، مع توقيع مكونات التنفيذ والمصادر وJavadoc وبيانات الوحدة وملف تعريف الإضافة
-* `تحسين` أضيف مستودع GitHub العام وبيانات POM الكاملة لـ Central وحزمة Portal قابلة لإعادة الإنتاج والتحقق المعزول من جانب المستهلك ومسارا توقيع آمنان منفصلان لـ GPG المحلي وCI
-* `تحسين` يُحل الاستخدام الرسمي الآن من المستودعات العامة وحدها من دون `mavenLocal()`؛ كما تتعرف أداة الترحيل على معرف الإضافة القديم وتحدثه
 
 ##### لمزيد من سجل الإصدارات يمكن الرجوع إلى
 

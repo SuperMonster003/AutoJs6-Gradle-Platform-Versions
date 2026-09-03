@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
     }
 }
 
@@ -181,6 +181,13 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.2
+
+###### 2026/09/03
+
+* `修复` 合并 Android Studio 通过 Gradle `-P` 提供的身份属性与 JVM 系统属性, Quail 3 不再被截断为 `2026.1` 并误选 AGP 9.2.1, JDK 25/26 的自动目标由此可正常配置
+* `优化` 新增可显式传入 Gradle 项目属性且保持二进制兼容的 Facade 重载, 并为尚未抓取的 IDE build 增加 strict 版本回退; 已验证 Quail 3 在 Gradle 9.5/9.7 与 JDK 25/26 下自动选择 AGP 9.3.2 并成功创建 Kotlin/KSP 任务
+
 # v1.7.1
 
 ###### 2026/09/02
@@ -200,15 +207,6 @@ npm --prefix .utils run check-data
 * `修复` 修复两段式 IDE 映射绕过 Gradle 的 AGP 上限, 以及旧 Gradle 回落到自身无法加载的平台版本的问题
 * `优化` 新增独立抓取的 Android API 到最低 AGP 官方数据, 并刷新 Android Studio、AGP 发行版及 AGP/Gradle 兼容数据
 * `优化` 验证范围扩展到 70 项 JVM 测试、Node 解析与幂等测试, 以及在真实 Temurin 17 CI 中执行无头自动选择的示例构建
-
-# v1.6.0
-
-###### 2026/08/29
-
-* `提示` 永久 Gradle 插件 ID 已由 `org.autojs.build.platform-versions` 改为 `io.github.supermonster003.autojs6-platform-versions`, Maven 坐标为 `io.github.supermonster003:autojs6-gradle-platform-versions`; Java/Kotlin 包名仍为 `org.autojs.build.platform`
-* `新增` 新增面向 Maven Central 与 Gradle Plugin Portal 的首次公开在线发布链路, 实现构件、源码、Javadoc、模块元数据及插件 marker 均带正式签名
-* `优化` 新增公开 GitHub 仓库、完整 Central POM 元数据、可复现 Portal bundle、隔离消费者验证, 以及分别供本机 GPG 与 CI 使用的安全签名入口
-* `优化` 正式用法现可仅通过公共仓库解析, 不再依赖 `mavenLocal()`; 迁移工具也可识别并更新旧插件 ID
 
 ##### 更多发行历史可参阅
 

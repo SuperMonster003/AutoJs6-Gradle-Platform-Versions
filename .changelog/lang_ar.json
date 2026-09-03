@@ -5,6 +5,15 @@
   "changelog_label_improvement": "تحسين",
   "changelog_label_dependency": "تبعية",
   "$data": {
+    "v1.7.2": {
+      "released_date": "2026/09/03",
+      "fix": [
+        "دُمجت خصائص تعريف Android Studio الممررة عبر Gradle `-P` مع خصائص نظام JVM، وبذلك لم يعد Quail 3 يُختصر إلى `2026.1` أو يختار AGP 9.2.1 بالخطأ أو يرفض هدف JVM 25 المحدد تلقائيا"
+      ],
+      "improvement": [
+        "أضيف تحميل زائد متوافق ثنائيا في Facade لتمرير خصائص مشروع Gradle صراحة مع رجوع إلى إصدار strict لبنيات IDE التي لم تُجمع بعد؛ وتم التحقق من أن Quail 3 مع Gradle 9.5/9.7 وJDK 25/26 يختار AGP 9.3.2 وينشئ مهام Kotlin/KSP بنجاح"
+      ]
+    },
     "v1.7.1": {
       "released_date": "2026/09/02",
       "fix": [
