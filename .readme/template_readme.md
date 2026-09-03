@@ -1,6 +1,13 @@
 <!--suppress HtmlDeprecatedAttribute, HttpUrlsUsage -->
 
 <div align="center">
+  <p>
+    <picture>
+      <source srcset="{{ repo_url }}/blob/master/app/src/main/res/mipmap-night/banner.png?raw=true" media="(prefers-color-scheme: dark)" />
+      <img src="{{ repo_url }}/blob/master/app/src/main/res/mipmap/banner.png?raw=true" alt="banner" border="0" width="512" />
+    </picture>
+  </p>
+
   <p>{{ text_plugin_synopsis }}</p>
 
   <p>

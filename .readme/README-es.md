@@ -1,6 +1,13 @@
 <!--suppress HtmlDeprecatedAttribute, HttpUrlsUsage -->
 
 <div align="center">
+  <p>
+    <picture>
+      <source srcset="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/app/src/main/res/mipmap-night/banner.png?raw=true" media="(prefers-color-scheme: dark)" />
+      <img src="https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/app/src/main/res/mipmap/banner.png?raw=true" alt="banner" border="0" width="512" />
+    </picture>
+  </p>
+
   <p>Un plugin de Gradle Settings que decide automáticamente las versiones de AGP y del plugin de Kotlin para el ecosistema de AutoJs6</p>
 
   <p>
