@@ -5,6 +5,15 @@
   "changelog_label_improvement": "改善",
   "changelog_label_dependency": "依存関係",
   "$data": {
+    "v1.7.2": {
+      "released_date": "2026/09/03",
+      "fix": [
+        "Android Studio が Gradle `-P` で渡す識別プロパティを JVM システムプロパティと統合。Quail 3 が `2026.1` に切り詰められて AGP 9.2.1 を誤選択することがなくなり、JDK 25/26 の自動 JVM ターゲットを正常に設定"
+      ],
+      "improvement": [
+        "Gradle プロジェクトプロパティを明示的に渡せるバイナリ互換の Facade オーバーロードと、未収集の IDE build 向け strict バージョンフォールバックを追加。Gradle 9.5/9.7 と JDK 25/26 の Quail 3 で AGP 9.3.2 が自動選択され、Kotlin/KSP タスクが正常に作成されることを検証"
+      ]
+    },
     "v1.7.1": {
       "released_date": "2026/09/02",
       "fix": [

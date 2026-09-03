@@ -76,7 +76,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
     }
 }
 
@@ -181,6 +181,13 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.7.2
+
+###### 2026/09/03
+
+* `Fix` Merged Android Studio identity supplied through Gradle `-P` properties with JVM system properties, so Quail 3 no longer collapses to `2026.1`, selects AGP 9.2.1 by mistake, and rejects its automatically selected JVM target 25
+* `Improvement` Added a binary-compatible Facade overload for explicit Gradle project properties and a strict-version fallback for not-yet-scraped IDE builds; verified Quail 3 with Gradle 9.5/9.7 and JDK 25/26 selects AGP 9.3.2 and creates Kotlin/KSP tasks successfully
+
 # v1.7.1
 
 ###### 2026/09/02
@@ -200,15 +207,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 * `Fix` Fixed two-component IDE mappings bypassing the Gradle AGP ceiling and old Gradle versions falling back to a platform version they cannot load
 * `Improvement` Added independently scraped official Android API-to-minimum-AGP data and refreshed Android Studio, AGP release, and AGP/Gradle compatibility data
 * `Improvement` Expanded verification to 70 JVM tests, Node parser and idempotency tests, and a real Temurin 17 CI sample that exercises headless automatic selection
-
-# v1.6.0
-
-###### 2026/08/29
-
-* `Hint` The permanent Gradle plugin ID is now `io.github.supermonster003.autojs6-platform-versions` instead of `org.autojs.build.platform-versions`, and the Maven coordinates are `io.github.supermonster003:autojs6-gradle-platform-versions`; the Java/Kotlin package remains `org.autojs.build.platform`
-* `Feature` First public online-release pipeline for Maven Central and the Gradle Plugin Portal, with signed implementation, sources, Javadoc, module-metadata, and plugin-marker artifacts
-* `Improvement` Added the public GitHub repository, complete Central POM metadata, a reproducible Portal bundle, isolated consumer validation, and separate secure signing paths for local GPG and CI
-* `Improvement` Official usage now resolves through public repositories without `mavenLocal()`; the migration tool also recognizes and updates the legacy plugin ID
 
 ##### For more release history, see
 

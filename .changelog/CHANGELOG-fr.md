@@ -23,6 +23,13 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.7.2
+
+###### 2026/09/03
+
+* `Correctif` Fusion des propriétés d’identité fournies par Android Studio via Gradle `-P` avec les propriétés système JVM : Quail 3 n’est plus réduit à `2026.1`, ne sélectionne plus AGP 9.2.1 par erreur et configure correctement la cible automatique avec les JDK 25/26
+* `Amélioration` Ajout d’une surcharge Facade compatible au niveau binaire pour fournir explicitement les propriétés de projet Gradle et d’un repli sur la version strict pour les builds IDE pas encore collectés ; vérification réussie de Quail 3 avec Gradle 9.5/9.7 et les JDK 25/26, avec sélection d’AGP 9.3.2 et création des tâches Kotlin/KSP
+
 # v1.7.1
 
 ###### 2026/09/02
