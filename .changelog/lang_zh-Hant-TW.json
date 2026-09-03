@@ -5,6 +5,15 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.7.3": {
+      "released_date": "2026/09/03",
+      "fix": [
+        "確保 Settings 外掛程式在根專案外掛程式解析前，將自動選取的 KGP 加入 buildscript classpath；AGP 9 內建 Kotlin 不再停留於隨附的 KGP 2.2.10，因此不會在 JDK 25 下拒絕 JVM target 25"
+      ],
+      "improvement": [
+        "新增未明確請求 Kotlin 外掛程式的 AGP 取用端範例斷言，核對所選 KGP 與根 classpath 實際版本一致；已在 Accessibility Compat 的 Gradle 9.5/AGP 9.3.2 上以 JDK 25/26 完成單元測試、lint、APK 建置及 4 台裝置共 28 項測試"
+      ]
+    },
     "v1.7.2": {
       "released_date": "2026/09/03",
       "fix": [

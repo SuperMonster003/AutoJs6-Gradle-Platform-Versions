@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
     }
 }
 
@@ -188,6 +188,13 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `修復` 確保 Settings 外掛程式在根專案外掛程式解析前，將自動選取的 KGP 加入 buildscript classpath；AGP 9 內建 Kotlin 不再停留於隨附的 KGP 2.2.10，因此不會在 JDK 25 下拒絕 JVM target 25
+* `優化` 新增未明確請求 Kotlin 外掛程式的 AGP 取用端範例斷言，核對所選 KGP 與根 classpath 實際版本一致；已在 Accessibility Compat 的 Gradle 9.5/AGP 9.3.2 上以 JDK 25/26 完成單元測試、lint、APK 建置及 4 台裝置共 28 項測試
+
 # v1.7.2
 
 ###### 2026/09/03
@@ -202,18 +209,6 @@ npm --prefix .utils run check-data
 * `修復` 強制以每份 IDE 相容性對應的最早項目作為中央支援下界；取用端 `MIN_SUPPORTED_*_IDE_VERSION` 只能收緊該範圍，不再允許不受支援的舊 IDE 落入僅依 Gradle 選擇 AGP 的回退路徑
 * `優化` 已滿足的 AGP 最低約束仍以機器可讀結果公開，但不再干擾一般成功摘要；不相容錯誤現在會包含偵測到的 IDE 版本和完整約束來源
 * `優化` 明確內建相容性資料是 AutoJs6 官方取用端的權威來源；`gradle/data` 覆寫僅為舊版相容或臨時診斷保留
-
-# v1.7.0
-
-###### 2026/09/02
-
-* `提示` 一般建置應宣告 SDK 版本，並僅在必要時宣告 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`；`OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` 應保留給刻意進行的精確版本測試或特殊逃生用途
-* `新增` AGP 選擇現在會將 Android API、專案與 KSP 下界同目前 Gradle 和 IDE 上界求交集，沒有相容版本時會回報約束來源
-* `新增` 新增 GitHub Actions 工作流程，用於 Temurin 建置、定期相容性資料檢查或更新 PR，以及受標籤和人工審核保護的 Maven Central／Gradle Plugin Portal 發布
-* `修復` Temurin 與純命令列建置不再查詢舊有的 JDK 至 AGP 對應，因此 JDK `21.0.6+7` 不會再靜默選擇 AGP 8.7.3；Android API 36 現在會自動要求 AGP 8.9.1 或更新版本
-* `修復` 修復兩段式 IDE 對應繞過 Gradle 的 AGP 上限，以及舊 Gradle 回退至本身無法載入的平台版本問題
-* `優化` 新增獨立擷取的 Android API 至最低 AGP 官方資料，並更新 Android Studio、AGP 發行版及 AGP／Gradle 相容性資料
-* `優化` 驗證範圍擴充至 70 項 JVM 測試、Node 解析與冪等測試，以及在真實 Temurin 17 CI 中執行無介面自動選擇的範例建置
 
 ##### 更多發行歷史可參閱
 

@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
     }
 }
 
@@ -188,6 +188,13 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `修正` Settings プラグインがプロジェクトのプラグイン解決前に、自動選択した KGP をルート buildscript classpath へ追加するよう修正。AGP 9 の組み込み Kotlin が同梱 KGP 2.2.10 に留まり、JDK 25 で JVM target 25 を拒否する問題を解消
+* `改善` Kotlin プラグインを明示しない AGP 利用側サンプルに、選択した KGP とルート classpath の実解決版が一致することを確認するアサーションを追加。Accessibility Compat を Gradle 9.5/AGP 9.3.2、JDK 25/26 で単体テスト、lint、APK ビルド、4 台計 28 テストまで検証
+
 # v1.7.2
 
 ###### 2026/09/03
@@ -202,18 +209,6 @@ npm --prefix .utils run check-data
 * `修正` 各 IDE 互換性マップの最古エントリを中央のサポート下限として強制。利用側の `MIN_SUPPORTED_*_IDE_VERSION` はこの範囲を狭めることしかできず、未サポートの古い IDE を Gradle のみに基づくフォールバックへ流せないように修正
 * `改善` 満たされた AGP 最小要件は機械可読な結果として維持しつつ、通常の成功ビルド概要には表示しないように変更。非互換エラーには検出した IDE バージョンとすべての要件元を表示
 * `改善` 組み込み互換性データを AutoJs6 公式利用プロジェクトの信頼できる情報源として明確化。`gradle/data` の上書きは旧版互換性または一時診断のためにのみ維持
-
-# v1.7.0
-
-###### 2026/09/02
-
-* `ヒント` 通常のビルドでは SDK レベルを宣言し、必要な場合に限って `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION` を指定してください。`OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` は、意図した厳密なバージョンテストや例外的な回避用途のために残してください
-* `機能` AGP 選択で Android API、プロジェクト、KSP の下限と、使用中の Gradle および IDE の上限を交差させ、互換バージョンが存在しない場合は制約元を報告するように変更
-* `機能` Temurin ビルド、互換性データの定期検査または更新 PR、タグと承認で保護された Maven Central／Gradle Plugin Portal 公開のための GitHub Actions ワークフローを追加
-* `修正` Temurin および純粋なコマンドラインビルドで旧 JDK→AGP マッピングを参照しないようにし、JDK `21.0.6+7` が AGP 8.7.3 を暗黙に選ぶ問題を解消。Android API 36 は AGP 8.9.1 以上を自動的に要求
-* `修正` 2 要素の IDE マッピングが Gradle の AGP 上限を迂回する問題と、古い Gradle が読み込めないプラットフォームバージョンへフォールバックする問題を修正
-* `改善` Android API と最小 AGP の公式データを独立スクレイピング対象として追加し、Android Studio、AGP リリース、AGP／Gradle 互換性データを更新
-* `改善` 検証を 70 件の JVM テスト、Node の解析・冪等性テスト、およびヘッドレス自動選択を実行する実際の Temurin 17 CI サンプルビルドまで拡充
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

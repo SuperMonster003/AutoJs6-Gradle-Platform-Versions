@@ -23,6 +23,13 @@
 
 ******
 
+# v1.7.3
+
+###### 2026/09/03
+
+* `수정` Settings 플러그인이 프로젝트 플러그인 해석 전에 자동 선택한 KGP를 루트 buildscript classpath에 추가하도록 수정했습니다. 이에 따라 AGP 9 내장 Kotlin이 번들 KGP 2.2.10에 머물러 JDK 25에서 JVM target 25를 거부하지 않습니다
+* `개선` Kotlin 플러그인을 명시하지 않은 AGP 소비자 예제에 선택된 KGP와 루트 classpath에서 실제 해석된 버전이 일치하는지 확인하는 단언을 추가했습니다. Accessibility Compat를 Gradle 9.5/AGP 9.3.2와 JDK 25/26에서 단위 테스트, lint, APK 빌드 및 4대 기기의 총 28개 테스트로 검증했습니다
+
 # v1.7.2
 
 ###### 2026/09/03

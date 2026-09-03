@@ -5,6 +5,15 @@
   "changelog_label_improvement": "Mejora",
   "changelog_label_dependency": "Dependencia",
   "$data": {
+    "v1.7.3": {
+      "released_date": "2026/09/03",
+      "fix": [
+        "El plugin de Settings ahora coloca el KGP seleccionado automáticamente en el classpath buildscript raíz antes de resolver los plugins del proyecto; así, el Kotlin integrado de AGP 9 deja de usar el KGP 2.2.10 incluido y de rechazar el destino JVM 25 con JDK 25"
+      ],
+      "improvement": [
+        "Se añadió una aserción de consumidor AGP sin plugin Kotlin explícito que comprueba que el KGP seleccionado sea el realmente resuelto en el classpath raíz; Accessibility Compat se verificó con Gradle 9.5/AGP 9.3.2 en JDK 25 y 26 mediante pruebas unitarias, lint, compilaciones APK y 28 pruebas en cuatro dispositivos"
+      ]
+    },
     "v1.7.2": {
       "released_date": "2026/09/03",
       "fix": [
