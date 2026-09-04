@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.4
+
+###### 2026/09/04
+
+* `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
+
 # v1.7.3
 
 ###### 2026/09/03
@@ -201,14 +207,6 @@ npm --prefix .utils run check-data
 
 * `수정` Android Studio가 Gradle `-P`로 제공하는 식별 속성을 JVM 시스템 속성과 병합하여 Quail 3가 `2026.1`로 축약되고 AGP 9.2.1을 잘못 선택하거나 자동 JVM 대상 25를 거부하는 문제를 수정함
 * `개선` Gradle 프로젝트 속성을 명시적으로 전달하는 바이너리 호환 Facade 오버로드와 아직 수집되지 않은 IDE build를 위한 strict 버전 폴백을 추가함; Gradle 9.5/9.7 및 JDK 25/26의 Quail 3에서 AGP 9.3.2 자동 선택과 Kotlin/KSP 작업 생성을 검증함
-
-# v1.7.1
-
-###### 2026/09/02
-
-* `수정` 각 IDE 호환성 매핑의 가장 오래된 항목을 중앙 지원 하한으로 강제함. 소비 측 `MIN_SUPPORTED_*_IDE_VERSION` 값은 이 범위를 더 좁힐 수만 있으며, 지원되지 않는 이전 IDE를 Gradle 전용 대체 경로로 보낼 수 없도록 수정
-* `개선` 충족된 AGP 최소 제약은 기계 판독 가능한 결과로 유지하되 일반적인 성공 빌드 요약에는 표시하지 않도록 변경. 비호환 오류에는 감지된 IDE 버전과 모든 요구 사항 출처를 포함
-* `개선` 내장 호환성 데이터를 AutoJs6 공식 소비 프로젝트의 권위 있는 출처로 명확히 함. `gradle/data` 재정의는 이전 버전 호환성 또는 임시 진단 용도로만 유지
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

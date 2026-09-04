@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.4
+
+###### 2026/09/04
+
+* `優化` 從官方上游來源更新隨外掛程式發布的平台相容性與發行資料；定時自動化在發布前已驗證擷取器解析、Gradle 外掛程式行為及無介面取用端建置
+
 # v1.7.3
 
 ###### 2026/09/03
@@ -201,14 +207,6 @@ npm --prefix .utils run check-data
 
 * `修復` 合併 Android Studio 透過 Gradle `-P` 提供的識別屬性與 JVM 系統屬性，Quail 3 不再被截斷為 `2026.1` 並誤選 AGP 9.2.1，JDK 25/26 的自動目標因而可正常設定
 * `優化` 新增可明確傳入 Gradle 專案屬性且維持二進位相容的 Facade 多載，並為尚未擷取的 IDE build 加入 strict 版本後援；已驗證 Quail 3 在 Gradle 9.5/9.7 與 JDK 25/26 下自動選擇 AGP 9.3.2 並成功建立 Kotlin/KSP 工作
-
-# v1.7.1
-
-###### 2026/09/02
-
-* `修復` 強制以每份 IDE 相容性對應的最早項目作為中央支援下界；取用端 `MIN_SUPPORTED_*_IDE_VERSION` 只能收緊該範圍，不再允許不受支援的舊 IDE 落入僅依 Gradle 選擇 AGP 的回退路徑
-* `優化` 已滿足的 AGP 最低約束仍以機器可讀結果公開，但不再干擾一般成功摘要；不相容錯誤現在會包含偵測到的 IDE 版本和完整約束來源
-* `優化` 明確內建相容性資料是 AutoJs6 官方取用端的權威來源；`gradle/data` 覆寫僅為舊版相容或臨時診斷保留
 
 ##### 更多發行歷史可參閱
 

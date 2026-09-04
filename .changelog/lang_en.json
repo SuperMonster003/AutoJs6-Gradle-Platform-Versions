@@ -5,6 +5,12 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.7.4": {
+      "released_date": "2026/09/04",
+      "improvement": [
+        "Refreshed the bundled platform compatibility and release data from the official upstream sources; the scheduled automation validated scraper parsing, Gradle plugin behavior, and a headless consumer build before publication"
+      ]
+    },
     "v1.7.3": {
       "released_date": "2026/09/03",
       "fix": [

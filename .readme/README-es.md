@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
     }
 }
 
@@ -188,6 +188,12 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.7.4
+
+###### 2026/09/04
+
+* `Mejora` Se actualizaron desde las fuentes oficiales los datos integrados de compatibilidad de plataforma y versiones; antes de publicar, la automatización programada validó los analizadores, el comportamiento del plugin de Gradle y una compilación consumidora sin interfaz
+
 # v1.7.3
 
 ###### 2026/09/03
@@ -201,14 +207,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 * `Corrección` Se combinaron las propiedades de identidad que Android Studio proporciona mediante Gradle `-P` con las propiedades del sistema JVM, por lo que Quail 3 ya no se reduce a `2026.1`, selecciona AGP 9.2.1 por error ni rechaza el objetivo JVM 25 elegido automáticamente
 * `Mejora` Se añadió una sobrecarga de Facade compatible a nivel binario para proporcionar propiedades de proyecto de Gradle explícitas y un respaldo de versión strict para builds de IDE aún no recopilados; se verificó que Quail 3 con Gradle 9.5/9.7 y JDK 25/26 selecciona AGP 9.3.2 y crea correctamente las tareas Kotlin/KSP
-
-# v1.7.1
-
-###### 2026/09/02
-
-* `Corrección` Se impone la entrada más antigua de cada mapa de compatibilidad de IDE como límite inferior central de soporte; los valores `MIN_SUPPORTED_*_IDE_VERSION` del consumidor solo pueden restringirlo y ya no pueden desviar IDE antiguos no compatibles al retorno basado únicamente en Gradle
-* `Mejora` Los requisitos mínimos de AGP satisfechos siguen disponibles como resultado legible por máquinas sin aparecer en los resúmenes rutinarios de compilaciones correctas; los errores de incompatibilidad ahora incluyen la versión de IDE detectada y todas las fuentes de requisitos
-* `Mejora` Se aclara que los datos de compatibilidad integrados son la fuente autorizada para los consumidores oficiales de AutoJs6; las sustituciones en `gradle/data` se conservan solo por compatibilidad heredada o para diagnósticos temporales
 
 ##### Para consultar un historial más completo, véase
 

@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.4
+
+###### 2026/09/04
+
+* `改善` 公式アップストリームから同梱のプラットフォーム互換性データとリリースデータを更新。定期自動化により、公開前にスクレイパー解析、Gradle プラグインの動作、ヘッドレス利用側ビルドを検証
+
 # v1.7.3
 
 ###### 2026/09/03
@@ -201,14 +207,6 @@ npm --prefix .utils run check-data
 
 * `修正` Android Studio が Gradle `-P` で渡す識別プロパティを JVM システムプロパティと統合。Quail 3 が `2026.1` に切り詰められて AGP 9.2.1 を誤選択することがなくなり、JDK 25/26 の自動 JVM ターゲットを正常に設定
 * `改善` Gradle プロジェクトプロパティを明示的に渡せるバイナリ互換の Facade オーバーロードと、未収集の IDE build 向け strict バージョンフォールバックを追加。Gradle 9.5/9.7 と JDK 25/26 の Quail 3 で AGP 9.3.2 が自動選択され、Kotlin/KSP タスクが正常に作成されることを検証
-
-# v1.7.1
-
-###### 2026/09/02
-
-* `修正` 各 IDE 互換性マップの最古エントリを中央のサポート下限として強制。利用側の `MIN_SUPPORTED_*_IDE_VERSION` はこの範囲を狭めることしかできず、未サポートの古い IDE を Gradle のみに基づくフォールバックへ流せないように修正
-* `改善` 満たされた AGP 最小要件は機械可読な結果として維持しつつ、通常の成功ビルド概要には表示しないように変更。非互換エラーには検出した IDE バージョンとすべての要件元を表示
-* `改善` 組み込み互換性データを AutoJs6 公式利用プロジェクトの信頼できる情報源として明確化。`gradle/data` の上書きは旧版互換性または一時診断のためにのみ維持
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

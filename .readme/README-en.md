@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
     }
 }
 
@@ -188,6 +188,12 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.7.4
+
+###### 2026/09/04
+
+* `Improvement` Refreshed the bundled platform compatibility and release data from the official upstream sources; the scheduled automation validated scraper parsing, Gradle plugin behavior, and a headless consumer build before publication
+
 # v1.7.3
 
 ###### 2026/09/03
@@ -201,14 +207,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 * `Fix` Merged Android Studio identity supplied through Gradle `-P` properties with JVM system properties, so Quail 3 no longer collapses to `2026.1`, selects AGP 9.2.1 by mistake, and rejects its automatically selected JVM target 25
 * `Improvement` Added a binary-compatible Facade overload for explicit Gradle project properties and a strict-version fallback for not-yet-scraped IDE builds; verified Quail 3 with Gradle 9.5/9.7 and JDK 25/26 selects AGP 9.3.2 and creates Kotlin/KSP tasks successfully
-
-# v1.7.1
-
-###### 2026/09/02
-
-* `Fix` Enforced the oldest IDE compatibility-map entry as the central support floor; consumer `MIN_SUPPORTED_*_IDE_VERSION` values can only tighten it and can no longer route unsupported old IDEs into Gradle-only fallback
-* `Improvement` Satisfied AGP minimum constraints remain machine-readable without appearing in routine successful-build summaries; incompatibility errors now include the detected IDE version and complete requirement sources
-* `Improvement` Clarified that bundled compatibility data is authoritative for official AutoJs6 consumers; `gradle/data` overrides remain only for legacy compatibility or temporary diagnostics
 
 ##### For more release history, see
 

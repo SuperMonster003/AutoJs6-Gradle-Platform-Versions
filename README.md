@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.4
+
+###### 2026/09/04
+
+* `优化` 从官方上游来源刷新随插件分发的平台兼容性与发行数据; 定时自动化在发布前已验证抓取器解析、Gradle 插件行为及无头消费者构建
+
 # v1.7.3
 
 ###### 2026/09/03
@@ -201,14 +207,6 @@ npm --prefix .utils run check-data
 
 * `修复` 合并 Android Studio 通过 Gradle `-P` 提供的身份属性与 JVM 系统属性, Quail 3 不再被截断为 `2026.1` 并误选 AGP 9.2.1, JDK 25/26 的自动目标由此可正常配置
 * `优化` 新增可显式传入 Gradle 项目属性且保持二进制兼容的 Facade 重载, 并为尚未抓取的 IDE build 增加 strict 版本回退; 已验证 Quail 3 在 Gradle 9.5/9.7 与 JDK 25/26 下自动选择 AGP 9.3.2 并成功创建 Kotlin/KSP 任务
-
-# v1.7.1
-
-###### 2026/09/02
-
-* `修复` 将每份 IDE 兼容映射的最早条目强制作为中央支持下界; 消费端 `MIN_SUPPORTED_*_IDE_VERSION` 只能收紧该范围, 不再允许不受支持的旧 IDE 落入仅按 Gradle 选择 AGP 的回退路径
-* `优化` 已满足的 AGP 最低约束仍以机器可读结果公开, 但不再干扰常规成功摘要; 不兼容错误现会包含检测到的 IDE 版本和完整约束来源
-* `优化` 明确内置兼容数据是 AutoJs6 官方消费仓的权威来源; `gradle/data` 覆盖仅为旧版兼容或临时诊断保留
 
 ##### 更多发行历史可参阅
 
