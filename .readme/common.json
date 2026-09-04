@@ -6,5 +6,5 @@
   "plugin_id": "io.github.supermonster003.autojs6-platform-versions",
   "maven_group": "io.github.supermonster003",
   "maven_artifact": "autojs6-gradle-platform-versions",
-  "plugin_version": "1.7.3"
+  "plugin_version": "1.7.4"
 }
