@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.5
+
+###### 2026/09/10
+
+* `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
+
 # v1.7.4
 
 ###### 2026/09/04
@@ -200,13 +206,6 @@ npm --prefix .utils run check-data
 
 * `수정` Settings 플러그인이 프로젝트 플러그인 해석 전에 자동 선택한 KGP를 루트 buildscript classpath에 추가하도록 수정했습니다. 이에 따라 AGP 9 내장 Kotlin이 번들 KGP 2.2.10에 머물러 JDK 25에서 JVM target 25를 거부하지 않습니다
 * `개선` Kotlin 플러그인을 명시하지 않은 AGP 소비자 예제에 선택된 KGP와 루트 classpath에서 실제 해석된 버전이 일치하는지 확인하는 단언을 추가했습니다. Accessibility Compat를 Gradle 9.5/AGP 9.3.2와 JDK 25/26에서 단위 테스트, lint, APK 빌드 및 4대 기기의 총 28개 테스트로 검증했습니다
-
-# v1.7.2
-
-###### 2026/09/03
-
-* `수정` Android Studio가 Gradle `-P`로 제공하는 식별 속성을 JVM 시스템 속성과 병합하여 Quail 3가 `2026.1`로 축약되고 AGP 9.2.1을 잘못 선택하거나 자동 JVM 대상 25를 거부하는 문제를 수정함
-* `개선` Gradle 프로젝트 속성을 명시적으로 전달하는 바이너리 호환 Facade 오버로드와 아직 수집되지 않은 IDE build를 위한 strict 버전 폴백을 추가함; Gradle 9.5/9.7 및 JDK 25/26의 Quail 3에서 AGP 9.3.2 자동 선택과 Kotlin/KSP 작업 생성을 검증함
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

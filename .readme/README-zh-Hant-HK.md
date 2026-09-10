@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.5
+
+###### 2026/09/10
+
+* `優化` 從官方上游來源刷新隨插件發佈的平台兼容性與發行數據; 定時自動化在發佈前已驗證抓取器解析、Gradle 插件行為及無頭取用端構建
+
 # v1.7.4
 
 ###### 2026/09/04
@@ -200,13 +206,6 @@ npm --prefix .utils run check-data
 
 * `修復` 確保 Settings 插件在根項目插件解析前把自動選擇的 KGP 加入 buildscript classpath; AGP 9 內置 Kotlin 不再停留在捆綁的 KGP 2.2.10, 因而不會在 JDK 25 下拒絕 JVM target 25
 * `優化` 新增未顯式請求 Kotlin 插件的 AGP 取用端示例斷言, 核對選擇的 KGP 與根 classpath 實際版本一致; 已在 Accessibility Compat 的 Gradle 9.5/AGP 9.3.2 上以 JDK 25/26 完成單元測試、lint、APK 構建及 4 台裝置共 28 項測試
-
-# v1.7.2
-
-###### 2026/09/03
-
-* `修復` 合併 Android Studio 透過 Gradle `-P` 提供的身份屬性與 JVM 系統屬性, Quail 3 不再被截斷為 `2026.1` 並誤選 AGP 9.2.1, JDK 25/26 的自動目標因而可正常配置
-* `優化` 新增可明確傳入 Gradle 項目屬性且保持二進制兼容的 Facade 多載, 並為尚未擷取的 IDE build 加入 strict 版本後備; 已驗證 Quail 3 在 Gradle 9.5/9.7 與 JDK 25/26 下自動選擇 AGP 9.3.2 並成功建立 Kotlin/KSP 任務
 
 ##### 更多發行歷史可參閱
 

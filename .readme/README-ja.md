@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.7.5
+
+###### 2026/09/10
+
+* `改善` 公式アップストリームから同梱のプラットフォーム互換性データとリリースデータを更新。定期自動化により、公開前にスクレイパー解析、Gradle プラグインの動作、ヘッドレス利用側ビルドを検証
+
 # v1.7.4
 
 ###### 2026/09/04
@@ -200,13 +206,6 @@ npm --prefix .utils run check-data
 
 * `修正` Settings プラグインがプロジェクトのプラグイン解決前に、自動選択した KGP をルート buildscript classpath へ追加するよう修正。AGP 9 の組み込み Kotlin が同梱 KGP 2.2.10 に留まり、JDK 25 で JVM target 25 を拒否する問題を解消
 * `改善` Kotlin プラグインを明示しない AGP 利用側サンプルに、選択した KGP とルート classpath の実解決版が一致することを確認するアサーションを追加。Accessibility Compat を Gradle 9.5/AGP 9.3.2、JDK 25/26 で単体テスト、lint、APK ビルド、4 台計 28 テストまで検証
-
-# v1.7.2
-
-###### 2026/09/03
-
-* `修正` Android Studio が Gradle `-P` で渡す識別プロパティを JVM システムプロパティと統合。Quail 3 が `2026.1` に切り詰められて AGP 9.2.1 を誤選択することがなくなり、JDK 25/26 の自動 JVM ターゲットを正常に設定
-* `改善` Gradle プロジェクトプロパティを明示的に渡せるバイナリ互換の Facade オーバーロードと、未収集の IDE build 向け strict バージョンフォールバックを追加。Gradle 9.5/9.7 と JDK 25/26 の Quail 3 で AGP 9.3.2 が自動選択され、Kotlin/KSP タスクが正常に作成されることを検証
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
     }
 }
 
@@ -188,6 +188,12 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.7.5
+
+###### 2026/09/10
+
+* `Amélioration` Actualisation des données embarquées de compatibilité de plateforme et de versions depuis les sources officielles en amont ; avant publication, l’automatisation planifiée a validé les analyseurs, le comportement du plugin Gradle et un build consommateur sans interface
+
 # v1.7.4
 
 ###### 2026/09/04
@@ -200,13 +206,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 * `Correctif` Le plugin Settings place désormais le KGP sélectionné automatiquement dans le classpath buildscript racine avant la résolution des plugins du projet ; le Kotlin intégré d'AGP 9 ne reste donc plus sur le KGP 2.2.10 embarqué et ne rejette plus la cible JVM 25 sous JDK 25
 * `Amélioration` Ajout d'une assertion consommateur AGP sans plugin Kotlin explicite, vérifiant que le KGP choisi est bien celui résolu sur le classpath racine ; Accessibility Compat a été validé avec Gradle 9.5/AGP 9.3.2 sous JDK 25 et 26 via tests unitaires, lint, builds APK et 28 tests sur quatre appareils
-
-# v1.7.2
-
-###### 2026/09/03
-
-* `Correctif` Fusion des propriétés d’identité fournies par Android Studio via Gradle `-P` avec les propriétés système JVM : Quail 3 n’est plus réduit à `2026.1`, ne sélectionne plus AGP 9.2.1 par erreur et configure correctement la cible automatique avec les JDK 25/26
-* `Amélioration` Ajout d’une surcharge Facade compatible au niveau binaire pour fournir explicitement les propriétés de projet Gradle et d’un repli sur la version strict pour les builds IDE pas encore collectés ; vérification réussie de Quail 3 avec Gradle 9.5/9.7 et les JDK 25/26, avec sélection d’AGP 9.3.2 et création des tâches Kotlin/KSP
 
 ##### Pour un historique plus complet, voir
 
