@@ -90,6 +90,11 @@ calls the official Central Publisher API to finalize it and waits for both `PUBL
 This preserves a distinct validation checkpoint without depending on Central Portal login. A published Maven Central
 version is immutable and cannot be replaced.
 
+The `release` Environment has no required reviewers or wait timer. The workflow's tag, version, and test checks run
+first; successful validation automatically starts the publishing job. Keep the environment restricted to `v*` tags
+and keep the six publishing secrets there. These settings live in GitHub's environment configuration; retain
+`environment: release` in both publishing workflows. See [GitHub Actions configuration](docs/github-actions.md).
+
 If an earlier run stopped after upload, use the protected `Finalize Central deployment` workflow with the existing
 UUID and matching release tag. Its `inspect` operation is read-only; `publish` performs the same identity checks and
 API finalization, waits for public artifacts, and can complete a missing GitHub Release after both registries resolve.
@@ -127,7 +132,8 @@ the VCS URL points to the public GitHub repository.
 3. Run translation checks, scraper tests, `clean check`, the headless sample, and the isolated Maven publication test.
 4. Commit the exact release source and create an annotated `v<version>` Git tag. For scheduled data releases, the
    workflow verifies that `master` has not advanced and pushes the commit and tag atomically.
-5. Run `Publish release` from that tag with `targets=both` and approve its protected `release` Environment deployment.
+5. Run `Publish release` from that tag with `targets=both`. After validation succeeds, publication proceeds
+   automatically through the `release` Environment, with no deployment review step.
 6. Let the workflow build and sign the Central bundle, upload it as `USER_MANAGED`, verify `VALIDATED`, finalize it
    through the official API, and wait for public Maven Central resolution.
 7. Let the same protected job publish the Gradle plugin and wait for public Plugin Portal resolution.
