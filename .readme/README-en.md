@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.4"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
     }
 }
 
@@ -188,6 +188,12 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.7.5
+
+###### 2026/09/10
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+
 # v1.7.4
 
 ###### 2026/09/04
@@ -200,13 +206,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 * `Fix` Ensured the Settings plugin places its automatically selected KGP on the root buildscript classpath before project plugin resolution, so AGP 9 built-in Kotlin no longer remains on bundled KGP 2.2.10 and rejects JVM target 25 under JDK 25
 * `Improvement` Added an AGP consumer assertion with no explicit Kotlin plugin that verifies the selected KGP is the version actually resolved on the root classpath; verified Accessibility Compat with Gradle 9.5/AGP 9.3.2 on JDK 25 and 26 through unit tests, lint, APK builds, and 28 tests across four devices
-
-# v1.7.2
-
-###### 2026/09/03
-
-* `Fix` Merged Android Studio identity supplied through Gradle `-P` properties with JVM system properties, so Quail 3 no longer collapses to `2026.1`, selects AGP 9.2.1 by mistake, and rejects its automatically selected JVM target 25
-* `Improvement` Added a binary-compatible Facade overload for explicit Gradle project properties and a strict-version fallback for not-yet-scraped IDE builds; verified Quail 3 with Gradle 9.5/9.7 and JDK 25/26 selects AGP 9.3.2 and creates Kotlin/KSP tasks successfully
 
 ##### For more release history, see
 
