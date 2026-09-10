@@ -56,6 +56,11 @@ class PlatformVersionsFacadeTest {
     fun `satisfied KSP minimum stays machine readable without routine console noise`() {
         rootDir.resolve("version.properties").writeText("")
 
+        // The standalone KSP version and its AGP guard change with upstream data refreshes.
+        val dataSource = DataSource(localDataDir = null)
+        val expectedKspVersion = dataSource.props("ksp-releases").getValue("2.3.Z")
+        val expectedMinimumAgpVersion = dataSource.props("ksp-agp-compat").getValue(expectedKspVersion)
+
         val versions = PlatformVersionsFacade.decide(
             rootDir = rootDir.toFile(),
             gradleVersion = "9.5.0",
@@ -63,11 +68,14 @@ class PlatformVersionsFacadeTest {
         )
 
         assertEquals("2.3.20", versions.kotlinVersion)
-        assertEquals("2.3.11", versions.kspVersion)
-        assertEquals("8.10.0", versions.minimumAgpVersion)
+        assertEquals(expectedKspVersion, versions.kspVersion)
+        assertEquals(expectedMinimumAgpVersion, versions.minimumAgpVersion)
+        assertTrue(VersionComparator.compareVersionStrings(versions.agpVersion, expectedMinimumAgpVersion) >= 0) {
+            "the selected AGP must satisfy the KSP lower boundary"
+        }
         assertTrue(
             versions.agpRequirements.any {
-                it.minimumVersion == "8.10.0" && it.source == "KSP 2.3.11"
+                it.minimumVersion == expectedMinimumAgpVersion && it.source == "KSP $expectedKspVersion"
             },
         ) { "the KSP lower boundary must remain available for selection and failure diagnostics" }
         assertTrue(versions.versionInfo.none { it.startsWith("Minimum: ") })

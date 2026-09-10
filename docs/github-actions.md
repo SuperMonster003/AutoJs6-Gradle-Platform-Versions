@@ -50,7 +50,7 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 1. 从 `master` 的完整历史开始, 安装并运行全部上游抓取器.
 2. 同时检查本次生成的工作区差异, 以及最新版本标签之后已经通过 PR 合并的数据差异. 后者保证 `update-pr` 合并后即使第二次抓取不再改文件, 下一次定时运行仍会发行这些数据.
 3. 若数据无语义变化, 以成功状态结束, 不修改分支、标签、版本或任何远端仓库.
-4. 若有变化, 检查最新标签与 `VERSION_NAME` 的基线关系, 并拒绝把插件实现、构建逻辑等超出自动数据发行边界的未发行改动意外带入补丁版本.
+4. 若有变化, 检查最新标签与 `VERSION_NAME` 的基线关系. 允许 `src/test/` 下的测试及夹具修复随数据更新进入验证, 并拒绝把插件实现、构建逻辑等超出自动数据发行边界的未发行改动意外带入补丁版本.
 5. 自动将稳定版本的 patch 位加一, 令 `VERSION_BUILD` 等于将要产生的提交总数, 同步 `.readme/common.json`, 为 10 种语言生成数据更新日志并重新生成全部 README/CHANGELOG.
 6. 执行翻译结构检查、Node 抓取器测试、Gradle 测试、Temurin 无头 sample 和隔离 Maven 发布测试; 同时验证生成器幂等、改动白名单以及目标版本在 GitHub、Central 和 Plugin Portal 上尚未占用.
 7. 以 `github-actions[bot]` 创建一个发行提交和注释标签. 推送前再次确认远端 `master` 仍是本次运行开始时的提交, 然后使用一次原子 push 同步分支与标签, 避免只推成功其中一项.
@@ -100,7 +100,7 @@ Central 不再提供 `AUTOMATIC`/`USER_MANAGED` 人工选择. 工作流固定使
 - 所有正式发布只接受与输入版本完全一致的 `v<version>` 标签.
 - Environment secrets 在人工批准前不可读取.
 - Central UUID、deployment 名称和每个 PURL 的版本必须全部匹配, 才允许调用发布 API.
-- 自动数据发行只接受已声明的生成/文档文件; 未发行的产品代码变化会要求改走人工发行.
+- 自动数据发行只接受已声明的数据、测试、自动化及文档文件; 未发行的产品代码变化会要求改走人工发行.
 - 目标版本必须在标签、GitHub Release、Central 与 Plugin Portal 中均未占用.
 - 远端 `master` 在长时间测试期间若有推进, 原子 push 会停止, 避免覆盖并发工作.
 - GitHub Release 仅在 Central 与 Plugin Portal 的 marker 和实现构件都可从公共仓库下载后创建.
