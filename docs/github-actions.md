@@ -4,10 +4,10 @@
 
 - `Build and test`: 每次推送及拉取请求均在 Temurin 17 上运行抓取器单元测试、Gradle 测试和无头 sample 决策.
 - `Platform data`: 每日北京时间 09:17 刷新官方上游数据; 仅在产生语义变化时准备下一补丁版本、提交并创建注释标签, 再启动受保护的正式发布工作流. 也可手动执行只读检查、数据 PR 或同一发行路径.
-- `Publish release`: 从版本标签手动或由数据工作流触发. 通过 `release` Environment 审批后, 将 Central bundle 以 `USER_MANAGED` 上传, 等待 `VALIDATED`, 使用官方 API 最终发布, 同时发布 Gradle Plugin Portal; 两端公共构件均可解析后创建 GitHub Release.
+- `Publish release`: 从版本标签手动或由数据工作流触发. 自动校验标签、版本及测试通过后, 使用 `release` Environment 中的凭据将 Central bundle 以 `USER_MANAGED` 上传, 等待 `VALIDATED`, 使用官方 API 最终发布, 同时发布 Gradle Plugin Portal; 两端公共构件均可解析后创建 GitHub Release.
 - `Finalize Central deployment`: 输入已有 Central deployment UUID, 可只读检查或从 `VALIDATED` 继续发布并等待公共同步; 适用于历史运行、局部失败或 Central Portal 登录不可用时的恢复.
 
-发布凭据只存在于 `release` Environment 中. 定时工作流可以自动发现、验证、提交、打标签并发起发布, 但在读取密钥和执行不可逆的仓库发布前仍保留一次人工批准.
+发布凭据只存在于仅允许 `v*` 标签使用的 `release` Environment 中. 该环境不设置 Required reviewers 或 Wait timer. 定时工作流自动完成发现、验证、提交、打标签及发布, 无需人工点击 Review deployments; 任一校验失败都会停止后续步骤.
 
 ## 一次性配置 release Environment
 
@@ -15,7 +15,7 @@
 
 建议保持以下配置:
 
-1. 将自己设为 Required reviewer. 如果目前只有自己维护仓库, 不要启用 `Prevent self-review`, 否则无人能够批准自己发起的发布.
+1. 关闭 Required reviewers, 清空必需审批人列表; 关闭 Wait timer. 发布校验通过后即可自动开始执行发布 job.
 2. 在 Deployment branches and tags 中只添加标签规则 `v*`; 不要允许普通分支取得发布凭据.
 3. 根据风险偏好关闭管理员绕过保护规则的能力.
 4. 在该 Environment 内保存下列六个 secrets, 不要把值写进仓库、Issue、Actions 日志或聊天记录:
@@ -28,6 +28,8 @@
 | `GRADLE_PUBLISH_SECRET` | Gradle Plugin Portal API secret |
 | `SIGNING_KEY` | ASCII-armored PGP 私钥全文, 包含 BEGIN/END 行 |
 | `SIGNING_PASSWORD` | 上述 PGP 私钥的口令 |
+
+Required reviewers 和 Wait timer 是 GitHub 端的 Environment 配置, 不由工作流 YAML 定义. 保留 `Publish release` 和 `Finalize Central deployment` 中的 `environment: release`, 以继续使用环境凭据和标签限制. 两条工作流共用此环境, 因而正常发布与手动恢复均无需额外审批; 恢复入口仍需显式选择 `inspect` 或 `publish`.
 
 正式签名密钥指纹应由发布者在本机核验. 当前项目发行密钥的指纹为:
 
@@ -54,10 +56,10 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 5. 自动将稳定版本的 patch 位加一, 令 `VERSION_BUILD` 等于将要产生的提交总数, 同步 `.readme/common.json`, 为 10 种语言生成数据更新日志并重新生成全部 README/CHANGELOG.
 6. 执行翻译结构检查、Node 抓取器测试、Gradle 测试、Temurin 无头 sample 和隔离 Maven 发布测试; 同时验证生成器幂等、改动白名单以及目标版本在 GitHub、Central 和 Plugin Portal 上尚未占用.
 7. 以 `github-actions[bot]` 创建一个发行提交和注释标签. 推送前再次确认远端 `master` 仍是本次运行开始时的提交, 然后使用一次原子 push 同步分支与标签, 避免只推成功其中一项.
-8. 在新标签上触发 `Publish release`, 目标为 `both`, 并等待维护者批准 `release` Environment.
-9. 获批后, 工作流签名并发布 Maven Central 与 Gradle Plugin Portal. 两套公开消费 URL 均返回成功后, 自动从英文 CHANGELOG 提取当前版本说明并创建 GitHub Release.
+8. 在新标签上触发 `Publish release`, 目标为 `both`, 自动核对标签、版本、提交总数并执行 Node/Gradle/sample 验证.
+9. 验证通过后, 工作流自动使用 `release` Environment 凭据签名并发布 Maven Central 与 Gradle Plugin Portal. 两套公开消费 URL 均返回成功后, 自动从英文 CHANGELOG 提取当前版本说明并创建 GitHub Release.
 
-这条链路不会取消人工最终门禁. 维护者唯一的常规操作是在收到待审批的 deployment 后检查版本/标签并批准. 若未批准或主动拒绝, 已生成的提交与标签会保留, 但发布凭据不会暴露、仓库构件也不会上传; 日后可直接从该标签手动重跑 `Publish release`, 无需制造另一个版本.
+正常数据发行从定时抓取到公开发布全程自动完成. 维护者只需在工作流失败时处理异常. 若失败发生在提交和标签推送之后, 可从同一标签按失败阶段恢复 `Publish release`; 已发布的目标应跳过, 已上传的 Central deployment 应复用其 UUID, 无需制造另一个版本.
 
 ## Platform data 手动模式
 
@@ -76,7 +78,7 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 3. 创建并推送与 `VERSION_NAME` 对应的注释标签, 例如 `v1.8.0`.
 4. 打开 `Actions` → `Publish release` → `Run workflow`, 在分支/标签选择器中选择刚推送的标签.
 5. `version` 填写不带 `v` 的版本号; `targets` 通常选择 `both`; `complete_github_release` 保持启用.
-6. `validate` job 会在不接触发布凭据的情况下核对标签、版本、提交总数并执行测试. 通过后检查等待中的 `release` deployment 并批准.
+6. `validate` job 会在不接触发布凭据的情况下核对标签、版本、提交总数并执行测试. 通过后 `publish` job 自动使用 `release` Environment 凭据继续发布.
 
 Central 不再提供 `AUTOMATIC`/`USER_MANAGED` 人工选择. 工作流固定使用更易审计的 `USER_MANAGED`: 上传后先得到独立的 `VALIDATED` 状态和 UUID, 再在同一受保护 job 中核对 deployment 身份、名称及所有 PURL, 最后调用 Sonatype 官方发布 API并等待 `PUBLISHED`. 因而正常发行不依赖 Central Portal 登录, 也不会跳过中间校验点.
 
@@ -89,7 +91,7 @@ Central 不再提供 `AUTOMATIC`/`USER_MANAGED` 人工选择. 工作流固定使
 1. 在分支/标签选择器中选择与构件版本相同的 `v<version>` 标签.
 2. `deployment_id` 粘贴 Central UUID; `expected_version` 填写不带 `v` 的版本.
 3. 第一次可选择 `inspect`, 只核对 UUID、deployment 名称、PURL 和当前状态.
-4. 准备完成后选择 `publish`; 通常保持 `wait_for_public` 和 `complete_github_release` 启用, 然后批准 `release` Environment.
+4. 准备完成后选择 `publish`; 通常保持 `wait_for_public` 和 `complete_github_release` 启用. 标签、deployment 身份及版本检查通过后会自动继续发布.
 
 `publish` 会自动完成 API 发布、等待 `PUBLISHED`、等待 Central 公共 POM/JAR/marker 可解析, 再检查 Plugin Portal. 若两端都已公开且 GitHub Release 尚不存在, 会自动补建; 已发布的 Central deployment 或已存在的 GitHub Release均按幂等成功处理.
 
@@ -98,7 +100,7 @@ Central 不再提供 `AUTOMATIC`/`USER_MANAGED` 人工选择. 工作流固定使
 ## 关键安全边界
 
 - 所有正式发布只接受与输入版本完全一致的 `v<version>` 标签.
-- Environment secrets 在人工批准前不可读取.
+- Environment secrets 仅提供给使用 `release` 环境且符合 `v*` 标签限制的 job; 正常发布的 `publish` job 还必须等待不使用发布凭据的 `validate` job 成功.
 - Central UUID、deployment 名称和每个 PURL 的版本必须全部匹配, 才允许调用发布 API.
 - 自动数据发行只接受已声明的数据、测试、自动化及文档文件; 未发行的产品代码变化会要求改走人工发行.
 - 目标版本必须在标签、GitHub Release、Central 与 Plugin Portal 中均未占用.
@@ -108,5 +110,5 @@ Central 不再提供 `AUTOMATIC`/`USER_MANAGED` 人工选择. 工作流固定使
 官方行为说明:
 
 - GitHub `GITHUB_TOKEN` 触发的普通 push 不会递归启动新工作流, 但 `workflow_dispatch` 是明确允许的例外: <https://docs.github.com/en/actions/concepts/security/github_token#when-github_token-triggers-workflow-runs>
-- Environment 审批、标签限制和 secrets 可见性: <https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments>
+- Environment 保护规则、标签限制和 secrets 可见性: <https://docs.github.com/en/actions/reference/workflows-and-actions/deployments-and-environments>
 - Central Publisher API 的状态与 `POST /api/v1/publisher/deployment/<deploymentId>`: <https://central.sonatype.org/publish/publish-portal-api/>

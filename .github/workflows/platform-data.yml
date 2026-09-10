@@ -423,7 +423,7 @@ jobs:
             "refs/tags/$RELEASE_TAG:refs/tags/$RELEASE_TAG"
           echo "Pushed release commit and annotated tag $RELEASE_TAG atomically." >> "$GITHUB_STEP_SUMMARY"
 
-      - name: Start the protected registry publication
+      - name: Start automatic registry publication
         if: steps.changes.outputs.should_release == 'true'
         env:
           GH_TOKEN: ${{ github.token }}
@@ -452,7 +452,7 @@ jobs:
 
           actions_url="https://github.com/${GITHUB_REPOSITORY}/actions/workflows/publish.yml"
           {
-            echo "Started the protected Publish release workflow for $RELEASE_TAG."
-            echo "Approve its release Environment deployment to expose publishing secrets and finish Maven Central, Plugin Portal, and GitHub Release publication."
+            echo "Started the automatic Publish release workflow for $RELEASE_TAG."
+            echo "After release validation succeeds, Maven Central, Plugin Portal, and GitHub Release publication proceeds automatically through the release Environment."
             echo "Workflow: $actions_url"
           } >> "$GITHUB_STEP_SUMMARY"
