@@ -37,6 +37,14 @@ gradlePlugin {
     vcsUrl.set(projectVcsUrl)
 
     plugins {
+        create("nativeAlignment") {
+            id = "io.github.supermonster003.autojs6-native-alignment"
+            implementationClass = "org.autojs.build.alignment.NativeAlignmentPlugin"
+            displayName = "AutoJs6 Native Page Alignment"
+            description = "Verifies 16 KB ELF load segments and uncompressed APK ZIP entries, including native runtime payloads."
+            tags.set(listOf("android", "native", "16kb", "verification"))
+            compatibility { features { configurationCache = false } }
+        }
         create("platformVersions") {
             id = "io.github.supermonster003.autojs6-platform-versions"
             implementationClass = "org.autojs.build.platform.PlatformVersionsSettingsPlugin"
@@ -201,6 +209,7 @@ val centralBundle by tasks.registering(Zip::class) {
         "publishAllPublicationsToCentralStagingRepository",
         "checkPomFileForPluginMavenPublication",
         "checkPomFileForPlatformVersionsPluginMarkerMavenPublication",
+        "checkPomFileForNativeAlignmentPluginMarkerMavenPublication",
     )
     from(centralStagingRepositoryDirectory)
     exclude("**/maven-metadata.xml*")
@@ -223,6 +232,7 @@ val centralBundle by tasks.registering(Zip::class) {
             "${project.name}-${project.version}.pom",
             "${project.name}-${project.version}.module",
             "io.github.supermonster003.autojs6-platform-versions.gradle.plugin-${project.version}.pom",
+            "io.github.supermonster003.autojs6-native-alignment.gradle.plugin-${project.version}.pom",
         )
         val publishedNames = primaryArtifacts.mapTo(mutableSetOf()) { it.name }
         check(publishedNames.containsAll(expectedArtifacts)) {
@@ -244,5 +254,6 @@ tasks.named("check") {
     dependsOn(
         "checkPomFileForPluginMavenPublication",
         "checkPomFileForPlatformVersionsPluginMarkerMavenPublication",
+        "checkPomFileForNativeAlignmentPluginMarkerMavenPublication",
     )
 }
