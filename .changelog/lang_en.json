@@ -9,6 +9,9 @@
       "released_date": "2026/09/11",
       "feature": [
         "Shared nativeAlignment Gradle plugin verifies 16 KB ELF and APK ZIP alignment, scans native runtime archives, and rejects invalid or missing artifacts before distribution"
+      ],
+      "improvement": [
+        "Provision the Android SDK before running the negative native alignment fixture in CI"
       ]
     },
     "v1.7.5": {
