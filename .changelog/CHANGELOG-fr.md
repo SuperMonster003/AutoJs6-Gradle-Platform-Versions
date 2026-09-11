@@ -28,6 +28,7 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 ###### 2026/09/11
 
 * `Fonctionnalité` Le plugin Gradle partagé nativeAlignment vérifie les alignements ELF et ZIP des APK sur 16 KB, analyse les archives natives et rejette les artefacts non conformes ou manquants avant distribution
+* `Amélioration` Preparation du SDK Android avant le test negatif de l alignement natif dans la CI
 
 # v1.7.5
 

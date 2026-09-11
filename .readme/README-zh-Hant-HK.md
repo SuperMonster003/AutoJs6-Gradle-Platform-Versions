@@ -193,6 +193,7 @@ npm --prefix .utils run check-data
 ###### 2026/09/11
 
 * `新增` 共用 nativeAlignment Gradle 外掛程式驗證 16 KB ELF 與 APK ZIP 對齊, 掃描原生執行階段封存檔, 並在發佈前拒絕不合規或缺失的產物
+* `優化` CI 在執行原生程式庫對齊負樣例前準備 Android SDK
 
 # v1.7.5
 

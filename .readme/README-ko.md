@@ -193,6 +193,7 @@ npm --prefix .utils run check-data
 ###### 2026/09/11
 
 * `기능` 공유 Gradle 플러그인 nativeAlignment가 ELF 및 APK ZIP의 16 KB 정렬을 검증하고 네이티브 런타임 아카이브를 검사하여 배포 전에 부적합하거나 누락된 산출물을 거부
+* `개선` CI에서 네이티브 정렬 실패 예제를 실행하기 전에 Android SDK 준비
 
 # v1.7.5
 

@@ -193,6 +193,7 @@ npm --prefix .utils run check-data
 ###### 2026/09/11
 
 * `機能` 共有 Gradle プラグイン nativeAlignment が ELF と APK ZIP の 16 KB アラインメントを検証し, ネイティブランタイムのアーカイブを走査して, 不適合または欠落した成果物の配布を防止
+* `改善` CI でネイティブアラインメントの負例テストを実行する前に Android SDK を準備
 
 # v1.7.5
 
