@@ -5,6 +5,12 @@
   "changelog_label_improvement": "تحسين",
   "changelog_label_dependency": "تبعية",
   "$data": {
+    "v1.8.0": {
+      "released_date": "2026/09/11",
+      "feature": [
+        "تتحقق إضافة Gradle المشتركة nativeAlignment من محاذاة ELF وZIP في ملفات APK إلى 16 KB, وتفحص أرشيفات التشغيل الأصلية وترفض الملفات غير المتوافقة أو المفقودة قبل التوزيع"
+      ]
+    },
     "v1.7.5": {
       "released_date": "2026/09/10",
       "improvement": [

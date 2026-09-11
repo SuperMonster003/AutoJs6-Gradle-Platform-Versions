@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.0
+
+###### 2026/09/11
+
+* `ميزة` تتحقق إضافة Gradle المشتركة nativeAlignment من محاذاة ELF وZIP في ملفات APK إلى 16 KB, وتفحص أرشيفات التشغيل الأصلية وترفض الملفات غير المتوافقة أو المفقودة قبل التوزيع
+
 # v1.7.5
 
 ###### 2026/09/10
@@ -199,13 +205,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/04
 
 * `تحسين` حُدثت بيانات توافق المنصة والإصدارات المضمنة من المصادر الرسمية؛ وتحققت الأتمتة المجدولة قبل النشر من تحليل أدوات الجمع وسلوك إضافة Gradle وبناء مستهلك بلا واجهة
-
-# v1.7.3
-
-###### 2026/09/03
-
-* `إصلاح` أصبحت إضافة Settings تضع KGP المحدد تلقائيًا في buildscript classpath للمشروع الجذر قبل حل إضافات المشروع؛ وبذلك لا يبقى Kotlin المدمج في AGP 9 على KGP 2.2.10 المرفق ولا يرفض JVM target 25 عند استخدام JDK 25
-* `تحسين` أضيف تحقق لمستهلك AGP لا يطلب إضافة Kotlin صراحةً للتأكد من أن KGP المختار هو الإصدار المحلول فعليًا في classpath الجذر؛ وتم التحقق من Accessibility Compat مع Gradle 9.5 وAGP 9.3.2 على JDK 25 و26 عبر اختبارات الوحدة وlint وبناء APK و28 اختبارًا على أربعة أجهزة
 
 ##### لمزيد من سجل الإصدارات يمكن الرجوع إلى
 
@@ -257,3 +256,7 @@ sample/
 - مشروع AutoJs6 الرئيسي: https://github.com/SuperMonster003/AutoJs6
 - ملاحظات إصدار Android Gradle Plugin: https://developer.android.com/build/releases/gradle-plugin
 - مصفوفة توافق Gradle: https://docs.gradle.org/current/userguide/compatibility.html
+
+### 16 KB (nativeAlignment)
+
+[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)

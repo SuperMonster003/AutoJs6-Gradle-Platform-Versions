@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.0
+
+###### 2026/09/11
+
+* `新增` 共享 nativeAlignment Gradle 插件验证 16 KB ELF 与 APK ZIP 对齐, 扫描原生运行时归档, 并在分发前拒绝不合规或缺失的产物
+
 # v1.7.5
 
 ###### 2026/09/10
@@ -199,13 +205,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/04
 
 * `优化` 从官方上游来源刷新随插件分发的平台兼容性与发行数据; 定时自动化在发布前已验证抓取器解析、Gradle 插件行为及无头消费者构建
-
-# v1.7.3
-
-###### 2026/09/03
-
-* `修复` 确保 Settings 插件在根项目插件解析前把自动选择的 KGP 加入 buildscript classpath; AGP 9 内置 Kotlin 不再停留在捆绑的 KGP 2.2.10, 因而不会在 JDK 25 下拒绝 JVM target 25
-* `优化` 新增未显式请求 Kotlin 插件的 AGP 消费样例断言, 核对选择的 KGP 与根 classpath 实际版本一致; 已在 Accessibility Compat 的 Gradle 9.5/AGP 9.3.2 上以 JDK 25/26 完成单元测试、lint、APK 构建及 4 台设备共 28 项测试
 
 ##### 更多发行历史可参阅
 
@@ -257,3 +256,7 @@ sample/
 - AutoJs6 主项目: https://github.com/SuperMonster003/AutoJs6
 - Android Gradle 插件发行说明: https://developer.android.com/build/releases/gradle-plugin
 - Gradle 兼容性矩阵: https://docs.gradle.org/current/userguide/compatibility.html
+
+### 16 KB (nativeAlignment)
+
+[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)

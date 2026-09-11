@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
     }
 }
 
@@ -188,6 +188,12 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.8.0
+
+###### 2026/09/11
+
+* `Función` El plugin Gradle compartido nativeAlignment verifica la alineación ELF y ZIP de los APK a 16 KB, analiza archivos nativos y rechaza artefactos incompatibles o ausentes antes de su distribución
+
 # v1.7.5
 
 ###### 2026/09/10
@@ -199,13 +205,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 ###### 2026/09/04
 
 * `Mejora` Se actualizaron desde las fuentes oficiales los datos integrados de compatibilidad de plataforma y versiones; antes de publicar, la automatización programada validó los analizadores, el comportamiento del plugin de Gradle y una compilación consumidora sin interfaz
-
-# v1.7.3
-
-###### 2026/09/03
-
-* `Corrección` El plugin de Settings ahora coloca el KGP seleccionado automáticamente en el classpath buildscript raíz antes de resolver los plugins del proyecto; así, el Kotlin integrado de AGP 9 deja de usar el KGP 2.2.10 incluido y de rechazar el destino JVM 25 con JDK 25
-* `Mejora` Se añadió una aserción de consumidor AGP sin plugin Kotlin explícito que comprueba que el KGP seleccionado sea el realmente resuelto en el classpath raíz; Accessibility Compat se verificó con Gradle 9.5/AGP 9.3.2 en JDK 25 y 26 mediante pruebas unitarias, lint, compilaciones APK y 28 pruebas en cuatro dispositivos
 
 ##### Para consultar un historial más completo, véase
 
@@ -257,3 +256,7 @@ La lógica de decisión se encuentra en `src/main/kotlin` y los datos de compati
 - Proyecto principal de AutoJs6: https://github.com/SuperMonster003/AutoJs6
 - Notas de versión del plugin de Android Gradle: https://developer.android.com/build/releases/gradle-plugin
 - Matriz de compatibilidad de Gradle: https://docs.gradle.org/current/userguide/compatibility.html
+
+### 16 KB (nativeAlignment)
+
+[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)

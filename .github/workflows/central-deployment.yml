@@ -173,7 +173,7 @@ jobs:
             base="https://repo.maven.apache.org/maven2/io/github/supermonster003"
             implementation="$base/autojs6-gradle-platform-versions/$EXPECTED_VERSION/autojs6-gradle-platform-versions-$EXPECTED_VERSION"
             marker="$base/autojs6-platform-versions/io.github.supermonster003.autojs6-platform-versions.gradle.plugin/$EXPECTED_VERSION/io.github.supermonster003.autojs6-platform-versions.gradle.plugin-$EXPECTED_VERSION.pom"
-            urls=("$implementation.pom" "$implementation.jar" "$marker")
+            urls=("$implementation.pom" "$implementation.jar" "$marker" "$base/autojs6-native-alignment/io.github.supermonster003.autojs6-native-alignment.gradle.plugin/$EXPECTED_VERSION/io.github.supermonster003.autojs6-native-alignment.gradle.plugin-$EXPECTED_VERSION.pom")
             available=false
 
             for attempt in {1..120}; do
@@ -226,8 +226,10 @@ jobs:
           implementation_path="autojs6-gradle-platform-versions/$RELEASE_VERSION/autojs6-gradle-platform-versions-$RELEASE_VERSION.jar"
           urls=(
             "$central_base/$marker_path"
+            "$central_base/autojs6-native-alignment/io.github.supermonster003.autojs6-native-alignment.gradle.plugin/$RELEASE_VERSION/io.github.supermonster003.autojs6-native-alignment.gradle.plugin-$RELEASE_VERSION.pom"
             "$central_base/$implementation_path"
             "$portal_base/$marker_path"
+            "$portal_base/autojs6-native-alignment/io.github.supermonster003.autojs6-native-alignment.gradle.plugin/$RELEASE_VERSION/io.github.supermonster003.autojs6-native-alignment.gradle.plugin-$RELEASE_VERSION.pom"
             "$portal_base/$implementation_path"
           )
 

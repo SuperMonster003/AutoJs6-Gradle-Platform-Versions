@@ -377,8 +377,10 @@ jobs:
           implementation_path="autojs6-gradle-platform-versions/$RELEASE_VERSION/autojs6-gradle-platform-versions-$RELEASE_VERSION.jar"
           urls=(
             "$central_base/$marker_path"
+            "$central_base/autojs6-native-alignment/io.github.supermonster003.autojs6-native-alignment.gradle.plugin/$RELEASE_VERSION/io.github.supermonster003.autojs6-native-alignment.gradle.plugin-$RELEASE_VERSION.pom"
             "$central_base/$implementation_path"
             "$portal_base/$marker_path"
+            "$portal_base/autojs6-native-alignment/io.github.supermonster003.autojs6-native-alignment.gradle.plugin/$RELEASE_VERSION/io.github.supermonster003.autojs6-native-alignment.gradle.plugin-$RELEASE_VERSION.pom"
             "$portal_base/$implementation_path"
           )
           for url in "${urls[@]}"; do

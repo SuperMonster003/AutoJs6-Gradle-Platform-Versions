@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
     }
 }
 
@@ -188,6 +188,12 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.8.0
+
+###### 2026/09/11
+
+* `Feature` Shared nativeAlignment Gradle plugin verifies 16 KB ELF and APK ZIP alignment, scans native runtime archives, and rejects invalid or missing artifacts before distribution
+
 # v1.7.5
 
 ###### 2026/09/10
@@ -199,13 +205,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 ###### 2026/09/04
 
 * `Improvement` Refreshed the bundled platform compatibility and release data from the official upstream sources; the scheduled automation validated scraper parsing, Gradle plugin behavior, and a headless consumer build before publication
-
-# v1.7.3
-
-###### 2026/09/03
-
-* `Fix` Ensured the Settings plugin places its automatically selected KGP on the root buildscript classpath before project plugin resolution, so AGP 9 built-in Kotlin no longer remains on bundled KGP 2.2.10 and rejects JVM target 25 under JDK 25
-* `Improvement` Added an AGP consumer assertion with no explicit Kotlin plugin that verifies the selected KGP is the version actually resolved on the root classpath; verified Accessibility Compat with Gradle 9.5/AGP 9.3.2 on JDK 25 and 26 through unit tests, lint, APK builds, and 28 tests across four devices
 
 ##### For more release history, see
 
@@ -257,3 +256,7 @@ The decision logic lives in `src/main/kotlin` and the compatibility data is pack
 - AutoJs6 main project: https://github.com/SuperMonster003/AutoJs6
 - Android Gradle Plugin release notes: https://developer.android.com/build/releases/gradle-plugin
 - Gradle compatibility matrix: https://docs.gradle.org/current/userguide/compatibility.html
+
+### 16 KB (nativeAlignment)
+
+[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)

@@ -5,6 +5,12 @@
   "changelog_label_improvement": "改善",
   "changelog_label_dependency": "依存関係",
   "$data": {
+    "v1.8.0": {
+      "released_date": "2026/09/11",
+      "feature": [
+        "共有 Gradle プラグイン nativeAlignment が ELF と APK ZIP の 16 KB アラインメントを検証し, ネイティブランタイムのアーカイブを走査して, 不適合または欠落した成果物の配布を防止"
+      ]
+    },
     "v1.7.5": {
       "released_date": "2026/09/10",
       "improvement": [

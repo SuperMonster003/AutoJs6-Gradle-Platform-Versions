@@ -6,7 +6,7 @@ This document describes the maintainer workflow. It deliberately contains no cre
 
 - Maven group: `io.github.supermonster003`
 - Maven artifact: `autojs6-gradle-platform-versions`
-- Gradle plugin ID: `io.github.supermonster003.autojs6-platform-versions`
+- Gradle plugin IDs: `io.github.supermonster003.autojs6-platform-versions` and `io.github.supermonster003.autojs6-native-alignment` (since 1.8.0)
 - Source repository: `https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions`
 
 The Java/Kotlin package remains `org.autojs.build.platform`; package names do not have to match Maven coordinates or

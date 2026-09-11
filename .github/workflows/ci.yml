@@ -46,3 +46,28 @@ jobs:
 
       - name: Verify headless Temurin decision
         run: bash ./gradlew -p sample printPlatformVersions --no-daemon
+
+      - name: Prepare negative Android fixture
+        run: sdkmanager "platforms;android-36" "build-tools;36.0.0"
+
+      - name: Require rejection of a 4 KB native library
+        shell: bash
+        run: |
+          if bash ./gradlew -p sample/native-alignment assembleDebug --no-daemon; then
+            echo "::error::The intentionally unaligned APK passed verification."
+            exit 1
+          fi
+          python3 - <<'PY'
+          import json
+          from pathlib import Path
+          report = json.loads(Path('sample/native-alignment/build/reports/native-alignment/Debug.json').read_text())
+          assert report['summary']['ok'] is False
+          assert any('libunaligned.so' in e and 'PT_LOAD alignment 4096' in e for e in report['summary']['errors'])
+          PY
+
+      - name: Upload native alignment receipts
+        if: always()
+        uses: actions/upload-artifact@v4
+        with:
+          name: native-alignment
+          path: sample/native-alignment/build/reports/native-alignment/

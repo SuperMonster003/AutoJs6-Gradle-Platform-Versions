@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.7.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.0
+
+###### 2026/09/11
+
+* `기능` 공유 Gradle 플러그인 nativeAlignment가 ELF 및 APK ZIP의 16 KB 정렬을 검증하고 네이티브 런타임 아카이브를 검사하여 배포 전에 부적합하거나 누락된 산출물을 거부
+
 # v1.7.5
 
 ###### 2026/09/10
@@ -199,13 +205,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/04
 
 * `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
-
-# v1.7.3
-
-###### 2026/09/03
-
-* `수정` Settings 플러그인이 프로젝트 플러그인 해석 전에 자동 선택한 KGP를 루트 buildscript classpath에 추가하도록 수정했습니다. 이에 따라 AGP 9 내장 Kotlin이 번들 KGP 2.2.10에 머물러 JDK 25에서 JVM target 25를 거부하지 않습니다
-* `개선` Kotlin 플러그인을 명시하지 않은 AGP 소비자 예제에 선택된 KGP와 루트 classpath에서 실제 해석된 버전이 일치하는지 확인하는 단언을 추가했습니다. Accessibility Compat를 Gradle 9.5/AGP 9.3.2와 JDK 25/26에서 단위 테스트, lint, APK 빌드 및 4대 기기의 총 28개 테스트로 검증했습니다
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
@@ -257,3 +256,7 @@ sample/
 - AutoJs6 메인 프로젝트: https://github.com/SuperMonster003/AutoJs6
 - Android Gradle 플러그인 릴리스 노트: https://developer.android.com/build/releases/gradle-plugin
 - Gradle 호환성 매트릭스: https://docs.gradle.org/current/userguide/compatibility.html
+
+### 16 KB (nativeAlignment)
+
+[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)

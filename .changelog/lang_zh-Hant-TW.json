@@ -5,6 +5,12 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.8.0": {
+      "released_date": "2026/09/11",
+      "feature": [
+        "共用 nativeAlignment Gradle 外掛程式驗證 16 KB ELF 與 APK ZIP 對齊, 掃描原生執行階段封存檔, 並在發佈前拒絕不合規或缺失的產物"
+      ]
+    },
     "v1.7.5": {
       "released_date": "2026/09/10",
       "improvement": [

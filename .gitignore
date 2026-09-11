@@ -19,6 +19,7 @@ desktop.ini
 # (org/autojs/build) are not swept up along with build output.
 /build/
 /*/build/
+/sample/native-alignment/build/
 __pycache__/
 node_modules/
 
