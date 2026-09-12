@@ -23,6 +23,12 @@ CHANGELOG.md is currently available in the following languages:
 
 ******
 
+# v1.8.1
+
+###### 2026/09/12
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+
 # v1.8.0
 
 ###### 2026/09/11

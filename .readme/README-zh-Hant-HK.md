@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.1"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.1
+
+###### 2026/09/12
+
+* `優化` 將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證
+
 # v1.8.0
 
 ###### 2026/09/11
@@ -198,12 +204,6 @@ npm --prefix .utils run check-data
 # v1.7.5
 
 ###### 2026/09/10
-
-* `優化` 將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證
-
-# v1.7.4
-
-###### 2026/09/04
 
 * `優化` 將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證
 

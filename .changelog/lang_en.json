@@ -5,6 +5,12 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.8.1": {
+      "released_date": "2026/09/12",
+      "improvement": [
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+      ]
+    },
     "v1.8.0": {
       "released_date": "2026/09/11",
       "feature": [

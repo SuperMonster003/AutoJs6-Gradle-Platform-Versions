@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.1"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.1
+
+###### 2026/09/12
+
+* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
+
 # v1.8.0
 
 ###### 2026/09/11
@@ -198,12 +204,6 @@ npm --prefix .utils run check-data
 # v1.7.5
 
 ###### 2026/09/10
-
-* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-
-# v1.7.4
-
-###### 2026/09/04
 
 * `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
 
