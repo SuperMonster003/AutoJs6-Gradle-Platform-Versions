@@ -23,6 +23,12 @@ CHANGELOG.md is currently available in the following languages:
 
 ******
 
+# v1.8.1
+
+###### 2026/09/12
+
+* `Improvement` Refreshed the bundled platform compatibility and release data from the official upstream sources; the scheduled automation validated scraper parsing, Gradle plugin behavior, and a headless consumer build before publication
+
 # v1.8.0
 
 ###### 2026/09/11

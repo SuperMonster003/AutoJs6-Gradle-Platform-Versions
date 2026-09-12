@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.1"
     }
 }
 
@@ -188,6 +188,12 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.8.1
+
+###### 2026/09/12
+
+* `Mejora` Se actualizaron desde las fuentes oficiales los datos integrados de compatibilidad de plataforma y versiones; antes de publicar, la automatización programada validó los analizadores, el comportamiento del plugin de Gradle y una compilación consumidora sin interfaz
+
 # v1.8.0
 
 ###### 2026/09/11
@@ -198,12 +204,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 # v1.7.5
 
 ###### 2026/09/10
-
-* `Mejora` Se actualizaron desde las fuentes oficiales los datos integrados de compatibilidad de plataforma y versiones; antes de publicar, la automatización programada validó los analizadores, el comportamiento del plugin de Gradle y una compilación consumidora sin interfaz
-
-# v1.7.4
-
-###### 2026/09/04
 
 * `Mejora` Se actualizaron desde las fuentes oficiales los datos integrados de compatibilidad de plataforma y versiones; antes de publicar, la automatización programada validó los analizadores, el comportamiento del plugin de Gradle y una compilación consumidora sin interfaz
 
