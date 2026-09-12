@@ -254,6 +254,8 @@ jobs:
               .utils/* | \
               .python/* | \
               .readme/* | \
+              .changelog/lang_*.json | \
+              .changelog/CHANGELOG-*.md | \
               docs/* | \
               README.md | Roadmap.md | PUBLISHING.md | version.properties | run-scrapers.bat)
                 ;;

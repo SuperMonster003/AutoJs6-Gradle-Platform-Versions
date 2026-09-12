@@ -52,7 +52,7 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 1. 从 `master` 的完整历史开始, 安装并运行全部上游抓取器.
 2. 同时检查本次生成的工作区差异, 以及最新版本标签之后已经通过 PR 合并的数据差异. 后者保证 `update-pr` 合并后即使第二次抓取不再改文件, 下一次定时运行仍会发行这些数据.
 3. 若数据无语义变化, 以成功状态结束, 不修改分支、标签、版本或任何远端仓库.
-4. 若有变化, 检查最新标签与 `VERSION_NAME` 的基线关系. 允许 `src/test/` 下的测试及夹具修复随数据更新进入验证, 并拒绝把插件实现、构建逻辑等超出自动数据发行边界的未发行改动意外带入补丁版本.
+4. 若有变化, 检查最新标签与 `VERSION_NAME` 的基线关系. 允许 `src/test/` 下的测试及夹具修复, 以及配套的 `.changelog/lang_*.json` 和 `.changelog/CHANGELOG-*.md` 发行日志随数据更新进入验证, 并拒绝把插件实现、构建逻辑等超出自动数据发行边界的未发行改动意外带入补丁版本.
 5. 自动将稳定版本的 patch 位加一, 令 `VERSION_BUILD` 等于将要产生的提交总数, 同步 `.readme/common.json`, 为 10 种语言生成数据更新日志并重新生成全部 README/CHANGELOG.
 6. 执行翻译结构检查、Node 抓取器测试、Gradle 测试、Temurin 无头 sample 和隔离 Maven 发布测试; 同时验证生成器幂等、改动白名单以及目标版本在 GitHub、Central 和 Plugin Portal 上尚未占用.
 7. 以 `github-actions[bot]` 创建一个发行提交和注释标签. 推送前再次确认远端 `master` 仍是本次运行开始时的提交, 然后使用一次原子 push 同步分支与标签, 避免只推成功其中一项.
@@ -60,6 +60,8 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 9. 验证通过后, 工作流自动使用 `release` Environment 凭据签名并发布 Maven Central 与 Gradle Plugin Portal. 两套公开消费 URL 均返回成功后, 自动从英文 CHANGELOG 提取当前版本说明并创建 GitHub Release.
 
 正常数据发行从定时抓取到公开发布全程自动完成. 维护者只需在工作流失败时处理异常. 若失败发生在提交和标签推送之后, 可从同一标签按失败阶段恢复 `Publish release`; 已发布的目标应跳过, 已上传的 Central deployment 应复用其 UUID, 无需制造另一个版本.
+
+若 `Platform data` 因工作流缺陷而失败, 修复推送到 `master` 后, 应从 `master` 新建一次 `mode=release` 运行, 或等待下一次定时运行. 不要通过旧失败记录的 Re-run jobs 验证修复: [GitHub 重跑会继续使用原事件的提交和引用](https://docs.github.com/en/actions/how-tos/manage-workflow-runs/re-run-workflows-and-jobs), 无法取得后续提交中的修复.
 
 ## Platform data 手动模式
 
