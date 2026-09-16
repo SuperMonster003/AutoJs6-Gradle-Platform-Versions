@@ -56,7 +56,9 @@ must preserve/upload the reports and may use SDK build-tools 35+ `zipalign -c -P
 opinion. Runtime testing on a device reporting `adb shell getconf PAGE_SIZE` as `16384` remains
 required: ELF/ZIP alignment cannot detect runtime code that assumes 4 KiB pages.
 
-`sample/native-alignment` is an Android negative fixture. With an SDK installed, run
+`sample/native-alignment` is an Android negative fixture with `compileSdk = 37` and
+`targetSdk = 37`. It uses AGP 9.1.1 and the repository's Gradle 9.3.1 wrapper. Install
+`platforms;android-37.0` and `build-tools;37.0.0` through the SDK manager, then run
 `./gradlew -p sample/native-alignment assembleDebug`; assembly must finish with a failure in
 `verifyDebugNativePageAlignment`, naming `libunaligned.so` and its 4096-byte PT_LOAD alignment.
 The synthetic ELF fixture is intentionally not executable. Unit tests cover positive/negative

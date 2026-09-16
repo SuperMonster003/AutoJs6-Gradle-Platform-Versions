@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.2"
     }
 }
 
@@ -188,6 +188,12 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.8.2
+
+###### 2026/09/16
+
+* `Amélioration` Passer les deux exemples consommateurs à compileSdk / targetSdk 37, mettre à jour les versions requises de Gradle et d'AGP, et adapter le cas de test négatif d'alignement natif ainsi que la CI à Android SDK 37
+
 # v1.8.1
 
 ###### 2026/09/12
@@ -200,12 +206,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 * `Fonctionnalité` Le plugin Gradle partagé nativeAlignment vérifie les alignements ELF et ZIP des APK sur 16 KB, analyse les archives natives et rejette les artefacts non conformes ou manquants avant distribution
 * `Amélioration` Preparation du SDK Android avant le test negatif de l alignement natif dans la CI
-
-# v1.7.5
-
-###### 2026/09/10
-
-* `Amélioration` Actualisation des données embarquées de compatibilité de plateforme et de versions depuis les sources officielles en amont ; avant publication, l’automatisation planifiée a validé les analyseurs, le comportement du plugin Gradle et un build consommateur sans interface
 
 ##### Pour un historique plus complet, voir
 

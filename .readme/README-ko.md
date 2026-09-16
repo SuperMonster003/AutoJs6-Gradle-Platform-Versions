@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.2"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.2
+
+###### 2026/09/16
+
+* `개선` 두 소비자 예제의 compileSdk / targetSdk를 37로 올리고 필요한 Gradle 및 AGP 버전을 갱신하며, 네이티브 정렬 실패 검증용 예제와 CI를 Android SDK 37에 맞춤
+
 # v1.8.1
 
 ###### 2026/09/12
@@ -200,12 +206,6 @@ npm --prefix .utils run check-data
 
 * `기능` 공유 Gradle 플러그인 nativeAlignment가 ELF 및 APK ZIP의 16 KB 정렬을 검증하고 네이티브 런타임 아카이브를 검사하여 배포 전에 부적합하거나 누락된 산출물을 거부
 * `개선` CI에서 네이티브 정렬 실패 예제를 실행하기 전에 Android SDK 준비
-
-# v1.7.5
-
-###### 2026/09/10
-
-* `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

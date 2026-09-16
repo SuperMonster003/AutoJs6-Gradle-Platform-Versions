@@ -5,6 +5,12 @@
   "changelog_label_improvement": "优化",
   "changelog_label_dependency": "依赖",
   "$data": {
+    "v1.8.2": {
+      "released_date": "2026/09/16",
+      "improvement": [
+        "将两个消费端示例的 compileSdk / targetSdk 升级至 37, 同步所需的 Gradle 与 AGP 版本, 并将原生库对齐负样例及 CI 切换到 Android SDK 37"
+      ]
+    },
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [

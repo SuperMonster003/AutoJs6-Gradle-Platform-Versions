@@ -5,6 +5,12 @@
   "changelog_label_improvement": "개선",
   "changelog_label_dependency": "의존성",
   "$data": {
+    "v1.8.2": {
+      "released_date": "2026/09/16",
+      "improvement": [
+        "두 소비자 예제의 compileSdk / targetSdk를 37로 올리고 필요한 Gradle 및 AGP 버전을 갱신하며, 네이티브 정렬 실패 검증용 예제와 CI를 Android SDK 37에 맞춤"
+      ]
+    },
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [

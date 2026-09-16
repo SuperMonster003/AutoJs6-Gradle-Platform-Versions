@@ -22,25 +22,25 @@ class PlatformVersionsFacadeTest {
     )
 
     @Test
-    fun `full headless decision derives API 36 minimum without pinning AGP`() {
+    fun `full headless decision derives API 37 minimum without pinning AGP`() {
         rootDir.resolve("version.properties").writeText(
             """
-            COMPILE_SDK_VERSION=36
-            TARGET_SDK_VERSION=36
-            MIN_SUPPORTED_GRADLE_VERSION=9.1.0
+            COMPILE_SDK_VERSION=37
+            TARGET_SDK_VERSION=37
+            MIN_SUPPORTED_GRADLE_VERSION=9.3.1
             OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION=NONE
             """.trimIndent()
         )
 
         val versions = PlatformVersionsFacade.decide(
             rootDir = rootDir.toFile(),
-            gradleVersion = "9.3.0",
+            gradleVersion = "9.5.0",
             systemProperties = temurinProperties,
         )
 
         assertEquals(AgpSelectionMode.GRADLE_COMPATIBILITY, versions.platform.agpSelectionMode)
-        assertEquals("8.9.1", versions.minimumAgpVersion)
-        assertEquals("9.0.1", versions.agpVersion)
+        assertEquals("9.1.1", versions.minimumAgpVersion)
+        assertEquals("9.3.2", versions.agpVersion)
         assertTrue(VersionComparator.compareVersionStrings(versions.agpVersion, versions.minimumAgpVersion!!) > 0) {
             "the API-derived lower boundary must not become an exact AGP pin"
         }
