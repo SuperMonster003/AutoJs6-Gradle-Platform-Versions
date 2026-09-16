@@ -194,14 +194,9 @@ jobs:
         shell: bash
         run: |
           data_dir="src/main/resources/org/autojs/build/platform/data"
-          current_version="$(sed -n 's/^VERSION_NAME=//p' version.properties | tr -d '\r')"
           latest_tag="$(git tag --list 'v[0-9]*' --sort=-version:refname | sed -n '1p')"
           if [[ -z "$latest_tag" ]]; then
             echo "::error title=Release history missing::No semantic version tag is available as the automation baseline."
-            exit 1
-          fi
-          if [[ "$latest_tag" != "v${current_version}" ]]; then
-            echo "::error title=Version baseline mismatch::Latest tag is $latest_tag but VERSION_NAME is $current_version."
             exit 1
           fi
           if ! git merge-base --is-ancestor "$latest_tag" HEAD; then
@@ -230,6 +225,14 @@ jobs:
             echo "should_release=false" >> "$GITHUB_OUTPUT"
             echo "No new platform-data changes were found; no repository, tag, registry, or release mutation was performed." >> "$GITHUB_STEP_SUMMARY"
             exit 0
+          fi
+
+          # A manually prepared version may be ahead of the latest tag without new data.
+          # Require matching versions only when an automatic data release is needed.
+          current_version="$(sed -n 's/^VERSION_NAME=//p' version.properties | tr -d '\r')"
+          if [[ "$latest_tag" != "v${current_version}" ]]; then
+            echo "::error title=Version baseline mismatch::Latest tag is $latest_tag but VERSION_NAME is $current_version."
+            exit 1
           fi
           echo "should_release=true" >> "$GITHUB_OUTPUT"
           echo "latest_tag=$latest_tag" >> "$GITHUB_OUTPUT"
