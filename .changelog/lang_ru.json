@@ -5,6 +5,12 @@
   "changelog_label_improvement": "Улучшение",
   "changelog_label_dependency": "Зависимость",
   "$data": {
+    "v1.8.2": {
+      "released_date": "2026/09/16",
+      "improvement": [
+        "Оба примера потребителей переведены на compileSdk / targetSdk 37, обновлены необходимые версии Gradle и AGP, а отрицательный тест выравнивания нативных библиотек и CI адаптированы к Android SDK 37"
+      ]
+    },
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [

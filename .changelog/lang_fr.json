@@ -5,6 +5,12 @@
   "changelog_label_improvement": "Amélioration",
   "changelog_label_dependency": "Dépendance",
   "$data": {
+    "v1.8.2": {
+      "released_date": "2026/09/16",
+      "improvement": [
+        "Passer les deux exemples consommateurs à compileSdk / targetSdk 37, mettre à jour les versions requises de Gradle et d'AGP, et adapter le cas de test négatif d'alignement natif ainsi que la CI à Android SDK 37"
+      ]
+    },
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [

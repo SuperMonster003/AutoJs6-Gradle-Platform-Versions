@@ -23,6 +23,12 @@ CHANGELOG.md está disponible actualmente en los siguientes idiomas:
 
 ******
 
+# v1.8.2
+
+###### 2026/09/16
+
+* `Mejora` Actualizar ambos ejemplos consumidores a compileSdk / targetSdk 37, actualizar las versiones necesarias de Gradle y AGP, y adaptar el caso de prueba negativo de alineación nativa y la CI a Android SDK 37
+
 # v1.8.1
 
 ###### 2026/09/12

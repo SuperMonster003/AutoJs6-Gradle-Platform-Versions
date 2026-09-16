@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.2"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.2
+
+###### 2026/09/16
+
+* `تحسين` ترقية compileSdk / targetSdk إلى 37 في مثالي المشاريع المستهلكة, وتحديث إصدارات Gradle وAGP المطلوبة, وتكييف نموذج الاختبار السلبي لمحاذاة المكتبات الأصلية وCI مع Android SDK 37
+
 # v1.8.1
 
 ###### 2026/09/12
@@ -200,12 +206,6 @@ npm --prefix .utils run check-data
 
 * `ميزة` تتحقق إضافة Gradle المشتركة nativeAlignment من محاذاة ELF وZIP في ملفات APK إلى 16 KB, وتفحص أرشيفات التشغيل الأصلية وترفض الملفات غير المتوافقة أو المفقودة قبل التوزيع
 * `تحسين` إعداد Android SDK قبل تشغيل اختبار المحاذاة الأصلية السلبي في CI
-
-# v1.7.5
-
-###### 2026/09/10
-
-* `تحسين` مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي
 
 ##### لمزيد من سجل الإصدارات يمكن الرجوع إلى
 
