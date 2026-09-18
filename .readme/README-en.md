@@ -257,7 +257,4 @@ The decision logic lives in `src/main/kotlin` and the compatibility data is pack
 - AutoJs6 main project: https://github.com/SuperMonster003/AutoJs6
 - Android Gradle Plugin release notes: https://developer.android.com/build/releases/gradle-plugin
 - Gradle compatibility matrix: https://docs.gradle.org/current/userguide/compatibility.html
-
-### 16 KB (nativeAlignment)
-
-[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)
+- 16 KB (nativeAlignment): [API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)
