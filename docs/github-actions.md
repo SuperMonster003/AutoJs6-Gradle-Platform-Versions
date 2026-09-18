@@ -43,11 +43,13 @@ Required reviewers 和 Wait timer 是 GitHub 端的 Environment 配置, 不由�
 gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 ```
 
-`Platform data` 的发行 job 明确申请 `contents: write` 与 `actions: write`, 分别用于原子推送发行提交/标签和触发 `Publish release`. 手动 `update-pr` 模式还申请 `pull-requests: write`; 若使用该模式, 需在 `Settings` → `Actions` → `General` 中允许 GitHub Actions 创建 pull request. 所有其他 job 保持只读或仅取得完成其职责所需的权限.
+`Platform data` 的发行 job 明确申请 `contents: write` 与 `actions: write`, 分别用于原子推送发行提交/标签和触发 `Publish release`. 手动 `update-pr` 模式申请 `contents: write`、`pull-requests: write` 与 `actions: write`, 用于推送数据分支、创建 PR 并在该分支显式启动 `Build and test`. `GITHUB_TOKEN` 的 push 不会启动 CI, 由它创建或更新 PR 产生的 pull_request 运行需要批准后才会执行, 因而此处使用允许自动执行的 `workflow_dispatch` 入口. 若使用该模式, 需在 `Settings` → `Actions` → `General` 中允许 GitHub Actions 创建 pull request. 所有其他 job 保持只读或仅取得完成其职责所需的权限.
 
 ## 每日数据自动发行
 
-定时器使用 UTC cron `17 1 * * *`, 即北京时间每天 09:17. 每次运行依次执行:
+定时器使用 cron `17 9 * * *` 和 `timezone: Asia/Shanghai`, 即北京时间每天 09:17 (UTC 01:17). GitHub 的调度可能延迟或丢弃事件, 工作流显示 `active` 仅表示已启用; 是否实际触发应以运行记录中的 `event=schedule` 为准. 仓库重建或恢复调度后, 需核验真实的定时运行记录. 官方说明见 [schedule 事件文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
+
+`Build and test` 的入口是 push、pull request 或手动触发; 每日定时入口是 `Platform data`, 其中会执行相同的 Node/Gradle/sample 检查. 每次数据发行依次执行:
 
 1. 从 `master` 的完整历史开始, 安装并运行全部上游抓取器.
 2. 同时检查本次生成的工作区差异, 以及最新版本标签之后已经通过 PR 合并的数据差异. 后者保证 `update-pr` 合并后即使第二次抓取不再改文件, 下一次定时运行仍会发行这些数据.
@@ -68,7 +70,7 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 打开 `Actions` → `Platform data` → `Run workflow`, 从 `master` 选择以下模式之一:
 
 - `check`: 只读抓取和比较. 最新时成功; 发现更新时以明确提示失败, 不写文件.
-- `update-pr`: 更新数据、运行 Node/Gradle/sample 验证, 将严格限制在数据资源目录内的差异提交到临时分支并创建 PR. 合并后由下一次定时 `release` 识别并发行.
+- `update-pr`: 更新数据、运行 Node/Gradle/sample 验证, 将严格限制在数据资源目录内的差异提交到临时分支并创建 PR, 再显式启动该分支的 `Build and test`, 包括 Android 原生库对齐负样例检查. 合并后由下一次定时 `release` 识别并发行.
 - `release`: 立即执行与每日定时器完全相同的安全发行链, 适合不等待下一次 cron.
 
 ## 手动正式发行
