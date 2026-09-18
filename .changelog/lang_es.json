@@ -6,7 +6,10 @@
   "changelog_label_dependency": "Dependencia",
   "$data": {
     "v1.8.2": {
-      "released_date": "2026/09/16",
+      "released_date": "2026/09/18",
+      "fix": [
+        "Omitir las comprobaciones de versión de publicación cuando los datos de plataforma no cambien en las ejecuciones programadas y evitar la instalación del paquete obsoleto Android SDK tools en CI"
+      ],
       "improvement": [
         "Actualizar ambos ejemplos consumidores a compileSdk / targetSdk 37, actualizar las versiones necesarias de Gradle y AGP, y adaptar el caso de prueba negativo de alineación nativa y la CI a Android SDK 37"
       ]

@@ -6,7 +6,10 @@
   "changelog_label_dependency": "依賴",
   "$data": {
     "v1.8.2": {
-      "released_date": "2026/09/16",
+      "released_date": "2026/09/18",
+      "fix": [
+        "修正平台資料未變更時仍執行發佈版本檢查的問題, 並避免 CI 安裝已棄用的 Android SDK tools 套件"
+      ],
       "improvement": [
         "將兩個消費端範例的 compileSdk / targetSdk 升級至 37, 同步所需的 Gradle 與 AGP 版本, 並將原生程式庫對齊負面範例及 CI 切換到 Android SDK 37"
       ]
