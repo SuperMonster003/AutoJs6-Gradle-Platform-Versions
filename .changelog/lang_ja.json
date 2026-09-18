@@ -6,7 +6,10 @@
   "changelog_label_dependency": "依存関係",
   "$data": {
     "v1.8.2": {
-      "released_date": "2026/09/16",
+      "released_date": "2026/09/18",
+      "fix": [
+        "定期実行でプラットフォームデータに変更がない場合はリリースバージョンの検証をスキップし、CI で廃止された Android SDK tools パッケージをインストールしないように修正"
+      ],
       "improvement": [
         "2 つの利用側サンプルの compileSdk / targetSdk を 37 に更新し, 必要な Gradle と AGP のバージョンを更新するとともに, ネイティブアライメントの異常系テストと CI を Android SDK 37 に対応"
       ]

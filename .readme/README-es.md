@@ -190,8 +190,9 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 # v1.8.2
 
-###### 2026/09/16
+###### 2026/09/18
 
+* `Corrección` Omitir las comprobaciones de versión de publicación cuando los datos de plataforma no cambien en las ejecuciones programadas y evitar la instalación del paquete obsoleto Android SDK tools en CI
 * `Mejora` Actualizar ambos ejemplos consumidores a compileSdk / targetSdk 37, actualizar las versiones necesarias de Gradle y AGP, y adaptar el caso de prueba negativo de alineación nativa y la CI a Android SDK 37
 
 # v1.8.1

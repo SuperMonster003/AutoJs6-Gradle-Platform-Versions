@@ -190,8 +190,9 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 # v1.8.2
 
-###### 2026/09/16
+###### 2026/09/18
 
+* `Fix` Skip release version checks when scheduled platform data is unchanged, and avoid installing the obsolete Android SDK tools package in CI
 * `Improvement` Upgrade both consumer samples to compileSdk / targetSdk 37, update the required Gradle and AGP versions, and align the negative native alignment fixture and CI with Android SDK 37
 
 # v1.8.1
