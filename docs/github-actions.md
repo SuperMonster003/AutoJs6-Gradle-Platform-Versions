@@ -49,6 +49,8 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 
 定时器使用 cron `17 9 * * *` 和 `timezone: Asia/Shanghai`, 即北京时间每天 09:17 (UTC 01:17). GitHub 的调度可能延迟或丢弃事件, 工作流显示 `active` 仅表示已启用; 是否实际触发应以运行记录中的 `event=schedule` 为准. 仓库重建或恢复调度后, 需核验真实的定时运行记录. 官方说明见 [schedule 事件文档](https://docs.github.com/en/actions/reference/workflows-and-actions/events-that-trigger-workflows#schedule).
 
+发行 job 只接受当前每日 cron 或手动 `mode=release`, 忽略已撤下的旧定时表达式可能延迟送达的事件. 修改每日 cron 时, 应同步更新 `release` job 的条件.
+
 `Build and test` 的入口是 push、pull request 或手动触发; 每日定时入口是 `Platform data`, 其中会执行相同的 Node/Gradle/sample 检查. 每次数据发行依次执行:
 
 1. 从 `master` 的完整历史开始, 安装并运行全部上游抓取器.

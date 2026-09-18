@@ -5,8 +5,6 @@ on:
     # Every day at 09:17 in Asia/Shanghai (01:17 UTC).
     - cron: '17 9 * * *'
       timezone: Asia/Shanghai
-    # Temporary read-only probe while verifying scheduling after repository recreation.
-    - cron: '*/5 * * * *'
   workflow_dispatch:
     inputs:
       mode:
@@ -27,19 +25,6 @@ concurrency:
   cancel-in-progress: false
 
 jobs:
-  schedule-probe:
-    if: github.event_name == 'schedule' && github.event.schedule == '*/5 * * * *'
-    runs-on: ubuntu-latest
-    timeout-minutes: 2
-    permissions: {}
-    steps:
-      - name: Record the actual scheduled event
-        env:
-          SCHEDULE: ${{ github.event.schedule }}
-        run: |
-          printf 'Scheduled event received at %s\nCron: %s\nRef: %s\nCommit: %s\n' \
-            "$(date -u +%FT%TZ)" "$SCHEDULE" "$GITHUB_REF" "$GITHUB_SHA" >> "$GITHUB_STEP_SUMMARY"
-
   check:
     if: github.event_name == 'workflow_dispatch' && inputs.mode == 'check'
     runs-on: ubuntu-latest
@@ -175,6 +160,7 @@ jobs:
         run: gh workflow run ci.yml --ref "$UPDATE_BRANCH"
 
   release:
+    # Ignore delayed events from retired schedules; update this condition when changing the daily cron.
     if: (github.event_name == 'schedule' && github.event.schedule == '17 9 * * *') || inputs.mode == 'release'
     runs-on: ubuntu-latest
     timeout-minutes: 60
