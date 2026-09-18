@@ -257,7 +257,4 @@ sample/
 - Основной проект AutoJs6: https://github.com/SuperMonster003/AutoJs6
 - Примечания к выпускам Android Gradle Plugin: https://developer.android.com/build/releases/gradle-plugin
 - Матрица совместимости Gradle: https://docs.gradle.org/current/userguide/compatibility.html
-
-### 16 KB (nativeAlignment)
-
-[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)
+- 16 KB (nativeAlignment): [API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)

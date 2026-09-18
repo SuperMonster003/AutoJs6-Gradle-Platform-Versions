@@ -257,7 +257,4 @@ sample/
 - AutoJs6 主項目: https://github.com/SuperMonster003/AutoJs6
 - Android Gradle 插件發行說明: https://developer.android.com/build/releases/gradle-plugin
 - Gradle 兼容性矩陣: https://docs.gradle.org/current/userguide/compatibility.html
-
-### 16 KB (nativeAlignment)
-
-[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)
+- 16 KB (nativeAlignment): [API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)

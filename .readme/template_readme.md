@@ -220,7 +220,4 @@ sample/
 - {{ text_link_autojs6 }}: {{ autojs6_url }}
 - {{ text_link_agp_releases }}: {{ agp_releases_url }}
 - {{ text_link_gradle_compat }}: {{ gradle_compat_url }}
-
-### 16 KB (nativeAlignment)
-
-[API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)
+- 16 KB (nativeAlignment): [API, DSL, CI, ELF/ZIP](https://github.com/SuperMonster003/AutoJs6-Gradle-Platform-Versions/blob/master/NATIVE_ALIGNMENT.md)
