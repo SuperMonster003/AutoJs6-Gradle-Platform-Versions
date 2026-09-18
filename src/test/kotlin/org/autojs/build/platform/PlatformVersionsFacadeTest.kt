@@ -21,6 +21,12 @@ class PlatformVersionsFacadeTest {
         )::get
     )
 
+    // Scraping advances patch releases without changing the AGP line selected by these scenarios.
+    private val latestStableAgp93 = DataSource(localDataDir = null).list("agp-releases")
+        .filter { it.matches(Regex("9\\.3\\.\\d+")) }
+        .maxWithOrNull(VersionComparator::compareVersionStrings)
+        ?: error("The bundled AGP releases must contain a stable 9.3 patch")
+
     @Test
     fun `full headless decision derives API 37 minimum without pinning AGP`() {
         rootDir.resolve("version.properties").writeText(
@@ -40,7 +46,7 @@ class PlatformVersionsFacadeTest {
 
         assertEquals(AgpSelectionMode.GRADLE_COMPATIBILITY, versions.platform.agpSelectionMode)
         assertEquals("9.1.1", versions.minimumAgpVersion)
-        assertEquals("9.3.2", versions.agpVersion)
+        assertEquals(latestStableAgp93, versions.agpVersion)
         assertTrue(VersionComparator.compareVersionStrings(versions.agpVersion, versions.minimumAgpVersion!!) > 0) {
             "the API-derived lower boundary must not become an exact AGP pin"
         }
@@ -142,10 +148,10 @@ class PlatformVersionsFacadeTest {
         )
 
         assertEquals("2026.1.3.8", versions.platform.version)
-        assertEquals("9.3.2", versions.agpVersion)
+        assertEquals(latestStableAgp93, versions.agpVersion)
         assertTrue(
             versions.versionInfo.any {
-                it.contains("com.android.tools.build:gradle:9.3.2") &&
+                it.contains("com.android.tools.build:gradle:$latestStableAgp93") &&
                         it.contains(Identifier.NEAREST_LOWER_MATCHED_SUFFIX)
             },
         )
