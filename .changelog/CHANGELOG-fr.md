@@ -23,6 +23,12 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.8.3
+
+###### 2026/09/19
+
+* `Correctif` La vérification de l'alignement natif exclut les tâches d'assemblage des tests unitaires JVM et des fixtures de test qui ne produisent pas d'APK
+
 # v1.8.2
 
 ###### 2026/09/18

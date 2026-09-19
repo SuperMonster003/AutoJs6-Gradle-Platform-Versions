@@ -158,7 +158,7 @@ class NativeAlignmentPlugin : Plugin<Project> {
         registerVerification("")
         pluginManager.withPlugin("com.android.application") {
             afterEvaluate {
-                tasks.names.filter { it.startsWith("assemble") && it.length > 8 && !it.contains("AndroidTest") }.forEach { name ->
+                tasks.names.filter(::isApkAssembleTask).forEach { name ->
                     val verification = registerVerification(name.removePrefix("assemble"))
                     tasks.named(name) { finalizedBy(verification) }
                 }
@@ -166,3 +166,9 @@ class NativeAlignmentPlugin : Plugin<Project> {
         }
     }
 }
+
+// Unit-test and test-fixture assemblies produce JVM classes or AARs, not APKs.
+// Keep application variants and flavour/build-type aggregate assemblies verified.
+internal fun isApkAssembleTask(name: String): Boolean =
+    name.startsWith("assemble") && name.length > "assemble".length &&
+        listOf("AndroidTest", "UnitTest", "TestFixtures").none { name.contains(it) }

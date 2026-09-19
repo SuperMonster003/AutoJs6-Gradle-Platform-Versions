@@ -5,6 +5,12 @@
   "changelog_label_improvement": "Amélioration",
   "changelog_label_dependency": "Dépendance",
   "$data": {
+    "v1.8.3": {
+      "released_date": "2026/09/19",
+      "fix": [
+        "La vérification de l'alignement natif exclut les tâches d'assemblage des tests unitaires JVM et des fixtures de test qui ne produisent pas d'APK"
+      ]
+    },
     "v1.8.2": {
       "released_date": "2026/09/18",
       "fix": [

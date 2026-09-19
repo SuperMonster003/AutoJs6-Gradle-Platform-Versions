@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.3"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.3
+
+###### 2026/09/19
+
+* `修正` ネイティブライブラリのアラインメント検証から, APK を生成しない JVM 単体テストとテストフィクスチャの組み立てタスクを除外
+
 # v1.8.2
 
 ###### 2026/09/18
@@ -200,13 +206,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/12
 
 * `改善` 公式アップストリームから同梱のプラットフォーム互換性データとリリースデータを更新。定期自動化により、公開前にスクレイパー解析、Gradle プラグインの動作、ヘッドレス利用側ビルドを検証
-
-# v1.8.0
-
-###### 2026/09/11
-
-* `機能` 共有 Gradle プラグイン nativeAlignment が ELF と APK ZIP の 16 KB アラインメントを検証し, ネイティブランタイムのアーカイブを走査して, 不適合または欠落した成果物の配布を防止
-* `改善` CI でネイティブアラインメントの負例テストを実行する前に Android SDK を準備
 
 ##### 詳しいリリース履歴はこちらを参照してください
 
