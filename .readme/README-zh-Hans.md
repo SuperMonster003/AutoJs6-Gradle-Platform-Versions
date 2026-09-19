@@ -192,6 +192,7 @@ npm --prefix .utils run check-data
 
 ###### 2026/09/19
 
+* `修复` AGP 9.1 通过 sdklib 32.2.1 读取 SDK repository XML v4, 并保持所选 AGP 与 AAPT2 版本一致
 * `修复` 原生库对齐检查排除不生成 APK 的 JVM 单元测试及测试夹具组装任务
 
 # v1.8.2

@@ -192,6 +192,7 @@ npm --prefix .utils run check-data
 
 ###### 2026/09/19
 
+* `수정` 선택한 AGP 및 AAPT2 버전을 유지하면서 AGP 9.1에서 sdklib 32.2.1로 SDK repository XML v4 읽기
 * `수정` APK를 생성하지 않는 JVM 단위 테스트 및 테스트 픽스처 조립 작업을 네이티브 정렬 검사에서 제외
 
 # v1.8.2

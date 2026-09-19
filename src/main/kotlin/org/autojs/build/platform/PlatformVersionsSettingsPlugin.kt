@@ -51,7 +51,7 @@ class PlatformVersionsSettingsPlugin : Plugin<Settings> {
         settings.gradle.extra.set("kotlinClasspathNotation", versions.kotlinClasspathNotation)
         settings.gradle.extra.set("r8ClasspathNotation", versions.r8ClasspathNotation)
 
-        alignRootBuildscriptKotlin(settings, versions)
+        alignRootBuildscript(settings, versions)
 
         settings.gradle.taskGraph.whenReady {
             if (allTasks.none { it.name == "clean" }) {
@@ -82,17 +82,23 @@ class PlatformVersionsSettingsPlugin : Plugin<Settings> {
      * lets normal Gradle conflict resolution upgrade AGP's runtime consistently, without
      * applying a second Kotlin plugin to Android modules.
      *
+     * The same hook lets [SdkToolingCompatibility] refresh the SDK repository reader that
+     * AGP 9.1 bundles, so it runs before the root script resolves AGP.
+     *
      * zh-CN: 在根项目插件解析前把已选 KGP 放入脚本 classpath. AGP 9 通过 KGP 运行时依赖
      * 编译 Android Kotlin 源码, 其捆绑版本可能落后于中央决策; 仅导出属性并不会参与依赖
      * 解析. 此处交由 Gradle 的正常冲突解析提升 AGP 运行时, 且不会向 Android 模块重复应用插件.
+     * 同一钩子也交由 [SdkToolingCompatibility] 更新 AGP 9.1 捆绑的 SDK 元数据读取库,
+     * 以保证其先于根脚本解析 AGP.
      */
-    private fun alignRootBuildscriptKotlin(
+    private fun alignRootBuildscript(
         settings: Settings,
         versions: PlatformVersionsExtension,
     ) {
         settings.gradle.beforeProject(Action<Project> {
             val project = this
             if (project == project.rootProject) {
+                SdkToolingCompatibility.configure(project, versions.agpVersion)
                 val repositories = project.buildscript.repositories
                 val hasMavenCentral = repositories
                     .withType(MavenArtifactRepository::class.java)

@@ -56,6 +56,9 @@ jobs:
       - name: Install negative fixture SDK
         run: sdkmanager "platforms;android-37.0" "build-tools;37.0.0"
 
+      - name: Verify SDK XML reader and unit-test assembly compatibility
+        run: bash ./gradlew -p sample/sdk-xml verifyToolingCompatibility --no-daemon
+
       - name: Require rejection of a 4 KB native library
         shell: bash
         run: |

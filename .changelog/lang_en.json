@@ -8,6 +8,7 @@
     "v1.8.3": {
       "released_date": "2026/09/19",
       "fix": [
+        "AGP 9.1 reads SDK repository XML v4 using sdklib 32.2.1 while preserving the selected AGP and AAPT2 versions",
         "Native alignment verification excludes JVM unit-test and test-fixture assemblies that do not produce APKs"
       ]
     },

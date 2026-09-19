@@ -192,6 +192,7 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ###### 2026/09/19
 
+* `Correctif` AGP 9.1 lit les métadonnées SDK repository XML v4 avec sdklib 32.2.1 tout en conservant les versions sélectionnées d'AGP et d'AAPT2
 * `Correctif` La vérification de l'alignement natif exclut les tâches d'assemblage des tests unitaires JVM et des fixtures de test qui ne produisent pas d'APK
 
 # v1.8.2

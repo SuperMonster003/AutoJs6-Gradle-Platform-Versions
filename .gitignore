@@ -20,6 +20,7 @@ desktop.ini
 /build/
 /*/build/
 /sample/native-alignment/build/
+/sample/sdk-xml/build/
 __pycache__/
 node_modules/
 
