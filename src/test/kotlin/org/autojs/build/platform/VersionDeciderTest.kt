@@ -40,6 +40,20 @@ class VersionDeciderTest {
     private fun decider(platform: Platform, gradleVersion: String = "9.3.0") =
         VersionDecider(platform, dataSource, gradleVersion)
 
+    /**
+     * Newest stable release on an AGP line, read from the bundled data.
+     *
+     * The scheduled data release refreshes agp-releases.list unattended, so a test
+     * that pins the newest patch of a line that is still receiving patches breaks the
+     * automation the day Google publishes the next one.
+     *
+     * zh-CN: 某条 AGP 版本线上最新的正式版, 取自随插件打包的数据. 定时数据发布会无人值守地
+     * 刷新 agp-releases.list, 若测试把仍在更新的版本线的最新补丁版写死, 上游一发新补丁自动化就会中断.
+     */
+    private fun newestOnLine(line: String) = requireNotNull(decider(commandLine()).getAgpReleasedVersion("$line.")) {
+        "the bundled AGP data should contain a stable release on the $line line"
+    }
+
     @Test
     fun `bundled datasets load from plugin resources`() {
         assertTrue(dataSource.list("agp-releases").isNotEmpty())
@@ -102,7 +116,7 @@ class VersionDeciderTest {
         }
 
         val decision = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
-        assertEquals("9.2.1", decision.version) { "one line of headroom above 9.1 is the 9.2 line" }
+        assertEquals(newestOnLine("9.2"), decision.version) { "one line of headroom above 9.1 is the 9.2 line" }
         assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix) { "a stale map means auto selection" }
     }
 
@@ -113,11 +127,11 @@ class VersionDeciderTest {
         // is AGP 9.1.0".
         val map = mapOf("2026.2" to "9.1.0")
         val decision = decider(idea("2026.2.1", map), gradleVersion = "9.6.1").decideAgpVersion()
-        assertEquals("9.1.1", decision.version) { "a patch update stays on the 9.1 line" }
+        assertEquals(newestOnLine("9.1"), decision.version) { "a patch update stays on the 9.1 line" }
 
         // A minor-level update does earn a line.
         val ahead = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
-        assertEquals("9.2.1", ahead.version) { "a minor update moves up to the 9.2 line" }
+        assertEquals(newestOnLine("9.2"), ahead.version) { "a minor update moves up to the 9.2 line" }
     }
 
     @Test
@@ -191,7 +205,13 @@ class VersionDeciderTest {
             listOf(AgpRequirement("9.1.1", AgpRequirementResolver.MIN_SUPPORTED_AGP_PROPERTY)),
         )
 
-        assertEquals("9.4.0", decision.version) {
+        // Whatever the newest Gradle-compatible release currently is, it must win over the
+        // minimum; the exact patch number is owned by the scheduled data refresh.
+        val newestUsable = requireNotNull(decider.maxSupportedAgpVersion())
+        assertTrue(VersionComparator.compareVersionStrings(newestUsable, "9.1.1") > 0) {
+            "Gradle 9.6.1 should reach an AGP above the 9.1.1 minimum, got $newestUsable"
+        }
+        assertEquals(newestUsable, decision.version) {
             "the newest Gradle-compatible AGP should win even though the project minimum is 9.1.1"
         }
     }
