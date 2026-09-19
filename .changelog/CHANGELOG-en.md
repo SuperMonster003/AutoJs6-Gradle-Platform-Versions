@@ -23,6 +23,12 @@ CHANGELOG.md is currently available in the following languages:
 
 ******
 
+# v1.8.3
+
+###### 2026/09/19
+
+* `Fix` Native alignment verification excludes JVM unit-test and test-fixture assemblies that do not produce APKs
+
 # v1.8.2
 
 ###### 2026/09/18

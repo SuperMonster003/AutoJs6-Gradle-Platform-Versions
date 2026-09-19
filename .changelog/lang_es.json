@@ -5,6 +5,12 @@
   "changelog_label_improvement": "Mejora",
   "changelog_label_dependency": "Dependencia",
   "$data": {
+    "v1.8.3": {
+      "released_date": "2026/09/19",
+      "fix": [
+        "La verificación de alineación nativa excluye las tareas de ensamblado de pruebas unitarias JVM y fixtures de prueba que no generan APK"
+      ]
+    },
     "v1.8.2": {
       "released_date": "2026/09/18",
       "fix": [

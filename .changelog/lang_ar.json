@@ -5,6 +5,12 @@
   "changelog_label_improvement": "تحسين",
   "changelog_label_dependency": "تبعية",
   "$data": {
+    "v1.8.3": {
+      "released_date": "2026/09/19",
+      "fix": [
+        "استثناء مهام تجميع اختبارات JVM وتجهيزات الاختبار التي لا تنتج ملفات APK من فحص محاذاة المكتبات الأصلية"
+      ]
+    },
     "v1.8.2": {
       "released_date": "2026/09/18",
       "fix": [

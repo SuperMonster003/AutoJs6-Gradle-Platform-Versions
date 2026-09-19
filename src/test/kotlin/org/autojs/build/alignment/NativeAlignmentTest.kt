@@ -18,6 +18,16 @@ import java.util.zip.ZipOutputStream
 class NativeAlignmentTest {
     @TempDir lateinit var directory: Path
 
+    @Test fun `test assemblies cannot schedule APK alignment checks`() {
+        for (task in listOf("assembleAppDebugUnitTest", "assembleInrtReleaseUnitTest",
+            "assembleDebugAndroidTest", "assembleDebugTestFixtures", "assemble", "testDebugUnitTest")) {
+            assertFalse(isApkAssembleTask(task), task)
+        }
+        for (task in listOf("assembleDebug", "assembleRelease", "assembleAppDebug", "assembleInrtRelease", "assembleApp")) {
+            assertTrue(isApkAssembleTask(task), task)
+        }
+    }
+
     private fun elf(align: Long = 16384, is64: Boolean = true, order: ByteOrder = ByteOrder.LITTLE_ENDIAN): ByteArray {
         val bytes = ByteArray(160)
         val data = ByteBuffer.wrap(bytes).order(order)

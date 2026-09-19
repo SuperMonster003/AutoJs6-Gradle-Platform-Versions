@@ -5,6 +5,12 @@
   "changelog_label_improvement": "개선",
   "changelog_label_dependency": "의존성",
   "$data": {
+    "v1.8.3": {
+      "released_date": "2026/09/19",
+      "fix": [
+        "APK를 생성하지 않는 JVM 단위 테스트 및 테스트 픽스처 조립 작업을 네이티브 정렬 검사에서 제외"
+      ]
+    },
     "v1.8.2": {
       "released_date": "2026/09/18",
       "fix": [

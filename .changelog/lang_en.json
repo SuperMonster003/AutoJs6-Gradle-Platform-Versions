@@ -5,6 +5,12 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.8.3": {
+      "released_date": "2026/09/19",
+      "fix": [
+        "Native alignment verification excludes JVM unit-test and test-fixture assemblies that do not produce APKs"
+      ]
+    },
     "v1.8.2": {
       "released_date": "2026/09/18",
       "fix": [

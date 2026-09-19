@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.3"
     }
 }
 
@@ -188,6 +188,12 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.8.3
+
+###### 2026/09/19
+
+* `Fix` Native alignment verification excludes JVM unit-test and test-fixture assemblies that do not produce APKs
+
 # v1.8.2
 
 ###### 2026/09/18
@@ -200,13 +206,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 ###### 2026/09/12
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
-
-# v1.8.0
-
-###### 2026/09/11
-
-* `Feature` Shared nativeAlignment Gradle plugin verifies 16 KB ELF and APK ZIP alignment, scans native runtime archives, and rejects invalid or missing artifacts before distribution
-* `Improvement` Provision the Android SDK before running the negative native alignment fixture in CI
 
 ##### For more release history, see
 
