@@ -192,6 +192,7 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ###### 2026/09/19
 
+* `Fix` AGP 9.1 reads SDK repository XML v4 using sdklib 32.2.1 while preserving the selected AGP and AAPT2 versions
 * `Fix` Native alignment verification excludes JVM unit-test and test-fixture assemblies that do not produce APKs
 
 # v1.8.2

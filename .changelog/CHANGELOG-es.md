@@ -27,6 +27,7 @@ CHANGELOG.md está disponible actualmente en los siguientes idiomas:
 
 ###### 2026/09/19
 
+* `Corrección` AGP 9.1 lee los metadatos SDK repository XML v4 mediante sdklib 32.2.1 y conserva las versiones seleccionadas de AGP y AAPT2
 * `Corrección` La verificación de alineación nativa excluye las tareas de ensamblado de pruebas unitarias JVM y fixtures de prueba que no generan APK
 
 # v1.8.2
