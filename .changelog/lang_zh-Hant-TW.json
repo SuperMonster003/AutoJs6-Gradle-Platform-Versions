@@ -5,6 +5,12 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.8.4": {
+      "released_date": "2026/09/20",
+      "improvement": [
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+      ]
+    },
     "v1.8.3": {
       "released_date": "2026/09/19",
       "fix": [

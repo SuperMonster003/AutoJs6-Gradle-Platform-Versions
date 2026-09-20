@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.4"
     }
 }
 
@@ -188,6 +188,12 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.8.4
+
+###### 2026/09/20
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+
 # v1.8.3
 
 ###### 2026/09/19
@@ -201,12 +207,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 * `Fix` Skip release version checks when scheduled platform data is unchanged, and avoid installing the obsolete Android SDK tools package in CI
 * `Improvement` Upgrade both consumer samples to compileSdk / targetSdk 37, update the required Gradle and AGP versions, and align the negative native alignment fixture and CI with Android SDK 37
-
-# v1.8.1
-
-###### 2026/09/12
-
-* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
 
 ##### For more release history, see
 

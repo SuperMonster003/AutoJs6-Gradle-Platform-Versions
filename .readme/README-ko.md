@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.4"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.4
+
+###### 2026/09/20
+
+* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
+
 # v1.8.3
 
 ###### 2026/09/19
@@ -201,12 +207,6 @@ npm --prefix .utils run check-data
 
 * `수정` 예약 실행에서 플랫폼 데이터가 변경되지 않으면 릴리스 버전 검사를 건너뛰고, CI에서 폐기된 Android SDK tools 패키지를 설치하지 않도록 수정
 * `개선` 두 소비자 예제의 compileSdk / targetSdk를 37로 올리고 필요한 Gradle 및 AGP 버전을 갱신하며, 네이티브 정렬 실패 검증용 예제와 CI를 Android SDK 37에 맞춤
-
-# v1.8.1
-
-###### 2026/09/12
-
-* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
