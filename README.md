@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.4"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.4
+
+###### 2026/09/20
+
+* `优化` 从官方上游来源刷新随插件分发的平台兼容性与发行数据; 定时自动化在发布前已验证抓取器解析、Gradle 插件行为及无头消费者构建
+
 # v1.8.3
 
 ###### 2026/09/19
@@ -201,12 +207,6 @@ npm --prefix .utils run check-data
 
 * `修复` 修复平台数据未变化时仍执行发行版本校验的问题, 并避免 CI 安装已废弃的 Android SDK tools 软件包
 * `优化` 将两个消费端示例的 compileSdk / targetSdk 升级至 37, 同步所需的 Gradle 与 AGP 版本, 并将原生库对齐负样例及 CI 切换到 Android SDK 37
-
-# v1.8.1
-
-###### 2026/09/12
-
-* `优化` 从官方上游来源刷新随插件分发的平台兼容性与发行数据; 定时自动化在发布前已验证抓取器解析、Gradle 插件行为及无头消费者构建
 
 ##### 更多发行历史可参阅
 
