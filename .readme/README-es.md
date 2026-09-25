@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.4"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.5"
     }
 }
 
@@ -188,6 +188,12 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.8.5
+
+###### 2026/09/25
+
+* `Mejora` Se actualizaron desde las fuentes oficiales los datos integrados de compatibilidad de plataforma y versiones; antes de publicar, la automatización programada validó los analizadores, el comportamiento del plugin de Gradle y una compilación consumidora sin interfaz
+
 # v1.8.4
 
 ###### 2026/09/20
@@ -200,13 +206,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 * `Corrección` AGP 9.1 lee los metadatos SDK repository XML v4 mediante sdklib 32.2.1 y conserva las versiones seleccionadas de AGP y AAPT2
 * `Corrección` La verificación de alineación nativa excluye las tareas de ensamblado de pruebas unitarias JVM y fixtures de prueba que no generan APK
-
-# v1.8.2
-
-###### 2026/09/18
-
-* `Corrección` Omitir las comprobaciones de versión de publicación cuando los datos de plataforma no cambien en las ejecuciones programadas y evitar la instalación del paquete obsoleto Android SDK tools en CI
-* `Mejora` Actualizar ambos ejemplos consumidores a compileSdk / targetSdk 37, actualizar las versiones necesarias de Gradle y AGP, y adaptar el caso de prueba negativo de alineación nativa y la CI a Android SDK 37
 
 ##### Para consultar un historial más completo, véase
 
