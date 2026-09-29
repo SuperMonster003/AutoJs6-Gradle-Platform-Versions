@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.6"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.6
+
+###### 2026/09/29
+
+* `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
+
 # v1.8.5
 
 ###### 2026/09/25
@@ -199,13 +205,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/20
 
 * `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
-
-# v1.8.3
-
-###### 2026/09/19
-
-* `수정` 선택한 AGP 및 AAPT2 버전을 유지하면서 AGP 9.1에서 sdklib 32.2.1로 SDK repository XML v4 읽기
-* `수정` APK를 생성하지 않는 JVM 단위 테스트 및 테스트 픽스처 조립 작업을 네이티브 정렬 검사에서 제외
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
