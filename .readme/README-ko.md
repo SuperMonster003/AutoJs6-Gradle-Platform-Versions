@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.6"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.6
+
+###### 2026/09/29
+
+* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
+
 # v1.8.5
 
 ###### 2026/09/25
@@ -199,13 +205,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/20
 
 * `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
-
-# v1.8.3
-
-###### 2026/09/19
-
-* `수정` 선택한 AGP 및 AAPT2 버전을 유지하면서 AGP 9.1에서 sdklib 32.2.1로 SDK repository XML v4 읽기
-* `수정` APK를 생성하지 않는 JVM 단위 테스트 및 테스트 픽스처 조립 작업을 네이티브 정렬 검사에서 제외
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

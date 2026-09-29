@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.6"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.6
+
+###### 2026/09/29
+
+* `تحسين` مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي
+
 # v1.8.5
 
 ###### 2026/09/25
@@ -199,13 +205,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/20
 
 * `تحسين` مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي
-
-# v1.8.3
-
-###### 2026/09/19
-
-* `إصلاح` قراءة SDK repository XML v4 في AGP 9.1 باستخدام sdklib 32.2.1 مع الحفاظ على إصدارات AGP وAAPT2 المحددة
-* `إصلاح` استثناء مهام تجميع اختبارات JVM وتجهيزات الاختبار التي لا تنتج ملفات APK من فحص محاذاة المكتبات الأصلية
 
 ##### لمزيد من سجل الإصدارات يمكن الرجوع إلى
 

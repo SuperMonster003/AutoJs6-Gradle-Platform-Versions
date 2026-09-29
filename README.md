@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.6"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.6
+
+###### 2026/09/29
+
+* `优化` 将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证
+
 # v1.8.5
 
 ###### 2026/09/25
@@ -199,13 +205,6 @@ npm --prefix .utils run check-data
 ###### 2026/09/20
 
 * `优化` 将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证
-
-# v1.8.3
-
-###### 2026/09/19
-
-* `修复` AGP 9.1 通过 sdklib 32.2.1 读取 SDK repository XML v4, 并保持所选 AGP 与 AAPT2 版本一致
-* `修复` 原生库对齐检查排除不生成 APK 的 JVM 单元测试及测试夹具组装任务
 
 ##### 更多发行历史可参阅
 
