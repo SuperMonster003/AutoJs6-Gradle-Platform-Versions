@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.6"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.7"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.7
+
+###### 2026/10/02
+
+* `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
+
 # v1.8.6
 
 ###### 2026/09/29
@@ -197,12 +203,6 @@ npm --prefix .utils run check-data
 # v1.8.5
 
 ###### 2026/09/25
-
-* `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
-
-# v1.8.4
-
-###### 2026/09/20
 
 * `개선` 공식 업스트림 소스에서 내장 플랫폼 호환성 및 릴리스 데이터를 갱신함. 예약 자동화가 게시 전에 스크레이퍼 파싱, Gradle 플러그인 동작 및 헤드리스 소비자 빌드를 검증함
 

@@ -84,7 +84,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.6"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.7"
     }
 }
 
@@ -188,6 +188,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.8.7
+
+###### 2026/10/02
+
+* `優化` 從官方上游來源更新隨外掛程式發布的平台相容性與發行資料；定時自動化在發布前已驗證擷取器解析、Gradle 外掛程式行為及無介面取用端建置
+
 # v1.8.6
 
 ###### 2026/09/29
@@ -197,12 +203,6 @@ npm --prefix .utils run check-data
 # v1.8.5
 
 ###### 2026/09/25
-
-* `優化` 從官方上游來源更新隨外掛程式發布的平台相容性與發行資料；定時自動化在發布前已驗證擷取器解析、Gradle 外掛程式行為及無介面取用端建置
-
-# v1.8.4
-
-###### 2026/09/20
 
 * `優化` 從官方上游來源更新隨外掛程式發布的平台相容性與發行資料；定時自動化在發布前已驗證擷取器解析、Gradle 外掛程式行為及無介面取用端建置
 

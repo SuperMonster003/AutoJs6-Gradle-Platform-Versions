@@ -1,27 +1,27 @@
 {
   "schemaVersion": 1,
   "sourceUrl": "https://jb.gg/android-studio-releases-list.json",
-  "name": "Android Studio Quail 4 | 2026.1.4 Patch 1",
-  "version": "2026.1.4.8",
-  "build": "AI-261.26222.65.2614.16379836",
-  "platformVersion": "2026.1.4",
-  "channel": "Patch",
-  "releaseDate": "2026-09-18",
+  "name": "Android Studio Rabbit 1 | 2026.2.1",
+  "version": "2026.2.1.8",
+  "build": "AI-262.9437.185.2621.16467767",
+  "platformVersion": "2026.2.1",
+  "channel": "Release",
+  "releaseDate": "2026-10-01",
   "downloads": {
     "windowsExe": {
-      "fileName": "android-studio-quail4-patch1-windows.exe",
-      "url": "https://edgedl.me.gvt1.com/android/studio/install/2026.1.4.8/android-studio-quail4-patch1-windows.exe",
-      "sizeBytes": 1483829316
+      "fileName": "android-studio-rabbit1-windows.exe",
+      "url": "https://edgedl.me.gvt1.com/android/studio/install/2026.2.1.8/android-studio-rabbit1-windows.exe",
+      "sizeBytes": 1511000449
     },
     "windowsZip": {
-      "fileName": "android-studio-quail4-patch1-windows.zip",
-      "url": "https://edgedl.me.gvt1.com/android/studio/ide-zips/2026.1.4.8/android-studio-quail4-patch1-windows.zip",
-      "sizeBytes": 1492443156
+      "fileName": "android-studio-rabbit1-windows.zip",
+      "url": "https://edgedl.me.gvt1.com/android/studio/ide-zips/2026.2.1.8/android-studio-rabbit1-windows.zip",
+      "sizeBytes": 1525456132
     },
     "linuxTar": {
-      "fileName": "android-studio-quail4-patch1-linux.tar.gz",
-      "url": "https://edgedl.me.gvt1.com/android/studio/ide-zips/2026.1.4.8/android-studio-quail4-patch1-linux.tar.gz",
-      "sizeBytes": 1536220902
+      "fileName": "android-studio-rabbit1-linux.tar.gz",
+      "url": "https://edgedl.me.gvt1.com/android/studio/ide-zips/2026.2.1.8/android-studio-rabbit1-linux.tar.gz",
+      "sizeBytes": 1570628738
     }
   }
 }
