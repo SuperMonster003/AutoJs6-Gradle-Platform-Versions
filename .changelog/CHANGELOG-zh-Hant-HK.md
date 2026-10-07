@@ -23,6 +23,14 @@
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `新增` nativeAlignment 外掛程式為每個應用程式變體的合併資訊清單寫入 org.autojs.plugin.contract.SUPPORTED_ABIS meta-data, 取值由合併後的原生程式庫按 ABI 分包與 ndk.abiFilters 收窄得出, 無原生程式碼時寫入 universal, 可用 supportedAbis 覆寫或用 supportedAbisMetaData 關閉
+* `新增` settings 外掛程式在版本資訊末尾提示相鄰檢出 (或 autojs.buildPlugins.localCheckout 指定的目錄) 中存在更新的外掛程式版本
+* `新增` .python/bump_consumers.py 將兄弟儲存庫 settings.gradle.kts 中釘住的兩個外掛程式版本批量升級到目前版本, 支援 --list, --dry-run, --apply 與 --commit
+
 # v1.8.7
 
 ###### 2026/10/02

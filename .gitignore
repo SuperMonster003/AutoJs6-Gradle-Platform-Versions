@@ -21,6 +21,7 @@ desktop.ini
 /*/build/
 /sample/native-alignment/build/
 /sample/sdk-xml/build/
+/sample/supported-abis/build/
 __pycache__/
 node_modules/
 

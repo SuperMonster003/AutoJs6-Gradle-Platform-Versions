@@ -53,9 +53,12 @@ class PlatformVersionsSettingsPlugin : Plugin<Settings> {
 
         alignRootBuildscript(settings, versions)
 
+        val notices = listOfNotNull(
+            SharedPluginUpdateNotice.detect(settings.rootDir, settings.gradle.startParameter.projectProperties),
+        )
         settings.gradle.taskGraph.whenReady {
             if (allTasks.none { it.name == "clean" }) {
-                PlatformVersionsFacade.printVersionInfo(versions, settings.gradle.gradleVersion)
+                PlatformVersionsFacade.printVersionInfo(versions, settings.gradle.gradleVersion, notices)
             }
         }
     }

@@ -5,6 +5,14 @@
   "changelog_label_improvement": "Улучшение",
   "changelog_label_dependency": "Зависимость",
   "$data": {
+    "v1.9.0": {
+      "released_date": "2026/10/07",
+      "feature": [
+        "Плагин nativeAlignment записывает meta-data org.autojs.plugin.contract.SUPPORTED_ABIS в объединённый манифест каждого варианта приложения; значение выводится из объединённых нативных библиотек, суженных ABI-сплитами и ndk.abiFilters, для пакетов без нативного кода записывается universal, supportedAbis переопределяет набор, а supportedAbisMetaData отключает запись",
+        "Плагин settings добавляет уведомление в конец сведений о версиях, если соседняя рабочая копия (или каталог из autojs.buildPlugins.localCheckout) содержит более новую версию плагина",
+        ".python/bump_consumers.py массово обновляет обе версии плагинов, закреплённые в settings.gradle.kts соседних репозиториев, до текущей версии; поддерживаются --list, --dry-run, --apply и --commit"
+      ]
+    },
     "v1.8.7": {
       "released_date": "2026/10/02",
       "improvement": [

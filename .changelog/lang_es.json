@@ -5,6 +5,14 @@
   "changelog_label_improvement": "Mejora",
   "changelog_label_dependency": "Dependencia",
   "$data": {
+    "v1.9.0": {
+      "released_date": "2026/10/07",
+      "feature": [
+        "El plugin nativeAlignment escribe la meta-data org.autojs.plugin.contract.SUPPORTED_ABIS en el manifiesto fusionado de cada variante de aplicación, derivada de las bibliotecas nativas fusionadas acotadas por los splits de ABI y ndk.abiFilters, con universal para paquetes sin código nativo; supportedAbis reemplaza el conjunto y supportedAbisMetaData desactiva la escritura",
+        "El plugin settings añade un aviso a la información de versión cuando un repositorio hermano (o el directorio indicado por autojs.buildPlugins.localCheckout) contiene una versión más reciente del plugin",
+        ".python/bump_consumers.py actualiza las dos versiones de plugin fijadas en los settings.gradle.kts de los repositorios hermanos a la versión actual, con --list, --dry-run, --apply y --commit"
+      ]
+    },
     "v1.8.7": {
       "released_date": "2026/10/02",
       "improvement": [

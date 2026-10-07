@@ -165,11 +165,11 @@ object PlatformVersionsFacade {
     }
 
     /** Prints the boxed version summary, as the mechanism this replaces did. */
-    fun printVersionInfo(versions: PlatformVersionsExtension, gradleVersion: String) {
+    fun printVersionInfo(versions: PlatformVersionsExtension, gradleVersion: String, notices: List<String> = emptyList()) {
         Formatted(
             "Version information for IDE platform and Gradle plugins",
             versions.versionInfo,
-            footers = listOf("Gradle version: $gradleVersion"),
+            footers = listOf("Gradle version: $gradleVersion") + notices,
         ).print()
     }
 

@@ -66,6 +66,7 @@
 - 自動選択した KGP をルートプロジェクトの buildscript classpath に追加し、AGP 9 の組み込み Kotlin が古い同梱版ではなく、そのコンパイラと JVM target 対応を実際に使用。
 - 互換性データをプラグインに同梱し、既定の唯一のデータソースとします。AutoJs6 の公式ホストおよびプラグインプロジェクトは、利用側の `gradle/data` にコピーを保持しません。
 - `version.properties` の `OVERRIDDEN_*` という避難口を用意しており、決定性のあるビルドが必要な場合はバージョンを直接固定可能。
+- nativeAlignment プラグインは各アプリケーションバリアントが実際にパッケージした ABI の集合をマニフェストの meta-data `org.autojs.plugin.contract.SUPPORTED_ABIS` に書き込み、AutoJs6 ホストと公式プラグインインデックスがそれを読み取るため、プラグインプロジェクトで supportedAbis を手動管理する必要がなくなる。
 - README と CHANGELOG はスペイン語、フランス語、ロシア語、アラビア語、日本語、韓国語、英語、簡体中国語、繁体中国語 (香港)、繁体中国語 (台湾) に対応。
 
 ******
@@ -84,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.7"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.0"
     }
 }
 
@@ -188,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `機能` nativeAlignment プラグインが各アプリケーションバリアントのマージ済みマニフェストに org.autojs.plugin.contract.SUPPORTED_ABIS meta-data を書き込み, 値はマージ済みネイティブライブラリを ABI split と ndk.abiFilters で絞り込んで導出, ネイティブコードがない場合は universal を書き込み, supportedAbis で上書き, supportedAbisMetaData で無効化が可能
+* `機能` settings プラグインが隣接するチェックアウト (または autojs.buildPlugins.localCheckout で指定したディレクトリ) に新しいプラグインバージョンがある場合, バージョン情報の末尾に通知を追加
+* `機能` .python/bump_consumers.py が兄弟リポジトリの settings.gradle.kts に固定された 2 つのプラグインバージョンを現在のバージョンへ一括更新, --list, --dry-run, --apply, --commit に対応
+
 # v1.8.7
 
 ###### 2026/10/02
@@ -197,12 +206,6 @@ npm --prefix .utils run check-data
 # v1.8.6
 
 ###### 2026/09/29
-
-* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-
-# v1.8.5
-
-###### 2026/09/25
 
 * `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
 

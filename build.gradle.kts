@@ -32,6 +32,26 @@ java {
     withJavadocJar()
 }
 
+// Lets the settings plugin know its own version, which it compares with a sibling checkout
+// to surface a newer release (see SharedPluginUpdateNotice).
+// zh-CN: 让 settings 插件知道自身版本, 用于与相邻检出比较并提示更新.
+val generatePluginVersionResource by tasks.registering {
+    val outputDirectory = layout.buildDirectory.dir("generated/plugin-version")
+    val pluginVersion = version.toString()
+    inputs.property("version", pluginVersion)
+    outputs.dir(outputDirectory)
+    doLast {
+        outputDirectory.get().file("org/autojs/build/platform/plugin-version.properties").asFile.apply {
+            parentFile.mkdirs()
+            writeText("VERSION_NAME=$pluginVersion\n")
+        }
+    }
+}
+
+sourceSets.main {
+    resources.srcDir(generatePluginVersionResource)
+}
+
 gradlePlugin {
     website.set("$projectUrl/blob/master/.readme/README-en.md")
     vcsUrl.set(projectVcsUrl)

@@ -23,6 +23,14 @@
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `機能` nativeAlignment プラグインが各アプリケーションバリアントのマージ済みマニフェストに org.autojs.plugin.contract.SUPPORTED_ABIS meta-data を書き込み, 値はマージ済みネイティブライブラリを ABI split と ndk.abiFilters で絞り込んで導出, ネイティブコードがない場合は universal を書き込み, supportedAbis で上書き, supportedAbisMetaData で無効化が可能
+* `機能` settings プラグインが隣接するチェックアウト (または autojs.buildPlugins.localCheckout で指定したディレクトリ) に新しいプラグインバージョンがある場合, バージョン情報の末尾に通知を追加
+* `機能` .python/bump_consumers.py が兄弟リポジトリの settings.gradle.kts に固定された 2 つのプラグインバージョンを現在のバージョンへ一括更新, --list, --dry-run, --apply, --commit に対応
+
 # v1.8.7
 
 ###### 2026/10/02

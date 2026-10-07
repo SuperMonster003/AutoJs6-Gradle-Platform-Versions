@@ -19,6 +19,7 @@
     "自動選択した KGP をルートプロジェクトの buildscript classpath に追加し、AGP 9 の組み込み Kotlin が古い同梱版ではなく、そのコンパイラと JVM target 対応を実際に使用。",
     "互換性データをプラグインに同梱し、既定の唯一のデータソースとします。AutoJs6 の公式ホストおよびプラグインプロジェクトは、利用側の `gradle/data` にコピーを保持しません。",
     "`version.properties` の `OVERRIDDEN_*` という避難口を用意しており、決定性のあるビルドが必要な場合はバージョンを直接固定可能。",
+    "nativeAlignment プラグインは各アプリケーションバリアントが実際にパッケージした ABI の集合をマニフェストの meta-data `org.autojs.plugin.contract.SUPPORTED_ABIS` に書き込み、AutoJs6 ホストと公式プラグインインデックスがそれを読み取るため、プラグインプロジェクトで supportedAbis を手動管理する必要がなくなる。",
     "README と CHANGELOG はスペイン語、フランス語、ロシア語、アラビア語、日本語、韓国語、英語、簡体中国語、繁体中国語 (香港)、繁体中国語 (台湾) に対応。"
   ],
   "h3_usage": "使い方",

@@ -30,6 +30,14 @@ abstract class NativeAlignmentExtension {
     abstract val scanEmbeddedPayloads: Property<Boolean>
     abstract val apkFiles: ConfigurableFileCollection
     abstract val extraFiles: ConfigurableFileCollection
+
+    /** Writes the supported-ABI meta-data into every application variant's merged manifest (see [SupportedAbisManifest]). */
+    abstract val supportedAbisMetaData: Property<Boolean>
+
+    /** Replaces the computed ABI set, for plugins whose native code is not packaged under `lib/`. */
+    abstract val supportedAbis: SetProperty<String>
+    abstract val supportedAbisMetaDataName: Property<String>
+
     fun apkFiles(vararg files: Any) { apkFiles.from(*files) }
     fun alsoScan(vararg files: Any) { extraFiles.from(*files) }
 }
@@ -133,6 +141,9 @@ class NativeAlignmentPlugin : Plugin<Project> {
         extension.expectNoNativeLibraries.convention(false)
         extension.checkRelro.convention(false)
         extension.scanEmbeddedPayloads.convention(false)
+        extension.supportedAbisMetaData.convention(true)
+        extension.supportedAbis.convention(emptySet())
+        extension.supportedAbisMetaDataName.convention(SupportedAbisManifest.META_DATA_NAME)
         val skip = providers.gradleProperty("autojs.nativeAlignment.skip").map { it.toBooleanStrict() }.orElse(false)
         val ciProvider = providers.provider {
             listOf("CI", "GITHUB_ACTIONS", "TF_BUILD", "JENKINS_URL", "BUILD_BUILDID").any { name ->
@@ -157,6 +168,7 @@ class NativeAlignmentPlugin : Plugin<Project> {
         }
         registerVerification("")
         pluginManager.withPlugin("com.android.application") {
+            SupportedAbisAgpWiring.configure(project, extension)
             afterEvaluate {
                 tasks.names.filter(::isApkAssembleTask).forEach { name ->
                     val verification = registerVerification(name.removePrefix("assemble"))

@@ -19,6 +19,7 @@
     "將自動選取的 KGP 注入根專案 buildscript classpath，讓 AGP 9 內建 Kotlin 實際使用該編譯器及其 JVM target 能力，而非較舊的隨附版本。",
     "相容性資料隨插件一同散布，並作為預設的唯一資料來源；AutoJs6 官方宿主與插件專案不在使用端重複維護 `gradle/data` 副本。",
     "保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生門，需要確定性建置時可直接鎖定版本。",
+    "nativeAlignment 外掛程式自動把應用程式變體實際打包的 ABI 集合寫入資訊清單 meta-data `org.autojs.plugin.contract.SUPPORTED_ABIS`，供 AutoJs6 宿主與官方外掛程式索引讀取，外掛程式專案無需手動維護 supportedAbis。",
     "README 與 CHANGELOG 支援西班牙文、法文、俄文、阿拉伯文、日文、韓文、英文、簡體中文、香港繁體、台灣繁體。"
   ],
   "h3_usage": "使用方法",

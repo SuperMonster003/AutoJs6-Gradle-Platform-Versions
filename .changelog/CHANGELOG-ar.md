@@ -23,6 +23,14 @@
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `ميزة` تكتب إضافة nativeAlignment البيانات الوصفية org.autojs.plugin.contract.SUPPORTED_ABIS في البيان المدمج لكل متغيّر تطبيق, وتُشتق القيمة من المكتبات الأصلية المدمجة بعد تضييقها بتقسيمات ABI وبـ ndk.abiFilters, مع كتابة universal للحزم الخالية من الشيفرة الأصلية; يستبدل supportedAbis المجموعة ويعطّل supportedAbisMetaData الكتابة
+* `ميزة` تضيف إضافة settings تنبيهًا في نهاية معلومات الإصدار عندما يحتوي المستودع المجاور (أو الدليل المحدد عبر autojs.buildPlugins.localCheckout) على إصدار أحدث من الإضافة
+* `ميزة` يرفع السكربت .python/bump_consumers.py إصداري الإضافتين المثبّتين في settings.gradle.kts للمستودعات الشقيقة إلى الإصدار الحالي دفعةً واحدة, مع دعم --list و --dry-run و --apply و --commit
+
 # v1.8.7
 
 ###### 2026/10/02

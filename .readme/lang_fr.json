@@ -19,6 +19,7 @@
     "Ajout automatique du KGP sélectionné au classpath buildscript du projet racine, afin que le Kotlin intégré d'AGP 9 utilise ce compilateur et sa prise en charge des cibles JVM plutôt qu'une version embarquée plus ancienne.",
     "Distribue les données de compatibilité avec le plugin comme source de données unique par défaut ; les projets officiels de l'hôte et des plugins AutoJs6 ne conservent aucune copie de `gradle/data` côté consommateur.",
     "Porte de sortie `OVERRIDDEN_*` conservée dans `version.properties`, pour figer directement les versions lorsqu'un build déterministe est requis.",
+    "Le plugin nativeAlignment écrit l'ensemble des ABI réellement empaquetées par chaque variante d'application dans la meta-data de manifeste `org.autojs.plugin.contract.SUPPORTED_ABIS`, lue par l'hôte AutoJs6 et l'index officiel des plugins, de sorte que les projets de plugin n'ont plus à maintenir supportedAbis à la main.",
     "README et CHANGELOG disponibles en espagnol/français/russe/arabe/japonais/coréen/anglais/chinois simplifié/chinois traditionnel de Hong Kong/chinois traditionnel de Taïwan."
   ],
   "h3_usage": "Utilisation",

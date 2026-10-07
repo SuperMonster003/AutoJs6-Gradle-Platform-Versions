@@ -23,6 +23,14 @@
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `기능` nativeAlignment 플러그인이 각 애플리케이션 변형의 병합된 매니페스트에 org.autojs.plugin.contract.SUPPORTED_ABIS meta-data를 기록하며, 값은 병합된 네이티브 라이브러리를 ABI split과 ndk.abiFilters로 좁혀 도출하고 네이티브 코드가 없으면 universal을 기록, supportedAbis로 재정의하거나 supportedAbisMetaData로 비활성화 가능
+* `기능` settings 플러그인이 인접 체크아웃 (또는 autojs.buildPlugins.localCheckout으로 지정한 디렉터리) 에 더 새로운 플러그인 버전이 있으면 버전 정보 끝에 알림을 추가
+* `기능` .python/bump_consumers.py가 형제 저장소의 settings.gradle.kts에 고정된 두 플러그인 버전을 현재 버전으로 일괄 업그레이드하며 --list, --dry-run, --apply, --commit을 지원
+
 # v1.8.7
 
 ###### 2026/10/02

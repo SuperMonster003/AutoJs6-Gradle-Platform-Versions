@@ -66,6 +66,7 @@ Now that it ships as a publishable Settings plugin, a downstream project needs l
 - Places the automatically selected KGP on the root buildscript classpath, so AGP 9 built-in Kotlin uses that compiler and its JVM-target support instead of an older bundled version.
 - Ships compatibility data with the plugin as the single default data source; official AutoJs6 host and plugin projects do not maintain consumer-side `gradle/data` copies.
 - Keeps the `OVERRIDDEN_*` escape hatch in `version.properties`, so versions can be pinned outright whenever a deterministic build is needed.
+- The nativeAlignment plugin writes the ABI set actually packaged by each application variant into the manifest meta-data `org.autojs.plugin.contract.SUPPORTED_ABIS`, read by the AutoJs6 host and the official plugin index, so plugin projects no longer maintain supportedAbis by hand.
 - README and CHANGELOG are available in Spanish/French/Russian/Arabic/Japanese/Korean/English/Simplified Chinese/Traditional Chinese (Hong Kong)/Traditional Chinese (Taiwan).
 
 ******
@@ -84,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.7"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.0"
     }
 }
 
@@ -188,6 +189,14 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `Feature` The nativeAlignment plugin writes the org.autojs.plugin.contract.SUPPORTED_ABIS meta-data into the merged manifest of every application variant, derived from the merged native libraries narrowed by ABI splits and ndk.abiFilters, with universal for packages without native code; supportedAbis overrides the set and supportedAbisMetaData turns it off
+* `Feature` The settings plugin appends a notice to the version information when a sibling checkout (or the directory named by autojs.buildPlugins.localCheckout) carries a newer plugin version
+* `Feature` .python/bump_consumers.py upgrades both plugin versions pinned in sibling repositories' settings.gradle.kts to the current version, with --list, --dry-run, --apply and --commit
+
 # v1.8.7
 
 ###### 2026/10/02
@@ -197,12 +206,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 # v1.8.6
 
 ###### 2026/09/29
-
-* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
-
-# v1.8.5
-
-###### 2026/09/25
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
 

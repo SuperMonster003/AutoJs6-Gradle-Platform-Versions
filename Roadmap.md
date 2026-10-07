@@ -215,6 +215,16 @@ plugins {
 - [x] M13.6 保留 `check`、`update-pr`、`release` 三种手动数据模式, 并将 Central UUID 恢复表单扩展为检查、API 发布、公共同步及缺失 GitHub Release 补全的一站式入口。
 - [x] M13.7 补齐维护者文档、多语言 README 说明、发布恢复矩阵与本地 release-metadata 测试, 并使用 actionlint 验证全部工作流语法、表达式和嵌入式 shell。
 
+### M14 — 插件 ABI 元数据自动维护与消费端版本跟进
+
+背景: 各插件仓手工维护 `supportedAbis` (INFO 常量, 字符串资源或清单 meta-data), 后期增加 ABI 时容易遗漏; 消费端钉住的共享插件版本也没有提醒与批量升级手段。
+
+- [x] M14.1 `nativeAlignment` 插件以 AGP variant API 变换 `MERGED_MANIFEST`, 从 `MERGED_NATIVE_LIBS` 推导 ABI 集合, 按已启用的 ABI 分包与 `ndk.abiFilters` 收窄, 写入 `org.autojs.plugin.contract.SUPPORTED_ABIS`; 无原生代码写入 `universal`。DSL 提供 `supportedAbisMetaData`、`supportedAbis`、`supportedAbisMetaDataName`。不编译依赖 AGP: 消费端常经 included build 的约定插件加载 AGP, 与本插件的类加载器互不可见 (直接引用会在配置期 NoClassDefFoundError, 已在 NodeJs-Runtime 仓实测), 因此 variant API 全部通过 `androidComponents` 扩展对象所在类加载器反射调用。
+- [x] M14.2 `sample/supported-abis` 正向夹具: 三个 ABI 存根库在两个 ABI 分包下必须在 arm64-v8a、x86_64 与 universal APK 中都得到 `arm64-v8a,x86_64` (以 `aapt2 dump xmltree` 核对), 并通过对齐门禁。
+- [x] M14.3 settings 插件读取构建期生成的 `plugin-version.properties`, 与相邻检出 (或 `autojs.buildPlugins.localCheckout`) 的 `version.properties` 比较, 发现更新版本时在版本信息末尾追加一行提示; 快照版本与缺失检出保持静默。
+- [x] M14.4 `.python/bump_consumers.py` 扫描兄弟仓库 `settings.gradle.kts` 的两个插件钉住版本, 支持 `--list` / `--dry-run` / `--apply` / `--commit` / `--repo`, 提交时仅暂存 settings 脚本。
+- [ ] M14.5 发布 1.9.0 后运行 `bump_consumers.py --apply --commit` 升级全部消费端; 宿主插件中心区分 "支持 ABI" (meta-data) 与 "已安装 ABI" (已安装包内实际库), 官方插件索引工具改为从发行 APK 清单读取该 meta-data 作为交叉校验来源。
+
 ## 四. 迁移期间发现的上游缺陷
 
 抽取过程中发现的原始 settings.gradle.kts 缺陷, 本项目已修正, 并已回移主项目:

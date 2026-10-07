@@ -66,6 +66,7 @@ Convertido en un plugin de Settings publicable, a los proyectos que lo consumen 
 - Incorpora automáticamente el KGP seleccionado al classpath buildscript del proyecto raíz, para que el Kotlin integrado de AGP 9 use ese compilador y su compatibilidad con destinos JVM en lugar de una versión incluida más antigua.
 - Distribuye los datos de compatibilidad con el plugin como fuente de datos predeterminada única; los proyectos oficiales del host y de los plugins de AutoJs6 no mantienen copias de `gradle/data` en el consumidor.
 - Se conserva la vía de escape `OVERRIDDEN_*` de `version.properties`, para fijar versiones concretas cuando se necesita una compilación determinista.
+- El plugin nativeAlignment escribe el conjunto de ABI realmente empaquetado por cada variante de aplicación en la meta-data de manifiesto `org.autojs.plugin.contract.SUPPORTED_ABIS`, leída por el host AutoJs6 y el índice oficial de plugins, de modo que los proyectos de plugin ya no mantienen supportedAbis a mano.
 - README y CHANGELOG están disponibles en español/francés/ruso/árabe/japonés/coreano/inglés/chino simplificado/chino tradicional de Hong Kong/chino tradicional de Taiwán.
 
 ******
@@ -84,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.7"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.0"
     }
 }
 
@@ -188,6 +189,14 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `Función` El plugin nativeAlignment escribe la meta-data org.autojs.plugin.contract.SUPPORTED_ABIS en el manifiesto fusionado de cada variante de aplicación, derivada de las bibliotecas nativas fusionadas acotadas por los splits de ABI y ndk.abiFilters, con universal para paquetes sin código nativo; supportedAbis reemplaza el conjunto y supportedAbisMetaData desactiva la escritura
+* `Función` El plugin settings añade un aviso a la información de versión cuando un repositorio hermano (o el directorio indicado por autojs.buildPlugins.localCheckout) contiene una versión más reciente del plugin
+* `Función` .python/bump_consumers.py actualiza las dos versiones de plugin fijadas en los settings.gradle.kts de los repositorios hermanos a la versión actual, con --list, --dry-run, --apply y --commit
+
 # v1.8.7
 
 ###### 2026/10/02
@@ -197,12 +206,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 # v1.8.6
 
 ###### 2026/09/29
-
-* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
-
-# v1.8.5
-
-###### 2026/09/25
 
 * `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
 

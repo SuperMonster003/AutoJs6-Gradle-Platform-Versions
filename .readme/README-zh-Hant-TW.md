@@ -66,6 +66,7 @@
 - 將自動選取的 KGP 注入根專案 buildscript classpath，讓 AGP 9 內建 Kotlin 實際使用該編譯器及其 JVM target 能力，而非較舊的隨附版本。
 - 相容性資料隨插件一同散布，並作為預設的唯一資料來源；AutoJs6 官方宿主與插件專案不在使用端重複維護 `gradle/data` 副本。
 - 保留 `version.properties` 中的 `OVERRIDDEN_*` 逃生門，需要確定性建置時可直接鎖定版本。
+- nativeAlignment 外掛程式自動把應用程式變體實際打包的 ABI 集合寫入資訊清單 meta-data `org.autojs.plugin.contract.SUPPORTED_ABIS`，供 AutoJs6 宿主與官方外掛程式索引讀取，外掛程式專案無需手動維護 supportedAbis。
 - README 與 CHANGELOG 支援西班牙文、法文、俄文、阿拉伯文、日文、韓文、英文、簡體中文、香港繁體、台灣繁體。
 
 ******
@@ -84,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.8.7"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.0"
     }
 }
 
@@ -188,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `新增` nativeAlignment 外掛程式為每個應用程式變體的合併資訊清單寫入 org.autojs.plugin.contract.SUPPORTED_ABIS meta-data, 取值由合併後的原生程式庫按 ABI 分包與 ndk.abiFilters 收窄得出, 無原生程式碼時寫入 universal, 可用 supportedAbis 覆寫或用 supportedAbisMetaData 關閉
+* `新增` settings 外掛程式在版本資訊末尾提示相鄰檢出 (或 autojs.buildPlugins.localCheckout 指定的目錄) 中存在更新的外掛程式版本
+* `新增` .python/bump_consumers.py 將兄弟儲存庫 settings.gradle.kts 中釘住的兩個外掛程式版本批次升級到目前版本, 支援 --list, --dry-run, --apply 與 --commit
+
 # v1.8.7
 
 ###### 2026/10/02
@@ -197,12 +206,6 @@ npm --prefix .utils run check-data
 # v1.8.6
 
 ###### 2026/09/29
-
-* `優化` 將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證
-
-# v1.8.5
-
-###### 2026/09/25
 
 * `優化` 將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證
 

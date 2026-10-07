@@ -23,6 +23,14 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.9.0
+
+###### 2026/10/07
+
+* `Fonctionnalité` Le plugin nativeAlignment écrit la meta-data org.autojs.plugin.contract.SUPPORTED_ABIS dans le manifeste fusionné de chaque variante d'application, dérivée des bibliothèques natives fusionnées restreintes par les splits ABI et ndk.abiFilters, avec universal pour les paquets sans code natif ; supportedAbis remplace l'ensemble et supportedAbisMetaData désactive l'écriture
+* `Fonctionnalité` Le plugin settings ajoute un avis aux informations de version lorsqu'un dépôt voisin (ou le répertoire indiqué par autojs.buildPlugins.localCheckout) contient une version plus récente du plugin
+* `Fonctionnalité` .python/bump_consumers.py met à niveau les deux versions de plugin épinglées dans les settings.gradle.kts des dépôts voisins vers la version courante, avec --list, --dry-run, --apply et --commit
+
 # v1.8.7
 
 ###### 2026/10/02
