@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.0"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.1"
     }
 }
 
@@ -189,6 +189,12 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.1
+
+###### 2026/10/09
+
+* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
+
 # v1.9.0
 
 ###### 2026/10/07
@@ -200,12 +206,6 @@ npm --prefix .utils run check-data
 # v1.8.7
 
 ###### 2026/10/02
-
-* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
-
-# v1.8.6
-
-###### 2026/09/29
 
 * `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
 
