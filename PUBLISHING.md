@@ -128,7 +128,9 @@ the VCS URL points to the public GitHub repository.
 
 1. Choose a version that has never been used by a Git tag, GitHub Release, Maven Central, or the Plugin Portal.
 2. Update `VERSION_NAME`, `VERSION_BUILD`, `.readme/common.json`, and every localized changelog, then regenerate all
-   Markdown files. Pure scheduled data releases perform this step automatically and increment the patch component.
+   Markdown files. Pure scheduled data releases perform this step automatically and increment the patch component;
+   their changelog entries list every semantic data change since the latest tag, such as
+   `Upgrade AGP version 9.4.1 -> 9.4.2`.
 3. Run translation checks, scraper tests, `clean check`, the headless sample, and the isolated Maven publication test.
 4. Commit the exact release source and create an annotated `v<version>` Git tag. For scheduled data releases, the
    workflow verifies that `master` has not advanced and pushes the commit and tag atomically.

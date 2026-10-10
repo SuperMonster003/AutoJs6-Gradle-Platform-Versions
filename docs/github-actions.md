@@ -57,11 +57,11 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 2. 同时检查本次生成的工作区差异, 以及最新版本标签之后已经通过 PR 合并的数据差异. 后者保证 `update-pr` 合并后即使第二次抓取不再改文件, 下一次定时运行仍会发行这些数据.
 3. 若本次抓取和最新标签之后的已提交数据均无变化, 以成功状态结束, 不修改分支、标签、版本或任何远端仓库. 手动发行准备期间, 即使 `VERSION_NAME` 已推进但尚未创建对应标签, 无数据更新的运行也会正常结束.
 4. 若有数据变化, 检查最新标签与 `VERSION_NAME` 的基线关系; 二者不一致时仍停止自动发行, 需先完成手动发行以恢复基线. 允许 `src/test/` 下的测试及夹具修复, 以及配套的 `.changelog/lang_*.json` 和 `.changelog/CHANGELOG-*.md` 发行日志随数据更新进入验证, 并拒绝把插件实现、构建逻辑等超出自动数据发行边界的未发行改动意外带入补丁版本.
-5. 自动将稳定版本的 patch 位加一, 令 `VERSION_BUILD` 等于将要产生的提交总数, 同步 `.readme/common.json`, 为 10 种语言生成数据更新日志并重新生成全部 README/CHANGELOG.
+5. 自动将稳定版本的 patch 位加一, 令 `VERSION_BUILD` 等于将要产生的提交总数, 同步 `.readme/common.json`, 为 10 种语言生成数据更新日志并重新生成全部 README/CHANGELOG. 日志在通用说明之后逐条列出自最新版本标签以来的语义数据变化, 例如 `升级 AGP 版本 9.4.1 -> 9.4.2`、`升级 Android Studio 最新稳定版本 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)`、`新增映射: Gradle 9.8.0 内置 Kotlin 2.4.10`; 版本升级归入 `依赖`, 兼容性映射及构建号识别归入 `优化`. 仅生成时间戳或注释变化时不产生明细条目. 同一份英文清单也写入发行提交说明、注释标签说明及运行摘要.
 6. 执行翻译结构检查、Node 抓取器测试、Gradle 测试、Temurin 无头 sample 和隔离 Maven 发布测试; 同时验证生成器幂等、改动白名单以及目标版本在 GitHub、Central 和 Plugin Portal 上尚未占用.
 7. 以 `github-actions[bot]` 创建一个发行提交和注释标签. 推送前再次确认远端 `master` 仍是本次运行开始时的提交, 然后使用一次原子 push 同步分支与标签, 避免只推成功其中一项.
 8. 在新标签上触发 `Publish release`, 目标为 `both`, 自动核对标签、版本、提交总数并执行 Node/Gradle/sample 验证.
-9. 验证通过后, 工作流自动使用 `release` Environment 凭据签名并发布 Maven Central 与 Gradle Plugin Portal. 两套公开消费 URL 均返回成功后, 自动从英文 CHANGELOG 提取当前版本说明并创建 GitHub Release.
+9. 验证通过后, 工作流自动使用 `release` Environment 凭据签名并发布 Maven Central 与 Gradle Plugin Portal. 两套公开消费 URL 均返回成功后, 自动从英文 CHANGELOG 提取当前版本说明 (含上述逐条数据变化) 并创建 GitHub Release.
 
 正常数据发行从定时抓取到公开发布全程自动完成. 维护者只需在工作流失败时处理异常. 若失败发生在提交和标签推送之后, 可从同一标签按失败阶段恢复 `Publish release`; 已发布的目标应跳过, 已上传的 Central deployment 应复用其 UUID, 无需制造另一个版本.
 
@@ -72,7 +72,7 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 打开 `Actions` → `Platform data` → `Run workflow`, 从 `master` 选择以下模式之一:
 
 - `check`: 只读抓取和比较. 最新时成功; 发现更新时以明确提示失败, 不写文件.
-- `update-pr`: 更新数据、运行 Node/Gradle/sample 验证, 将严格限制在数据资源目录内的差异提交到临时分支并创建 PR, 再显式启动该分支的 `Build and test`, 包括 Android 原生库对齐负样例检查. 合并后由下一次定时 `release` 识别并发行.
+- `update-pr`: 更新数据、运行 Node/Gradle/sample 验证, 将严格限制在数据资源目录内的差异提交到临时分支并创建 PR (提交说明与 PR 正文附带逐条数据变化), 再显式启动该分支的 `Build and test`, 包括 Android 原生库对齐负样例检查. 合并后由下一次定时 `release` 识别并发行.
 - `release`: 立即执行与每日定时器完全相同的安全发行链, 适合不等待下一次 cron.
 
 ## 手动正式发行

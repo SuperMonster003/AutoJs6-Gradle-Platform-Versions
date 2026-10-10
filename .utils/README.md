@@ -37,6 +37,15 @@ npm --prefix .utils run check-data
 - `2`: 发现数据更新, 但检查模式未修改文件.
 - `1`: 网络、上游格式、数据校验或脚本执行失败.
 
+更新数据后, 可列出工作区相对任一 Git 版本 (通常是最新版本标签) 的语义变化:
+
+```bash
+node .utils/describe-data-changes.mjs --baseline-ref v1.9.0
+node .utils/describe-data-changes.mjs --baseline-ref v1.9.0 --language zh-Hans
+```
+
+输出为 Markdown 列表, 例如 `- Upgrade AGP version 9.4.1 -> 9.4.2` 或 `- Add mapping: Gradle 9.8.0 embeds Kotlin 2.4.10`; 仅时间戳或注释变化时输出为空. 自动发行用同一逻辑 (`lib/data-changes.mjs`) 把变化逐条写入 10 种语言的发行日志, 句式模板集中在 `lib/data-change-messages.mjs`. 新增数据集时须同时补充描述器与各语言模板, 否则 `npm --prefix .utils test` 会失败.
+
 仓库的 `Platform data` GitHub Actions 每日北京时间 09:17 运行 `update-data`. 无语义变化时不做任何远端修改; 发现变化时会严格校验生成范围, 自动准备下一 patch 版本及多语言发行日志, 完成 Node/Gradle/sample/隔离 Maven 验证, 然后原子推送发行提交与注释标签并启动双仓库发布链. 发布工作流再次校验标签、版本及测试后, 自动使用仅允许 `v*` 标签的 `release` Environment 凭据完成 Maven Central、Gradle Plugin Portal 与 GitHub Release 发布, 无需人工审批.
 
 工作流也保留三种手动模式: `check` 调用上述只读入口; `update-pr` 只提交数据资源并创建审阅 PR; `release` 立即执行与定时器相同的自动补丁发行路径. 完整安全边界和恢复步骤见 [`docs/github-actions.md`](../docs/github-actions.md). GitHub API 请求会自动使用可选的 `GITHUB_TOKEN`, 以提高 API 限额.
