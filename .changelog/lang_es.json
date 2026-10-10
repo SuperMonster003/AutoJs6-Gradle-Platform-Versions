@@ -22,25 +22,45 @@
     "v1.8.7": {
       "released_date": "2026/10/02",
       "improvement": [
-        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo"
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Correspondencia añadida: Android Studio 2026.2.1 admite hasta AGP 9.4",
+        "Se reconocen las compilaciones de Android Studio: 2026.2.2.3, 2026.2.1.8"
+      ],
+      "dependency": [
+        "Se actualiza la versión de AGP 9.5.0-alpha07 -> 9.5.0-alpha08",
+        "Se actualiza la última versión estable de Android Studio 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)"
       ]
     },
     "v1.8.6": {
       "released_date": "2026/09/29",
       "improvement": [
-        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo"
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Se reconocen las compilaciones de Android Studio: 2026.2.1.7"
       ]
     },
     "v1.8.5": {
       "released_date": "2026/09/25",
       "improvement": [
-        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo"
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Correspondencia añadida: Gradle 9.8.0 incluye Kotlin 2.4.10",
+        "Correspondencia añadida: ejecutar en Java 27 requiere Gradle 9.8.0",
+        "Se reconocen las compilaciones de Android Studio: 2026.2.2.2"
+      ],
+      "dependency": [
+        "Se actualiza la versión de AGP 9.5.0-alpha06 -> 9.5.0-alpha07"
       ]
     },
     "v1.8.4": {
       "released_date": "2026/09/20",
       "improvement": [
-        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo"
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Se reconocen las compilaciones de Android Studio: 2026.2.2.1, 2026.2.1.6, 2026.1.4.8"
+      ],
+      "dependency": [
+        "Se actualiza la versión de AGP 9.5.0-alpha05 -> 9.5.0-alpha06",
+        "Se actualiza la versión de AGP 9.4.0 -> 9.4.1",
+        "Se actualiza la versión de AGP 9.3.2 -> 9.3.3",
+        "Se actualiza la última versión estable de Android Studio 2026.1.4.7 -> 2026.1.4.8 (Quail 4 | 2026.1.4 Patch 1)"
       ]
     },
     "v1.8.3": {
@@ -62,7 +82,11 @@
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [
-        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo"
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Se reconocen las compilaciones de Android Studio: 2026.2.1.5"
+      ],
+      "dependency": [
+        "Se actualiza la versión de AGP 9.5.0-alpha04 -> 9.5.0-alpha05"
       ]
     },
     "v1.8.0": {
@@ -77,13 +101,21 @@
     "v1.7.5": {
       "released_date": "2026/09/10",
       "improvement": [
-        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo"
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Correspondencia añadida: KSP 2.3.12 requiere AGP 8.12.0"
+      ],
+      "dependency": [
+        "Se actualiza la versión de KSP 2.3.11 -> 2.3.12"
       ]
     },
     "v1.7.4": {
       "released_date": "2026/09/04",
       "improvement": [
-        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo"
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Se reconocen las compilaciones de Android Studio: 2026.2.1.4"
+      ],
+      "dependency": [
+        "Se actualiza la versión de AGP 9.5.0-alpha03 -> 9.5.0-alpha04"
       ]
     },
     "v1.7.3": {

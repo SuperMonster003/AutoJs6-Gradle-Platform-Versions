@@ -22,25 +22,45 @@
     "v1.8.7": {
       "released_date": "2026/10/02",
       "improvement": [
-        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增對應: Android Studio 2026.2.1 最高支援 AGP 9.4",
+        "新增 Android Studio 建置編號識別: 2026.2.2.3, 2026.2.1.8"
+      ],
+      "dependency": [
+        "升級 AGP 版本 9.5.0-alpha07 -> 9.5.0-alpha08",
+        "升級 Android Studio 最新穩定版本 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)"
       ]
     },
     "v1.8.6": {
       "released_date": "2026/09/29",
       "improvement": [
-        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增 Android Studio 建置編號識別: 2026.2.1.7"
       ]
     },
     "v1.8.5": {
       "released_date": "2026/09/25",
       "improvement": [
-        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增對應: Gradle 9.8.0 內建 Kotlin 2.4.10",
+        "新增對應: 在 Java 27 上執行最低需要 Gradle 9.8.0",
+        "新增 Android Studio 建置編號識別: 2026.2.2.2"
+      ],
+      "dependency": [
+        "升級 AGP 版本 9.5.0-alpha06 -> 9.5.0-alpha07"
       ]
     },
     "v1.8.4": {
       "released_date": "2026/09/20",
       "improvement": [
-        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增 Android Studio 建置編號識別: 2026.2.2.1, 2026.2.1.6, 2026.1.4.8"
+      ],
+      "dependency": [
+        "升級 AGP 版本 9.5.0-alpha05 -> 9.5.0-alpha06",
+        "升級 AGP 版本 9.4.0 -> 9.4.1",
+        "升級 AGP 版本 9.3.2 -> 9.3.3",
+        "升級 Android Studio 最新穩定版本 2026.1.4.7 -> 2026.1.4.8 (Quail 4 | 2026.1.4 Patch 1)"
       ]
     },
     "v1.8.3": {
@@ -62,7 +82,11 @@
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [
-        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增 Android Studio 建置編號識別: 2026.2.1.5"
+      ],
+      "dependency": [
+        "升級 AGP 版本 9.5.0-alpha04 -> 9.5.0-alpha05"
       ]
     },
     "v1.8.0": {
@@ -77,13 +101,21 @@
     "v1.7.5": {
       "released_date": "2026/09/10",
       "improvement": [
-        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增對應: KSP 2.3.12 最低需要 AGP 8.12.0"
+      ],
+      "dependency": [
+        "升級 KSP 版本 2.3.11 -> 2.3.12"
       ]
     },
     "v1.7.4": {
       "released_date": "2026/09/04",
       "improvement": [
-        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證"
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增 Android Studio 建置編號識別: 2026.2.1.4"
+      ],
+      "dependency": [
+        "升級 AGP 版本 9.5.0-alpha03 -> 9.5.0-alpha04"
       ]
     },
     "v1.7.3": {

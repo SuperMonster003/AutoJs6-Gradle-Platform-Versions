@@ -208,6 +208,10 @@ npm --prefix .utils run check-data
 ###### 2026/10/02
 
 * `優化` 將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證
+* `優化` 新增映射: Android Studio 2026.2.1 最高支援 AGP 9.4
+* `優化` 新增 Android Studio 構建號識別: 2026.2.2.3, 2026.2.1.8
+* `依賴` 升級 AGP 版本 9.5.0-alpha07 -> 9.5.0-alpha08
+* `依賴` 升級 Android Studio 最新穩定版本 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### 更多發行歷史可參閱
 

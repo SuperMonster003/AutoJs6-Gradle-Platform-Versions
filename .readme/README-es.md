@@ -208,6 +208,10 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 ###### 2026/10/02
 
 * `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
+* `Mejora` Correspondencia añadida: Android Studio 2026.2.1 admite hasta AGP 9.4
+* `Mejora` Se reconocen las compilaciones de Android Studio: 2026.2.2.3, 2026.2.1.8
+* `Dependencia` Se actualiza la versión de AGP 9.5.0-alpha07 -> 9.5.0-alpha08
+* `Dependencia` Se actualiza la última versión estable de Android Studio 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### Para consultar un historial más completo, véase
 

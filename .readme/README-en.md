@@ -208,6 +208,10 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 ###### 2026/10/02
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Add mapping: Android Studio 2026.2.1 supports up to AGP 9.4
+* `Improvement` Recognize Android Studio builds: 2026.2.2.3, 2026.2.1.8
+* `Dependency` Upgrade AGP version 9.5.0-alpha07 -> 9.5.0-alpha08
+* `Dependency` Upgrade the latest stable Android Studio version 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### For more release history, see
 

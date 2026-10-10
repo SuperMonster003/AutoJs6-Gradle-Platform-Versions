@@ -42,24 +42,38 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 ###### 2026/10/02
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Correspondance ajoutée : Android Studio 2026.2.1 prend en charge AGP jusqu’à 9.4
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.2.3, 2026.2.1.8
+* `Dépendance` Mise à niveau de la version d’AGP 9.5.0-alpha07 -> 9.5.0-alpha08
+* `Dépendance` Mise à niveau de la dernière version stable d’Android Studio 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 # v1.8.6
 
 ###### 2026/09/29
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.1.7
 
 # v1.8.5
 
 ###### 2026/09/25
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Correspondance ajoutée : Gradle 9.8.0 embarque Kotlin 2.4.10
+* `Amélioration` Correspondance ajoutée : l’exécution sur Java 27 requiert Gradle 9.8.0
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.2.2
+* `Dépendance` Mise à niveau de la version d’AGP 9.5.0-alpha06 -> 9.5.0-alpha07
 
 # v1.8.4
 
 ###### 2026/09/20
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.2.1, 2026.2.1.6, 2026.1.4.8
+* `Dépendance` Mise à niveau de la version d’AGP 9.5.0-alpha05 -> 9.5.0-alpha06
+* `Dépendance` Mise à niveau de la version d’AGP 9.4.0 -> 9.4.1
+* `Dépendance` Mise à niveau de la version d’AGP 9.3.2 -> 9.3.3
+* `Dépendance` Mise à niveau de la dernière version stable d’Android Studio 2026.1.4.7 -> 2026.1.4.8 (Quail 4 | 2026.1.4 Patch 1)
 
 # v1.8.3
 
@@ -80,6 +94,8 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 ###### 2026/09/12
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.1.5
+* `Dépendance` Mise à niveau de la version d’AGP 9.5.0-alpha04 -> 9.5.0-alpha05
 
 # v1.8.0
 
@@ -93,12 +109,16 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 ###### 2026/09/10
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Correspondance ajoutée : KSP 2.3.12 requiert AGP 8.12.0
+* `Dépendance` Mise à niveau de la version de KSP 2.3.11 -> 2.3.12
 
 # v1.7.4
 
 ###### 2026/09/04
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.1.4
+* `Dépendance` Mise à niveau de la version d’AGP 9.5.0-alpha03 -> 9.5.0-alpha04
 
 # v1.7.3
 

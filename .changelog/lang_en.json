@@ -22,25 +22,45 @@
     "v1.8.7": {
       "released_date": "2026/10/02",
       "improvement": [
-        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Add mapping: Android Studio 2026.2.1 supports up to AGP 9.4",
+        "Recognize Android Studio builds: 2026.2.2.3, 2026.2.1.8"
+      ],
+      "dependency": [
+        "Upgrade AGP version 9.5.0-alpha07 -> 9.5.0-alpha08",
+        "Upgrade the latest stable Android Studio version 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)"
       ]
     },
     "v1.8.6": {
       "released_date": "2026/09/29",
       "improvement": [
-        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Recognize Android Studio builds: 2026.2.1.7"
       ]
     },
     "v1.8.5": {
       "released_date": "2026/09/25",
       "improvement": [
-        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Add mapping: Gradle 9.8.0 embeds Kotlin 2.4.10",
+        "Add mapping: Running on Java 27 requires Gradle 9.8.0",
+        "Recognize Android Studio builds: 2026.2.2.2"
+      ],
+      "dependency": [
+        "Upgrade AGP version 9.5.0-alpha06 -> 9.5.0-alpha07"
       ]
     },
     "v1.8.4": {
       "released_date": "2026/09/20",
       "improvement": [
-        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Recognize Android Studio builds: 2026.2.2.1, 2026.2.1.6, 2026.1.4.8"
+      ],
+      "dependency": [
+        "Upgrade AGP version 9.5.0-alpha05 -> 9.5.0-alpha06",
+        "Upgrade AGP version 9.4.0 -> 9.4.1",
+        "Upgrade AGP version 9.3.2 -> 9.3.3",
+        "Upgrade the latest stable Android Studio version 2026.1.4.7 -> 2026.1.4.8 (Quail 4 | 2026.1.4 Patch 1)"
       ]
     },
     "v1.8.3": {
@@ -62,7 +82,11 @@
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [
-        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Recognize Android Studio builds: 2026.2.1.5"
+      ],
+      "dependency": [
+        "Upgrade AGP version 9.5.0-alpha04 -> 9.5.0-alpha05"
       ]
     },
     "v1.8.0": {
@@ -77,13 +101,21 @@
     "v1.7.5": {
       "released_date": "2026/09/10",
       "improvement": [
-        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Add mapping: KSP 2.3.12 requires AGP 8.12.0"
+      ],
+      "dependency": [
+        "Upgrade KSP version 2.3.11 -> 2.3.12"
       ]
     },
     "v1.7.4": {
       "released_date": "2026/09/04",
       "improvement": [
-        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release"
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Recognize Android Studio builds: 2026.2.1.4"
+      ],
+      "dependency": [
+        "Upgrade AGP version 9.5.0-alpha03 -> 9.5.0-alpha04"
       ]
     },
     "v1.7.3": {

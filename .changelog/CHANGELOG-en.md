@@ -42,24 +42,38 @@ CHANGELOG.md is currently available in the following languages:
 ###### 2026/10/02
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Add mapping: Android Studio 2026.2.1 supports up to AGP 9.4
+* `Improvement` Recognize Android Studio builds: 2026.2.2.3, 2026.2.1.8
+* `Dependency` Upgrade AGP version 9.5.0-alpha07 -> 9.5.0-alpha08
+* `Dependency` Upgrade the latest stable Android Studio version 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 # v1.8.6
 
 ###### 2026/09/29
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.2.1.7
 
 # v1.8.5
 
 ###### 2026/09/25
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Add mapping: Gradle 9.8.0 embeds Kotlin 2.4.10
+* `Improvement` Add mapping: Running on Java 27 requires Gradle 9.8.0
+* `Improvement` Recognize Android Studio builds: 2026.2.2.2
+* `Dependency` Upgrade AGP version 9.5.0-alpha06 -> 9.5.0-alpha07
 
 # v1.8.4
 
 ###### 2026/09/20
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.2.2.1, 2026.2.1.6, 2026.1.4.8
+* `Dependency` Upgrade AGP version 9.5.0-alpha05 -> 9.5.0-alpha06
+* `Dependency` Upgrade AGP version 9.4.0 -> 9.4.1
+* `Dependency` Upgrade AGP version 9.3.2 -> 9.3.3
+* `Dependency` Upgrade the latest stable Android Studio version 2026.1.4.7 -> 2026.1.4.8 (Quail 4 | 2026.1.4 Patch 1)
 
 # v1.8.3
 
@@ -80,6 +94,8 @@ CHANGELOG.md is currently available in the following languages:
 ###### 2026/09/12
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.2.1.5
+* `Dependency` Upgrade AGP version 9.5.0-alpha04 -> 9.5.0-alpha05
 
 # v1.8.0
 
@@ -93,12 +109,16 @@ CHANGELOG.md is currently available in the following languages:
 ###### 2026/09/10
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Add mapping: KSP 2.3.12 requires AGP 8.12.0
+* `Dependency` Upgrade KSP version 2.3.11 -> 2.3.12
 
 # v1.7.4
 
 ###### 2026/09/04
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.2.1.4
+* `Dependency` Upgrade AGP version 9.5.0-alpha03 -> 9.5.0-alpha04
 
 # v1.7.3
 

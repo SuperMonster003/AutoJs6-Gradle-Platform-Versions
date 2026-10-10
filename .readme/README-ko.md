@@ -208,6 +208,10 @@ npm --prefix .utils run check-data
 ###### 2026/10/02
 
 * `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
+* `개선` 매핑 추가: Android Studio 2026.2.1은(는) AGP 9.4까지 지원함
+* `개선` Android Studio 빌드 번호 인식 추가: 2026.2.2.3, 2026.2.1.8
+* `의존성` AGP 버전 업그레이드 9.5.0-alpha07 -> 9.5.0-alpha08
+* `의존성` Android Studio 최신 안정 버전 업그레이드 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

@@ -22,25 +22,45 @@
     "v1.8.7": {
       "released_date": "2026/10/02",
       "improvement": [
-        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証"
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "対応表に追加: Android Studio 2026.2.1 は AGP 9.4 までをサポート",
+        "Android Studio のビルド番号を認識: 2026.2.2.3, 2026.2.1.8"
+      ],
+      "dependency": [
+        "AGP バージョンを 9.5.0-alpha07 -> 9.5.0-alpha08 にアップグレード",
+        "Android Studio 最新安定版を 2026.1.4.8 -> 2026.2.1.8 にアップグレード (Rabbit 1 | 2026.2.1)"
       ]
     },
     "v1.8.6": {
       "released_date": "2026/09/29",
       "improvement": [
-        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証"
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "Android Studio のビルド番号を認識: 2026.2.1.7"
       ]
     },
     "v1.8.5": {
       "released_date": "2026/09/25",
       "improvement": [
-        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証"
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "対応表に追加: Gradle 9.8.0 は Kotlin 2.4.10 を内蔵",
+        "対応表に追加: Java 27 上での実行には Gradle 9.8.0 以上が必要",
+        "Android Studio のビルド番号を認識: 2026.2.2.2"
+      ],
+      "dependency": [
+        "AGP バージョンを 9.5.0-alpha06 -> 9.5.0-alpha07 にアップグレード"
       ]
     },
     "v1.8.4": {
       "released_date": "2026/09/20",
       "improvement": [
-        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証"
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "Android Studio のビルド番号を認識: 2026.2.2.1, 2026.2.1.6, 2026.1.4.8"
+      ],
+      "dependency": [
+        "AGP バージョンを 9.5.0-alpha05 -> 9.5.0-alpha06 にアップグレード",
+        "AGP バージョンを 9.4.0 -> 9.4.1 にアップグレード",
+        "AGP バージョンを 9.3.2 -> 9.3.3 にアップグレード",
+        "Android Studio 最新安定版を 2026.1.4.7 -> 2026.1.4.8 にアップグレード (Quail 4 | 2026.1.4 Patch 1)"
       ]
     },
     "v1.8.3": {
@@ -62,7 +82,11 @@
     "v1.8.1": {
       "released_date": "2026/09/12",
       "improvement": [
-        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証"
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "Android Studio のビルド番号を認識: 2026.2.1.5"
+      ],
+      "dependency": [
+        "AGP バージョンを 9.5.0-alpha04 -> 9.5.0-alpha05 にアップグレード"
       ]
     },
     "v1.8.0": {
@@ -77,13 +101,21 @@
     "v1.7.5": {
       "released_date": "2026/09/10",
       "improvement": [
-        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証"
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "対応表に追加: KSP 2.3.12 には AGP 8.12.0 以上が必要"
+      ],
+      "dependency": [
+        "KSP バージョンを 2.3.11 -> 2.3.12 にアップグレード"
       ]
     },
     "v1.7.4": {
       "released_date": "2026/09/04",
       "improvement": [
-        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証"
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "Android Studio のビルド番号を認識: 2026.2.1.4"
+      ],
+      "dependency": [
+        "AGP バージョンを 9.5.0-alpha03 -> 9.5.0-alpha04 にアップグレード"
       ]
     },
     "v1.7.3": {
