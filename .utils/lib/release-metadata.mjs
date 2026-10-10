@@ -1,5 +1,6 @@
 import fs from 'node:fs';
 import path from 'node:path';
+import { renderDataChangeCategories } from './data-changes.mjs';
 
 export const LANGUAGE_CODES = [
     'zh-Hans',
@@ -63,10 +64,25 @@ export function shanghaiReleaseDate(date = new Date()) {
     return `${values.year}/${values.month}/${values.day}`;
 }
 
+/**
+ * Builds one localized changelog entry: the fixed data-release summary first,
+ * then one sentence per semantic data change, e.g. an AGP version upgrade.
+ */
+export function dataReleaseEntry(code, releasedDate, dataChanges = []) {
+    const { improvement, dependency } = renderDataChangeCategories(dataChanges, code);
+    const entry = {
+        released_date: releasedDate,
+        improvement: [ DATA_RELEASE_MESSAGES[code], ...improvement ],
+    };
+    if (dependency.length > 0) entry.dependency = dependency;
+    return entry;
+}
+
 export function prepareDataRelease({
     rootDir,
     versionBuild,
     releasedDate = shanghaiReleaseDate(),
+    dataChanges = [],
 }) {
     if (!Number.isSafeInteger(versionBuild) || versionBuild <= 0) {
         throw new Error(`versionBuild must be a positive integer, received ${versionBuild}.`);
@@ -101,10 +117,7 @@ export function prepareDataRelease({
             throw new Error(`${file} does not contain the current release v${currentVersion}.`);
         }
         changelog.$data = {
-            [releaseKey]: {
-                released_date: releasedDate,
-                improvement: [ DATA_RELEASE_MESSAGES[code] ],
-            },
+            [releaseKey]: dataReleaseEntry(code, releasedDate, dataChanges),
             ...changelog.$data,
         };
         return [ file, serializeJson(changelog) ];
@@ -122,5 +135,6 @@ export function prepareDataRelease({
         releaseVersion,
         versionBuild,
         releasedDate,
+        dataChangeCount: dataChanges.length,
     };
 }
