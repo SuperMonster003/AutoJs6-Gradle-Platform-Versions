@@ -80,7 +80,7 @@ gpg --armor --export-secret-keys 3278716E2E6174D7 > signing-key.asc
 非纯数据版本仍由维护者准备版本元数据和注释标签, 然后使用统一的受保护发布入口:
 
 1. 更新版本号, 发行日志与文档, 完成测试并提交发行提交.
-2. 确认 `VERSION_BUILD` 等于该发行提交包含的提交总数.
+2. 确认 `VERSION_BUILD` 与该发行提交包含的提交总数相差不超过 10 (工作流按此容差校验).
 3. 创建并推送与 `VERSION_NAME` 对应的注释标签, 例如 `v1.8.0`.
 4. 打开 `Actions` > `Publish release` > `Run workflow`, 在分支/标签选择器中选择刚推送的标签.
 5. `version` 填写不带 `v` 的版本号; `targets` 通常选择 `both`; `complete_github_release` 保持启用.

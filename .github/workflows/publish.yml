@@ -61,8 +61,10 @@ jobs:
             echo "::error title=Version mismatch::version.properties contains $release_version."
             exit 1
           fi
-          if [[ "$version_build" != "$commit_count" ]]; then
-            echo "::error title=Build number mismatch::VERSION_BUILD=$version_build but the tag contains $commit_count commits."
+          # VERSION_BUILD follows the commit count within 10 (shared rule of the AutoJs6 repositories).
+          drift=$(( version_build - commit_count ))
+          if (( drift > 10 || drift < -10 )); then
+            echo "::error title=Build number drift::VERSION_BUILD=$version_build is $drift away from the $commit_count commits of the tag (allowed: 10)."
             exit 1
           fi
 
