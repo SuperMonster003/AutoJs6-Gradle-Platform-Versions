@@ -4,6 +4,7 @@ import os from 'node:os';
 import path from 'node:path';
 import test from 'node:test';
 import { describeDataChanges } from '../lib/data-changes.mjs';
+import { NON_ASCII_PUNCTUATION } from '../lib/punctuation.mjs';
 import {
     LANGUAGE_CODES,
     dataReleaseEntry,
@@ -68,6 +69,7 @@ test('data release metadata stays aligned across every language', (t) => {
         assert.equal(changelog.$data['v1.7.2'].released_date, '2026/09/03');
         assert.equal(changelog.$data['v1.7.2'].improvement.length, 1);
         assert.ok(changelog.$data['v1.7.2'].improvement[0].length > 20);
+        assert.doesNotMatch(changelog.$data['v1.7.2'].improvement[0], NON_ASCII_PUNCTUATION, code);
         assert.equal(changelog.$data['v1.7.2'].dependency, undefined);
     });
 });

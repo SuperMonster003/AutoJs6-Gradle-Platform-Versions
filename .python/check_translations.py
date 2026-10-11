@@ -3,12 +3,15 @@
 
 Two classes of mistake are easy to make by hand and expensive to spot later:
 a missing key, which makes generation fail outright, and a stray fullwidth
-punctuation mark in a language whose house style is halfwidth.
+or script-specific punctuation mark, since every language uses ASCII
+punctuation.
 
 Run: py .python/check_translations.py
 """
 import json
+import re
 import sys
+import unicodedata
 from pathlib import Path
 
 from generate_markdown import (
@@ -19,13 +22,24 @@ from generate_markdown import (
     ROOT,
 )
 
-# Languages whose house style keeps CJK sentence punctuation fullwidth.
-# Everything else is expected to read as halfwidth, matching the source language.
-FULLWIDTH_ALLOWED = {"zh-Hant-TW", "ja"}
+# Every language writes its punctuation in ASCII. Any non-ASCII character in a
+# Unicode punctuation category is rejected (ideographic comma and full stop,
+# corner brackets, the katakana middle dot, dashes, curly quotes, the
+# ellipsis, guillemets, Arabic and Spanish marks, ...), plus arrows, the
+# ideographic space and fullwidth forms. The middle dot U+00B7 stays allowed
+# as a value separator. Escapes keep this file itself ASCII-only.
+MIDDLE_DOT = "\u00b7"
+EXTRA_NON_ASCII = re.compile("[\u2190-\u21ff\u3000\uff01-\uff65]")
 
-# Fullwidth marks that must not appear in a halfwidth language.
-# The ideographic comma is exempt: it has no halfwidth counterpart.
-FULLWIDTH_MARKS = "，。；：！？（）"
+
+def non_ascii_punctuation(text):
+    """Returns the sorted set of non-ASCII punctuation marks found in text."""
+    return sorted({
+        ch for ch in text
+        if ord(ch) > 0x7F and ch != MIDDLE_DOT
+        and (unicodedata.category(ch).startswith("P") or EXTRA_NON_ASCII.match(ch))
+    })
+
 
 CHANGELOG_LABEL_KEYS = [
     "changelog_label_hint",
@@ -70,12 +84,11 @@ def check_keys(kind, code, reference, actual, errors):
 
 
 def check_punctuation(kind, code, data, errors):
-    if code in FULLWIDTH_ALLOWED:
-        return
     for trail, text in walk_strings(data):
-        found = sorted({ch for ch in text if ch in FULLWIDTH_MARKS})
+        found = non_ascii_punctuation(text)
         if found:
-            errors.append(f"{kind}/{code}: fullwidth punctuation {''.join(found)} at '{trail}'")
+            marks = ", ".join(f"U+{ord(ch):04X}" for ch in found)
+            errors.append(f"{kind}/{code}: non-ASCII punctuation {marks} at '{trail}'")
 
 
 def main():

@@ -15,6 +15,7 @@ import {
     renderDataChangeMarkdown,
 } from '../lib/data-changes.mjs';
 import { DATA_DIR } from '../lib/paths.mjs';
+import { NON_ASCII_PUNCTUATION } from '../lib/punctuation.mjs';
 import { LANGUAGE_CODES } from '../lib/release-metadata.mjs';
 
 const snapshot = (entries) => new Map(Object.entries(entries));
@@ -211,14 +212,13 @@ test('every language renders complete, single-line sentences', () => {
         assert.ok(kinds.has(kind), `fixture should cover ${kind}`);
     }
 
-    const fullwidthAllowed = new Set([ 'zh-Hant-TW', 'ja' ]);
     for (const code of LANGUAGE_CODES) {
         const categories = renderDataChangeCategories(changes, code);
         const lines = [ ...categories.improvement, ...categories.dependency ];
         assert.equal(lines.length, changes.length, code);
         for (const line of lines) {
             assert.doesNotMatch(line, /[{}\n]|undefined/, `${code}: ${line}`);
-            if (!fullwidthAllowed.has(code)) assert.doesNotMatch(line, /[，。；：！？（）]/, `${code}: ${line}`);
+            assert.doesNotMatch(line, NON_ASCII_PUNCTUATION, `${code}: ${line}`);
         }
     }
 });
