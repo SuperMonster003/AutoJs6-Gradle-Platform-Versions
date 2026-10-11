@@ -156,7 +156,7 @@
         "Temurin 빌드, 정기 호환성 데이터 검사 또는 갱신 PR, 태그와 승인으로 보호되는 Maven Central 및 Gradle Plugin Portal 게시를 위한 GitHub Actions 워크플로를 추가"
       ],
       "fix": [
-        "Temurin 및 순수 명령줄 빌드에서 더 이상 이전 JDK→AGP 매핑을 조회하지 않으므로 JDK `21.0.6+7`이 AGP 8.7.3을 조용히 선택할 수 없음. Android API 36은 이제 AGP 8.9.1 이상을 자동으로 요구",
+        "Temurin 및 순수 명령줄 빌드에서 더 이상 이전 JDK -> AGP 매핑을 조회하지 않으므로 JDK `21.0.6+7`이 AGP 8.7.3을 조용히 선택할 수 없음. Android API 36은 이제 AGP 8.9.1 이상을 자동으로 요구",
         "두 요소 IDE 매핑이 Gradle의 AGP 상한을 우회하던 문제와 오래된 Gradle이 로드할 수 없는 플랫폼 버전으로 대체되던 문제를 수정"
       ],
       "improvement": [

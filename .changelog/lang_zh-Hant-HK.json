@@ -124,7 +124,7 @@
         "確保 Settings 插件在根項目插件解析前把自動選擇的 KGP 加入 buildscript classpath; AGP 9 內置 Kotlin 不再停留在捆綁的 KGP 2.2.10, 因而不會在 JDK 25 下拒絕 JVM target 25"
       ],
       "improvement": [
-        "新增未顯式請求 Kotlin 插件的 AGP 取用端示例斷言, 核對選擇的 KGP 與根 classpath 實際版本一致; 已在 Accessibility Compat 的 Gradle 9.5/AGP 9.3.2 上以 JDK 25/26 完成單元測試、lint、APK 構建及 4 台裝置共 28 項測試"
+        "新增未顯式請求 Kotlin 插件的 AGP 取用端示例斷言, 核對選擇的 KGP 與根 classpath 實際版本一致; 已在 Accessibility Compat 的 Gradle 9.5/AGP 9.3.2 上以 JDK 25/26 完成單元測試, lint, APK 構建及 4 台裝置共 28 項測試"
       ]
     },
     "v1.7.2": {
@@ -152,16 +152,16 @@
         "一般構建應聲明 SDK 版本, 並只在有需要時聲明 `MIN_SUPPORTED_ANDROID_GRADLE_PLUGIN_VERSION`; `OVERRIDDEN_ANDROID_GRADLE_PLUGIN_VERSION` 應保留作刻意的精確版本測試或特殊逃生用途"
       ],
       "feature": [
-        "AGP 選擇現會將 Android API、項目與 KSP 下界同目前 Gradle 和 IDE 上界求交集, 沒有兼容版本時會報告約束來源",
-        "新增 GitHub Actions 工作流程, 用於 Temurin 構建、定期兼容數據檢查或更新 PR, 以及受標籤和人工審批保護的 Maven Central / Gradle Plugin Portal 發佈"
+        "AGP 選擇現會將 Android API, 項目與 KSP 下界同目前 Gradle 和 IDE 上界求交集, 沒有兼容版本時會報告約束來源",
+        "新增 GitHub Actions 工作流程, 用於 Temurin 構建, 定期兼容數據檢查或更新 PR, 以及受標籤和人工審批保護的 Maven Central / Gradle Plugin Portal 發佈"
       ],
       "fix": [
         "Temurin 與純命令列構建不再查詢舊有的 JDK 至 AGP 映射, 因此 JDK `21.0.6+7` 不會再靜默選擇 AGP 8.7.3; Android API 36 現會自動要求 AGP 8.9.1 或以上版本",
         "修復兩段式 IDE 映射繞過 Gradle 的 AGP 上限, 以及舊 Gradle 回落至本身無法載入的平台版本問題"
       ],
       "improvement": [
-        "新增獨立抓取的 Android API 至最低 AGP 官方數據, 並刷新 Android Studio、AGP 發行版及 AGP/Gradle 兼容數據",
-        "驗證範圍擴展至 70 項 JVM 測試、Node 解析與冪等測試, 以及在真實 Temurin 17 CI 中執行無頭自動選擇的範例構建"
+        "新增獨立抓取的 Android API 至最低 AGP 官方數據, 並刷新 Android Studio, AGP 發行版及 AGP/Gradle 兼容數據",
+        "驗證範圍擴展至 70 項 JVM 測試, Node 解析與冪等測試, 以及在真實 Temurin 17 CI 中執行無頭自動選擇的範例構建"
       ]
     },
     "v1.6.0": {
@@ -170,10 +170,10 @@
         "永久 Gradle 插件 ID 已由 `org.autojs.build.platform-versions` 改為 `io.github.supermonster003.autojs6-platform-versions`, Maven 座標為 `io.github.supermonster003:autojs6-gradle-platform-versions`; Java/Kotlin 套件名稱仍為 `org.autojs.build.platform`"
       ],
       "feature": [
-        "新增面向 Maven Central 與 Gradle Plugin Portal 的首次公開網上發佈流程, 實作構件、原始碼、Javadoc、模組中繼資料及插件 marker 均附有正式簽名"
+        "新增面向 Maven Central 與 Gradle Plugin Portal 的首次公開網上發佈流程, 實作構件, 原始碼, Javadoc, 模組中繼資料及插件 marker 均附有正式簽名"
       ],
       "improvement": [
-        "新增公開 GitHub 倉庫、完整 Central POM 中繼資料、可重現 Portal bundle、隔離取用端驗證, 以及分別供本機 GPG 與 CI 使用的安全簽名入口",
+        "新增公開 GitHub 倉庫, 完整 Central POM 中繼資料, 可重現 Portal bundle, 隔離取用端驗證, 以及分別供本機 GPG 與 CI 使用的安全簽名入口",
         "正式用法現可只透過公共倉庫解析, 不再依賴 `mavenLocal()`; 遷移工具亦可識別並更新舊插件 ID"
       ]
     },
@@ -184,7 +184,7 @@
       ],
       "improvement": [
         "抓取器不再依賴 Puppeteer/Chrome, 改為解析官方靜態來源; 保留邊界與輸出驗證集中配置, 並避免只因時間戳變化而重寫檔案",
-        "內置數據已更新至 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03、9.4.0-rc02 及 9.3.2, Android Studio Rabbit 及 KSP 2.3.11"
+        "內置數據已更新至 Gradle 9.7/Kotlin 2.4, AGP 9.5.0-alpha03, 9.4.0-rc02 及 9.3.2, Android Studio Rabbit 及 KSP 2.3.11"
       ]
     },
     "v1.4.1": {

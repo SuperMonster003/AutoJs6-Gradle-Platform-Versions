@@ -14,7 +14,7 @@
     "按當前 IDE 版本挑選它能支援的 AGP 版本, 版本之間不完全匹配時向下就近選取.",
     "IDE 版本比映射表全部條目都新時, 自動回退到 auto 選擇, 避免靜默降級到過舊的 AGP.",
     "Temurin 與裸命令行不再使用平台版本映射, 而是明確按 Gradle 兼容性自動選擇 AGP.",
-    "把 Android API、KSP 及項目聲明的最低 AGP 作為下界, 與 IDE/Gradle 上界求交; 無兼容交集時提前報錯.",
+    "把 Android API, KSP 及項目聲明的最低 AGP 作為下界, 與 IDE/Gradle 上界求交; 無兼容交集時提前報錯.",
     "決定 R8 版本, 僅在 AGP 自帶的 R8 不夠新時才引入外部 R8.",
     "把自動選擇的 KGP 注入根項目 buildscript classpath, 使 AGP 9 內置 Kotlin 實際使用該編譯器及其 JVM target 能力, 而非較舊的捆綁版本.",
     "兼容數據隨插件分發並作為默認的唯一數據源; AutoJs6 官方宿主和插件項目不在消費端重複維護 `gradle/data` 副本.",
@@ -31,7 +31,7 @@
   "decision_steps": [
     "IDE 環境以平台映射表的最早 key 作為中央支援下界, 以匹配到的 AGP 作為上界; 消費端 IDE 最低版本只能收緊該下界. 對較新的 IDE 保留映射滯後回退; Temurin 與裸命令行直接採用 Gradle 兼容上界.",
     "按 AGP 與 Gradle 的官方兼容表再次封頂, 保證候選版本可由當前 Gradle 載入.",
-    "從 compileSdk/targetSdk、KSP 及可選的項目最低版本推導下界, 僅在上下界存在交集時返回 AGP."
+    "從 compileSdk/targetSdk, KSP 及可選的項目最低版本推導下界, 僅在上下界存在交集時返回 AGP."
   ],
   "p_decision_flow_outro": "Kotlin 版本則跟隨 Gradle 而非 IDE, 始終選取當前 Gradle 支援的最新版本",
   "h3_pinning": "指定版本",

@@ -190,9 +190,9 @@ export const DATA_CHANGE_MESSAGES = {
             removed: 'Retrait de {subject} {from}',
         },
         subjects: {
-            agp: 'la version d’AGP',
+            agp: "la version d'AGP",
             ksp: 'la version de KSP',
-            androidStudioStable: 'la dernière version stable d’Android Studio',
+            androidStudioStable: "la dernière version stable d'Android Studio",
         },
         mapping: {
             added: 'Correspondance ajoutée : {fact}',
@@ -202,12 +202,12 @@ export const DATA_CHANGE_MESSAGES = {
         facts: {
             'agp-gradle-compat': 'AGP {key} requiert Gradle {value}',
             'android-api-agp-compat': 'Android API {key} requiert AGP {value}',
-            'android-studio-agp-compat': 'Android Studio {key} prend en charge AGP jusqu’à {value}',
+            'android-studio-agp-compat': "Android Studio {key} prend en charge AGP jusqu'à {value}",
             'android-studio-build-version': 'le build Android Studio {key} correspond à la version {value}',
             'android-studio-codename-version': 'Android Studio {key} utilise la lettre de nom de code {value}',
             'android-studio-codename': 'le nom de code Android Studio {key} est {value}',
             'gradle-kotlin-compat': 'Gradle {key} embarque Kotlin {value}',
-            'java-gradle-compat': 'l’exécution sur Java {key} requiert Gradle {value}',
+            'java-gradle-compat': "l'exécution sur Java {key} requiert Gradle {value}",
             'kotlin-r8-compat': 'Kotlin {key} requiert R8 {value}',
             'ksp-agp-compat': 'KSP {key} requiert AGP {value}',
         },
@@ -217,7 +217,7 @@ export const DATA_CHANGE_MESSAGES = {
         },
         listSeparator: ', ',
         listOverflow: '{list} et {rest} de plus',
-        androidStudioMetadata: 'Actualisation des métadonnées de publication d’Android Studio {version}',
+        androidStudioMetadata: "Actualisation des métadonnées de publication d'Android Studio {version}",
         file: {
             added: 'Ajout du fichier de données {file}',
             changed: 'Mise à jour du fichier de données {file}',
@@ -430,7 +430,7 @@ export const DATA_CHANGE_MESSAGES = {
             added: 'التعرف على إصدارات بناء Android Studio: {list}',
             removed: 'إيقاف التعرف على إصدارات بناء Android Studio: {list}',
         },
-        listSeparator: '، ',
+        listSeparator: ', ',
         listOverflow: '{list} و{rest} أخرى',
         androidStudioMetadata: 'تحديث بيانات إصدار Android Studio {version}',
         file: {
