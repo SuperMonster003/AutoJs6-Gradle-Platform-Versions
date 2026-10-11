@@ -294,6 +294,7 @@ jobs:
               src/main/resources/org/autojs/build/platform/data/* | \
               src/test/* | \
               .github/workflows/* | \
+              .gitignore | \
               .utils/* | \
               .python/* | \
               .readme/* | \
