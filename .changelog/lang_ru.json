@@ -5,6 +5,16 @@
   "changelog_label_improvement": "Улучшение",
   "changelog_label_dependency": "Зависимость",
   "$data": {
+    "v1.9.2": {
+      "released_date": "2026/10/16",
+      "improvement": [
+        "Встроенные данные о совместимости версий (AGP, Gradle, Kotlin, KSP, Android Studio и др.) автоматически синхронизированы с актуальной официальной информацией и перед публикацией проверены тестами и сборкой демонстрационного проекта",
+        "Распознаются сборки Android Studio: 2026.2.2.5"
+      ],
+      "dependency": [
+        "Версия AGP: обновление 9.5.0-alpha09 -> 9.5.0-alpha10"
+      ]
+    },
     "v1.9.1": {
       "released_date": "2026/10/09",
       "improvement": [

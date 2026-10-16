@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.2"
     }
 }
 
@@ -189,6 +189,14 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.9.2
+
+###### 2026/10/16
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.2.2.5
+* `Dependency` Upgrade AGP version 9.5.0-alpha09 -> 9.5.0-alpha10
+
 # v1.9.1
 
 ###### 2026/10/09
@@ -202,16 +210,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 * `Feature` The nativeAlignment plugin writes the org.autojs.plugin.contract.SUPPORTED_ABIS meta-data into the merged manifest of every application variant, derived from the merged native libraries narrowed by ABI splits and ndk.abiFilters, with universal for packages without native code; supportedAbis overrides the set and supportedAbisMetaData turns it off
 * `Feature` The settings plugin appends a notice to the version information when a sibling checkout (or the directory named by autojs.buildPlugins.localCheckout) carries a newer plugin version
 * `Feature` .python/bump_consumers.py upgrades both plugin versions pinned in sibling repositories' settings.gradle.kts to the current version, with --list, --dry-run, --apply and --commit
-
-# v1.8.7
-
-###### 2026/10/02
-
-* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
-* `Improvement` Add mapping: Android Studio 2026.2.1 supports up to AGP 9.4
-* `Improvement` Recognize Android Studio builds: 2026.2.2.3, 2026.2.1.8
-* `Dependency` Upgrade AGP version 9.5.0-alpha07 -> 9.5.0-alpha08
-* `Dependency` Upgrade the latest stable Android Studio version 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### For more release history, see
 

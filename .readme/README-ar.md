@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.2"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.2
+
+###### 2026/10/16
+
+* `تحسين` مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي
+* `تحسين` التعرف على إصدارات بناء Android Studio: 2026.2.2.5
+* `تبعية` ترقية إصدار AGP 9.5.0-alpha09 -> 9.5.0-alpha10
+
 # v1.9.1
 
 ###### 2026/10/09
@@ -202,16 +210,6 @@ npm --prefix .utils run check-data
 * `ميزة` تكتب إضافة nativeAlignment البيانات الوصفية org.autojs.plugin.contract.SUPPORTED_ABIS في البيان المدمج لكل متغيّر تطبيق, وتُشتق القيمة من المكتبات الأصلية المدمجة بعد تضييقها بتقسيمات ABI وبـ ndk.abiFilters, مع كتابة universal للحزم الخالية من الشيفرة الأصلية; يستبدل supportedAbis المجموعة ويعطّل supportedAbisMetaData الكتابة
 * `ميزة` تضيف إضافة settings تنبيهًا في نهاية معلومات الإصدار عندما يحتوي المستودع المجاور (أو الدليل المحدد عبر autojs.buildPlugins.localCheckout) على إصدار أحدث من الإضافة
 * `ميزة` يرفع السكربت .python/bump_consumers.py إصداري الإضافتين المثبّتين في settings.gradle.kts للمستودعات الشقيقة إلى الإصدار الحالي دفعةً واحدة, مع دعم --list و --dry-run و --apply و --commit
-
-# v1.8.7
-
-###### 2026/10/02
-
-* `تحسين` مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي
-* `تحسين` إضافة تعيين: يدعم Android Studio 2026.2.1 حتى AGP 9.4
-* `تحسين` التعرف على إصدارات بناء Android Studio: 2026.2.2.3, 2026.2.1.8
-* `تبعية` ترقية إصدار AGP 9.5.0-alpha07 -> 9.5.0-alpha08
-* `تبعية` ترقية أحدث إصدار مستقر من Android Studio 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### لمزيد من سجل الإصدارات يمكن الرجوع إلى
 

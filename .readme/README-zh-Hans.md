@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.2"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.2
+
+###### 2026/10/16
+
+* `优化` 将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证
+* `优化` 新增 Android Studio 构建号识别: 2026.2.2.5
+* `依赖` 升级 AGP 版本 9.5.0-alpha09 -> 9.5.0-alpha10
+
 # v1.9.1
 
 ###### 2026/10/09
@@ -202,16 +210,6 @@ npm --prefix .utils run check-data
 * `新增` nativeAlignment 插件为每个应用变体的合并清单写入 org.autojs.plugin.contract.SUPPORTED_ABIS meta-data, 取值由合并后的原生库按 ABI 分包与 ndk.abiFilters 收窄得出, 无原生代码时写入 universal, 可用 supportedAbis 覆盖或用 supportedAbisMetaData 关闭
 * `新增` settings 插件在版本信息末尾提示相邻检出 (或 autojs.buildPlugins.localCheckout 指定的目录) 中存在更新的插件版本
 * `新增` .python/bump_consumers.py 将兄弟仓库 settings.gradle.kts 中钉住的两个插件版本批量升级到当前版本, 支持 --list, --dry-run, --apply 与 --commit
-
-# v1.8.7
-
-###### 2026/10/02
-
-* `优化` 将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证
-* `优化` 新增映射: Android Studio 2026.2.1 最高支持 AGP 9.4
-* `优化` 新增 Android Studio 构建号识别: 2026.2.2.3, 2026.2.1.8
-* `依赖` 升级 AGP 版本 9.5.0-alpha07 -> 9.5.0-alpha08
-* `依赖` 升级 Android Studio 最新稳定版本 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### 更多发行历史可参阅
 

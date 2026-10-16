@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.1"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.2"
     }
 }
 
@@ -189,6 +189,14 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.9.2
+
+###### 2026/10/16
+
+* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
+* `Mejora` Se reconocen las compilaciones de Android Studio: 2026.2.2.5
+* `Dependencia` Se actualiza la versión de AGP 9.5.0-alpha09 -> 9.5.0-alpha10
+
 # v1.9.1
 
 ###### 2026/10/09
@@ -202,16 +210,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 * `Función` El plugin nativeAlignment escribe la meta-data org.autojs.plugin.contract.SUPPORTED_ABIS en el manifiesto fusionado de cada variante de aplicación, derivada de las bibliotecas nativas fusionadas acotadas por los splits de ABI y ndk.abiFilters, con universal para paquetes sin código nativo; supportedAbis reemplaza el conjunto y supportedAbisMetaData desactiva la escritura
 * `Función` El plugin settings añade un aviso a la información de versión cuando un repositorio hermano (o el directorio indicado por autojs.buildPlugins.localCheckout) contiene una versión más reciente del plugin
 * `Función` .python/bump_consumers.py actualiza las dos versiones de plugin fijadas en los settings.gradle.kts de los repositorios hermanos a la versión actual, con --list, --dry-run, --apply y --commit
-
-# v1.8.7
-
-###### 2026/10/02
-
-* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
-* `Mejora` Correspondencia añadida: Android Studio 2026.2.1 admite hasta AGP 9.4
-* `Mejora` Se reconocen las compilaciones de Android Studio: 2026.2.2.3, 2026.2.1.8
-* `Dependencia` Se actualiza la versión de AGP 9.5.0-alpha07 -> 9.5.0-alpha08
-* `Dependencia` Se actualiza la última versión estable de Android Studio 2026.1.4.8 -> 2026.2.1.8 (Rabbit 1 | 2026.2.1)
 
 ##### Para consultar un historial más completo, véase
 
