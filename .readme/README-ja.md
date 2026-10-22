@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.3"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.3
+
+###### 2026/10/22
+
+* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
+* `改善` Android Studio のビルド番号を認識: 2026.2.2.6
+* `依存関係` AGP バージョンを 9.5.0-alpha10 -> 9.5.0-rc01 にアップグレード
+
 # v1.9.2
 
 ###### 2026/10/16
@@ -202,14 +210,6 @@ npm --prefix .utils run check-data
 ###### 2026/10/09
 
 * `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-
-# v1.9.0
-
-###### 2026/10/07
-
-* `機能` nativeAlignment プラグインが各アプリケーションバリアントのマージ済みマニフェストに org.autojs.plugin.contract.SUPPORTED_ABIS meta-data を書き込み, 値はマージ済みネイティブライブラリを ABI split と ndk.abiFilters で絞り込んで導出, ネイティブコードがない場合は universal を書き込み, supportedAbis で上書き, supportedAbisMetaData で無効化が可能
-* `機能` settings プラグインが隣接するチェックアウト (または autojs.buildPlugins.localCheckout で指定したディレクトリ) に新しいプラグインバージョンがある場合, バージョン情報の末尾に通知を追加
-* `機能` .python/bump_consumers.py が兄弟リポジトリの settings.gradle.kts に固定された 2 つのプラグインバージョンを現在のバージョンへ一括更新, --list, --dry-run, --apply, --commit に対応
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

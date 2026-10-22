@@ -5,6 +5,16 @@
   "changelog_label_improvement": "改善",
   "changelog_label_dependency": "依存関係",
   "$data": {
+    "v1.9.3": {
+      "released_date": "2026/10/22",
+      "improvement": [
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "Android Studio のビルド番号を認識: 2026.2.2.6"
+      ],
+      "dependency": [
+        "AGP バージョンを 9.5.0-alpha10 -> 9.5.0-rc01 にアップグレード"
+      ]
+    },
     "v1.9.2": {
       "released_date": "2026/10/16",
       "improvement": [

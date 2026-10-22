@@ -23,6 +23,14 @@ CHANGELOG.md est actuellement disponible dans les langues suivantes:
 
 ******
 
+# v1.9.3
+
+###### 2026/10/22
+
+* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.2.6
+* `Dépendance` Mise à niveau de la version d'AGP 9.5.0-alpha10 -> 9.5.0-rc01
+
 # v1.9.2
 
 ###### 2026/10/16

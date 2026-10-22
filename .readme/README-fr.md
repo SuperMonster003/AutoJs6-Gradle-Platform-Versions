@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.3"
     }
 }
 
@@ -189,6 +189,14 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.9.3
+
+###### 2026/10/22
+
+* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.2.6
+* `Dépendance` Mise à niveau de la version d'AGP 9.5.0-alpha10 -> 9.5.0-rc01
+
 # v1.9.2
 
 ###### 2026/10/16
@@ -202,14 +210,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 ###### 2026/10/09
 
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
-
-# v1.9.0
-
-###### 2026/10/07
-
-* `Fonctionnalité` Le plugin nativeAlignment écrit la meta-data org.autojs.plugin.contract.SUPPORTED_ABIS dans le manifeste fusionné de chaque variante d'application, dérivée des bibliothèques natives fusionnées restreintes par les splits ABI et ndk.abiFilters, avec universal pour les paquets sans code natif ; supportedAbis remplace l'ensemble et supportedAbisMetaData désactive l'écriture
-* `Fonctionnalité` Le plugin settings ajoute un avis aux informations de version lorsqu'un dépôt voisin (ou le répertoire indiqué par autojs.buildPlugins.localCheckout) contient une version plus récente du plugin
-* `Fonctionnalité` .python/bump_consumers.py met à niveau les deux versions de plugin épinglées dans les settings.gradle.kts des dépôts voisins vers la version courante, avec --list, --dry-run, --apply et --commit
 
 ##### Pour un historique plus complet, voir
 

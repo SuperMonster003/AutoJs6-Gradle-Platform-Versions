@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.2"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.3"
     }
 }
 
@@ -189,6 +189,14 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.9.3
+
+###### 2026/10/22
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.2.2.6
+* `Dependency` Upgrade AGP version 9.5.0-alpha10 -> 9.5.0-rc01
+
 # v1.9.2
 
 ###### 2026/10/16
@@ -202,14 +210,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 ###### 2026/10/09
 
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
-
-# v1.9.0
-
-###### 2026/10/07
-
-* `Feature` The nativeAlignment plugin writes the org.autojs.plugin.contract.SUPPORTED_ABIS meta-data into the merged manifest of every application variant, derived from the merged native libraries narrowed by ABI splits and ndk.abiFilters, with universal for packages without native code; supportedAbis overrides the set and supportedAbisMetaData turns it off
-* `Feature` The settings plugin appends a notice to the version information when a sibling checkout (or the directory named by autojs.buildPlugins.localCheckout) carries a newer plugin version
-* `Feature` .python/bump_consumers.py upgrades both plugin versions pinned in sibling repositories' settings.gradle.kts to the current version, with --list, --dry-run, --apply and --commit
 
 ##### For more release history, see
 
