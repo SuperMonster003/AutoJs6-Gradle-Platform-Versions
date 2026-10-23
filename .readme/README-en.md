@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.4"
     }
 }
 
@@ -189,6 +189,14 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.9.4
+
+###### 2026/10/23
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.2.3.1
+* `Dependency` Add AGP version 9.6.0-alpha01
+
 # v1.9.3
 
 ###### 2026/10/22
@@ -204,12 +212,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
 * `Improvement` Recognize Android Studio builds: 2026.2.2.5
 * `Dependency` Upgrade AGP version 9.5.0-alpha09 -> 9.5.0-alpha10
-
-# v1.9.1
-
-###### 2026/10/09
-
-* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
 
 ##### For more release history, see
 

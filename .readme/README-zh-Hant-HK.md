@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.3"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.4"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.4
+
+###### 2026/10/23
+
+* `優化` 將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證
+* `優化` 新增 Android Studio 構建號識別: 2026.2.3.1
+* `依賴` 新增 AGP 版本 9.6.0-alpha01
+
 # v1.9.3
 
 ###### 2026/10/22
@@ -204,12 +212,6 @@ npm --prefix .utils run check-data
 * `優化` 將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證
 * `優化` 新增 Android Studio 構建號識別: 2026.2.2.5
 * `依賴` 升級 AGP 版本 9.5.0-alpha09 -> 9.5.0-alpha10
-
-# v1.9.1
-
-###### 2026/10/09
-
-* `優化` 將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證
 
 ##### 更多發行歷史可參閱
 
