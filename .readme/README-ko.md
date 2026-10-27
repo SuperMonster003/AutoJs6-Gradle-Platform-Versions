@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.4"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.5"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.5
+
+###### 2026/10/27
+
+* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
+* `개선` Android Studio 빌드 번호 인식 추가: 2026.2.2.7
+* `의존성` AGP 버전 업그레이드 9.5.0-rc01 -> 9.5.0-rc02
+
 # v1.9.4
 
 ###### 2026/10/23
@@ -204,14 +212,6 @@ npm --prefix .utils run check-data
 * `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
 * `개선` Android Studio 빌드 번호 인식 추가: 2026.2.2.6
 * `의존성` AGP 버전 업그레이드 9.5.0-alpha10 -> 9.5.0-rc01
-
-# v1.9.2
-
-###### 2026/10/16
-
-* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
-* `개선` Android Studio 빌드 번호 인식 추가: 2026.2.2.5
-* `의존성` AGP 버전 업그레이드 9.5.0-alpha09 -> 9.5.0-alpha10
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 
