@@ -4,6 +4,8 @@ import org.junit.jupiter.api.Assertions.assertEquals
 import org.junit.jupiter.api.Assertions.assertTrue
 import org.junit.jupiter.api.Test
 import org.junit.jupiter.api.assertThrows
+import org.junit.jupiter.api.io.TempDir
+import java.io.File
 
 /**
  * Covers the three scenarios that matter downstream: a map that covers the IDE,
@@ -107,17 +109,45 @@ class VersionDeciderTest {
 
     @Test
     fun `the stale-map fallback stays within one line of what the map knows`() {
-        // Auto selection alone would reach the AGP 9.4 line here, past what an IDE topping out at
-        // 9.1.0 accepts. The fallback is held to the line just above the newest entry.
+        // Auto selection must reach past the fallback ceiling to exercise the cap. The
+        // scheduled data refresh can advance that maximum to newer AGP lines at any time.
         val map = mapOf("2026.2" to "9.1.0")
+        val fallbackMaximum = newestOnLine("9.2")
         val commandLineMaximum = decider(commandLine(), gradleVersion = "9.6.1").maxSupportedAgpVersion()
-        assertTrue(commandLineMaximum != null && commandLineMaximum.startsWith("9.4.")) {
-            "Gradle 9.6.1 should reach the latest published AGP on the 9.4 line, got $commandLineMaximum"
+        assertTrue(commandLineMaximum != null && VersionComparator.compareVersionStrings(commandLineMaximum, fallbackMaximum) > 0) {
+            "Gradle 9.6.1 should reach past the $fallbackMaximum fallback ceiling, got $commandLineMaximum"
         }
 
         val decision = decider(idea("2026.3", map), gradleVersion = "9.6.1").decideAgpVersion()
-        assertEquals(newestOnLine("9.2"), decision.version) { "one line of headroom above 9.1 is the 9.2 line" }
+        assertEquals(fallbackMaximum, decision.version) { "one line of headroom above 9.1 is the 9.2 line" }
         assertEquals(Identifier.AUTO_SPECIFIED_SUFFIX, decision.hintSuffix) { "a stale map means auto selection" }
+    }
+
+    @Test
+    fun `newer AGP releases do not move the stale-map fallback ceiling`(@TempDir dataDir: File) {
+        dataDir.resolve("agp-gradle-compat.properties").writeText(
+            """
+            9.5=9.6.0
+            9.4=9.6.0
+            9.2=9.4.1
+            9.1=9.3.1
+            """.trimIndent(),
+        )
+        val map = mapOf("2026.2" to "9.1.0")
+
+        // Fixed fixtures cover new stable lines and patches independently of bundled data.
+        listOf("9.4.1", "9.5.0", "9.5.1").forEach { latestRelease ->
+            dataDir.resolve("agp-releases.list").writeText(
+                listOf(latestRelease, "9.4.1", "9.2.1", "9.1.1").distinct().joinToString("\n"),
+            )
+            val fixtureData = DataSource(localDataDir = dataDir)
+            assertEquals(latestRelease, VersionDecider(commandLine(), fixtureData, "9.6.1").maxSupportedAgpVersion())
+
+            val decision = VersionDecider(idea("2026.3", map), fixtureData, "9.6.1").decideAgpVersion()
+            assertEquals(Decision("9.2.1", Identifier.AUTO_SPECIFIED_SUFFIX), decision) {
+                "the IDE fallback must stay on 9.2 even when auto selection reaches $latestRelease"
+            }
+        }
     }
 
     @Test
