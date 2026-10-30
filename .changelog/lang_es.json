@@ -5,6 +5,20 @@
   "changelog_label_improvement": "Mejora",
   "changelog_label_dependency": "Dependencia",
   "$data": {
+    "v1.9.6": {
+      "released_date": "2026/10/30",
+      "improvement": [
+        "Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo",
+        "Correspondencia añadida: AGP 9.5 requiere Gradle 9.6.0",
+        "Correspondencia añadida: Android Studio 2026.2.2 admite hasta AGP 9.5",
+        "Se reconocen las compilaciones de Android Studio: 2026.2.3.2, 2026.2.2.8"
+      ],
+      "dependency": [
+        "Se actualiza la versión de AGP 9.6.0-alpha01 -> 9.6.0-alpha02",
+        "Se actualiza la versión de AGP 9.5.0-rc02 -> 9.5.0",
+        "Se actualiza la última versión estable de Android Studio 2026.2.1.8 -> 2026.2.2.8 (Rabbit 2 | 2026.2.2)"
+      ]
+    },
     "v1.9.5": {
       "released_date": "2026/10/27",
       "improvement": [

@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.5"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.6"
     }
 }
 
@@ -189,6 +189,18 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.6
+
+###### 2026/10/30
+
+* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
+* `改善` 対応表に追加: AGP 9.5 には Gradle 9.6.0 以上が必要
+* `改善` 対応表に追加: Android Studio 2026.2.2 は AGP 9.5 までをサポート
+* `改善` Android Studio のビルド番号を認識: 2026.2.3.2, 2026.2.2.8
+* `依存関係` AGP バージョンを 9.6.0-alpha01 -> 9.6.0-alpha02 にアップグレード
+* `依存関係` AGP バージョンを 9.5.0-rc02 -> 9.5.0 にアップグレード
+* `依存関係` Android Studio 最新安定版を 2026.2.1.8 -> 2026.2.2.8 にアップグレード (Rabbit 2 | 2026.2.2)
+
 # v1.9.5
 
 ###### 2026/10/27
@@ -204,14 +216,6 @@ npm --prefix .utils run check-data
 * `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
 * `改善` Android Studio のビルド番号を認識: 2026.2.3.1
 * `依存関係` AGP バージョン 9.6.0-alpha01 を追加
-
-# v1.9.3
-
-###### 2026/10/22
-
-* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-* `改善` Android Studio のビルド番号を認識: 2026.2.2.6
-* `依存関係` AGP バージョンを 9.5.0-alpha10 -> 9.5.0-rc01 にアップグレード
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

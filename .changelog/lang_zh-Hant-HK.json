@@ -5,6 +5,20 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "依賴",
   "$data": {
+    "v1.9.6": {
+      "released_date": "2026/10/30",
+      "improvement": [
+        "將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證",
+        "新增映射: AGP 9.5 最低需要 Gradle 9.6.0",
+        "新增映射: Android Studio 2026.2.2 最高支援 AGP 9.5",
+        "新增 Android Studio 構建號識別: 2026.2.3.2, 2026.2.2.8"
+      ],
+      "dependency": [
+        "升級 AGP 版本 9.6.0-alpha01 -> 9.6.0-alpha02",
+        "升級 AGP 版本 9.5.0-rc02 -> 9.5.0",
+        "升級 Android Studio 最新穩定版本 2026.2.1.8 -> 2026.2.2.8 (Rabbit 2 | 2026.2.2)"
+      ]
+    },
     "v1.9.5": {
       "released_date": "2026/10/27",
       "improvement": [
