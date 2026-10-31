@@ -5,6 +5,16 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.9.7": {
+      "released_date": "2026/10/31",
+      "improvement": [
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Add mapping: KSP 2.3.13 requires AGP 8.12.0"
+      ],
+      "dependency": [
+        "Upgrade KSP version 2.3.12 -> 2.3.13"
+      ]
+    },
     "v1.9.6": {
       "released_date": "2026/10/30",
       "improvement": [

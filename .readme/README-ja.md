@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.6"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.7"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.7
+
+###### 2026/10/31
+
+* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
+* `改善` 対応表に追加: KSP 2.3.13 には AGP 8.12.0 以上が必要
+* `依存関係` KSP バージョンを 2.3.12 -> 2.3.13 にアップグレード
+
 # v1.9.6
 
 ###### 2026/10/30
@@ -208,14 +216,6 @@ npm --prefix .utils run check-data
 * `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
 * `改善` Android Studio のビルド番号を認識: 2026.2.2.7
 * `依存関係` AGP バージョンを 9.5.0-rc01 -> 9.5.0-rc02 にアップグレード
-
-# v1.9.4
-
-###### 2026/10/23
-
-* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-* `改善` Android Studio のビルド番号を認識: 2026.2.3.1
-* `依存関係` AGP バージョン 9.6.0-alpha01 を追加
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.6"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.7"
     }
 }
 
@@ -189,6 +189,14 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.9.7
+
+###### 2026/10/31
+
+* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Correspondance ajoutée : KSP 2.3.13 requiert AGP 8.12.0
+* `Dépendance` Mise à niveau de la version de KSP 2.3.12 -> 2.3.13
+
 # v1.9.6
 
 ###### 2026/10/30
@@ -208,14 +216,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
 * `Amélioration` Reconnaissance des builds Android Studio : 2026.2.2.7
 * `Dépendance` Mise à niveau de la version d'AGP 9.5.0-rc01 -> 9.5.0-rc02
-
-# v1.9.4
-
-###### 2026/10/23
-
-* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
-* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.3.1
-* `Dépendance` Ajout de la version d'AGP 9.6.0-alpha01
 
 ##### Pour un historique plus complet, voir
 

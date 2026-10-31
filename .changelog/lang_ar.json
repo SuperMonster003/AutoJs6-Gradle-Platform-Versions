@@ -5,6 +5,16 @@
   "changelog_label_improvement": "تحسين",
   "changelog_label_dependency": "تبعية",
   "$data": {
+    "v1.9.7": {
+      "released_date": "2026/10/31",
+      "improvement": [
+        "مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي",
+        "إضافة تعيين: يتطلب KSP 2.3.13 الإصدار AGP 8.12.0"
+      ],
+      "dependency": [
+        "ترقية إصدار KSP 2.3.12 -> 2.3.13"
+      ]
+    },
     "v1.9.6": {
       "released_date": "2026/10/30",
       "improvement": [

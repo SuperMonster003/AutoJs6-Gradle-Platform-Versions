@@ -5,6 +5,16 @@
   "changelog_label_improvement": "优化",
   "changelog_label_dependency": "依赖",
   "$data": {
+    "v1.9.7": {
+      "released_date": "2026/10/31",
+      "improvement": [
+        "将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证",
+        "新增映射: KSP 2.3.13 最低需要 AGP 8.12.0"
+      ],
+      "dependency": [
+        "升级 KSP 版本 2.3.12 -> 2.3.13"
+      ]
+    },
     "v1.9.6": {
       "released_date": "2026/10/30",
       "improvement": [
