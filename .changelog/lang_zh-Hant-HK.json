@@ -5,6 +5,13 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "依賴",
   "$data": {
+    "v1.9.9": {
+      "released_date": "2026/11/07",
+      "improvement": [
+        "將插件內置的版本兼容數據 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發佈前已通過自動化測試與示例項目構建驗證",
+        "新增映射: Gradle 9.9.0 內置 Kotlin 2.4.21"
+      ]
+    },
     "v1.9.8": {
       "released_date": "2026/11/06",
       "improvement": [

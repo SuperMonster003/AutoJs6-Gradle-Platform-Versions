@@ -5,6 +5,13 @@
   "changelog_label_improvement": "Amélioration",
   "changelog_label_dependency": "Dépendance",
   "$data": {
+    "v1.9.9": {
+      "released_date": "2026/11/07",
+      "improvement": [
+        "Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple",
+        "Correspondance ajoutée : Gradle 9.9.0 embarque Kotlin 2.4.21"
+      ]
+    },
     "v1.9.8": {
       "released_date": "2026/11/06",
       "improvement": [

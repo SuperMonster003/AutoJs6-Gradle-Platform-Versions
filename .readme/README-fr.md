@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.8"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.9"
     }
 }
 
@@ -189,6 +189,13 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.9.9
+
+###### 2026/11/07
+
+* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Correspondance ajoutée : Gradle 9.9.0 embarque Kotlin 2.4.21
+
 # v1.9.8
 
 ###### 2026/11/06
@@ -206,18 +213,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
 * `Amélioration` Correspondance ajoutée : KSP 2.3.13 requiert AGP 8.12.0
 * `Dépendance` Mise à niveau de la version de KSP 2.3.12 -> 2.3.13
-
-# v1.9.6
-
-###### 2026/10/30
-
-* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
-* `Amélioration` Correspondance ajoutée : AGP 9.5 requiert Gradle 9.6.0
-* `Amélioration` Correspondance ajoutée : Android Studio 2026.2.2 prend en charge AGP jusqu'à 9.5
-* `Amélioration` Reconnaissance des builds Android Studio : 2026.2.3.2, 2026.2.2.8
-* `Dépendance` Mise à niveau de la version d'AGP 9.6.0-alpha01 -> 9.6.0-alpha02
-* `Dépendance` Mise à niveau de la version d'AGP 9.5.0-rc02 -> 9.5.0
-* `Dépendance` Mise à niveau de la dernière version stable d'Android Studio 2026.2.1.8 -> 2026.2.2.8 (Rabbit 2 | 2026.2.2)
 
 ##### Pour un historique plus complet, voir
 

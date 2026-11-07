@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.8"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.9"
     }
 }
 
@@ -189,6 +189,13 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.9.9
+
+###### 2026/11/07
+
+* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
+* `Mejora` Correspondencia añadida: Gradle 9.9.0 incluye Kotlin 2.4.21
+
 # v1.9.8
 
 ###### 2026/11/06
@@ -206,18 +213,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 * `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
 * `Mejora` Correspondencia añadida: KSP 2.3.13 requiere AGP 8.12.0
 * `Dependencia` Se actualiza la versión de KSP 2.3.12 -> 2.3.13
-
-# v1.9.6
-
-###### 2026/10/30
-
-* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
-* `Mejora` Correspondencia añadida: AGP 9.5 requiere Gradle 9.6.0
-* `Mejora` Correspondencia añadida: Android Studio 2026.2.2 admite hasta AGP 9.5
-* `Mejora` Se reconocen las compilaciones de Android Studio: 2026.2.3.2, 2026.2.2.8
-* `Dependencia` Se actualiza la versión de AGP 9.6.0-alpha01 -> 9.6.0-alpha02
-* `Dependencia` Se actualiza la versión de AGP 9.5.0-rc02 -> 9.5.0
-* `Dependencia` Se actualiza la última versión estable de Android Studio 2026.2.1.8 -> 2026.2.2.8 (Rabbit 2 | 2026.2.2)
 
 ##### Para consultar un historial más completo, véase
 

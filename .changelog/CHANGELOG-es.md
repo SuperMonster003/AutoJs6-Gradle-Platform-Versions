@@ -23,6 +23,13 @@ CHANGELOG.md está disponible actualmente en los siguientes idiomas:
 
 ******
 
+# v1.9.9
+
+###### 2026/11/07
+
+* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
+* `Mejora` Correspondencia añadida: Gradle 9.9.0 incluye Kotlin 2.4.21
+
 # v1.9.8
 
 ###### 2026/11/06

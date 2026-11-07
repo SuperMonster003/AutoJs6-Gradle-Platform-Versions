@@ -5,6 +5,13 @@
   "changelog_label_improvement": "تحسين",
   "changelog_label_dependency": "تبعية",
   "$data": {
+    "v1.9.9": {
+      "released_date": "2026/11/07",
+      "improvement": [
+        "مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي",
+        "إضافة تعيين: يتضمن Gradle 9.9.0 الإصدار Kotlin 2.4.21"
+      ]
+    },
     "v1.9.8": {
       "released_date": "2026/11/06",
       "improvement": [
