@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.9"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.10"
     }
 }
 
@@ -189,6 +189,14 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.9.10
+
+###### 2026/11/14
+
+* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
+* `Mejora` Correspondencia añadida: KSP 2.3.14 requiere AGP 8.12.0
+* `Dependencia` Se actualiza la versión de KSP 2.3.13 -> 2.3.14
+
 # v1.9.9
 
 ###### 2026/11/07
@@ -205,14 +213,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 * `Dependencia` Se actualiza la versión de AGP 9.6.0-alpha02 -> 9.6.0-alpha03
 * `Dependencia` Se actualiza la versión de AGP 9.5.0 -> 9.5.1
 * `Dependencia` Se actualiza la última versión estable de Android Studio 2026.2.2.8 -> 2026.2.2.9 (Rabbit 2 | 2026.2.2 Patch 1)
-
-# v1.9.7
-
-###### 2026/10/31
-
-* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
-* `Mejora` Correspondencia añadida: KSP 2.3.13 requiere AGP 8.12.0
-* `Dependencia` Se actualiza la versión de KSP 2.3.12 -> 2.3.13
 
 ##### Para consultar un historial más completo, véase
 

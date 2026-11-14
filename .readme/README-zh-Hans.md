@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.9"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.10"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.10
+
+###### 2026/11/14
+
+* `优化` 将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证
+* `优化` 新增映射: KSP 2.3.14 最低需要 AGP 8.12.0
+* `依赖` 升级 KSP 版本 2.3.13 -> 2.3.14
+
 # v1.9.9
 
 ###### 2026/11/07
@@ -205,14 +213,6 @@ npm --prefix .utils run check-data
 * `依赖` 升级 AGP 版本 9.6.0-alpha02 -> 9.6.0-alpha03
 * `依赖` 升级 AGP 版本 9.5.0 -> 9.5.1
 * `依赖` 升级 Android Studio 最新稳定版本 2026.2.2.8 -> 2026.2.2.9 (Rabbit 2 | 2026.2.2 Patch 1)
-
-# v1.9.7
-
-###### 2026/10/31
-
-* `优化` 将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证
-* `优化` 新增映射: KSP 2.3.13 最低需要 AGP 8.12.0
-* `依赖` 升级 KSP 版本 2.3.12 -> 2.3.13
 
 ##### 更多发行历史可参阅
 
