@@ -5,6 +5,18 @@
   "changelog_label_improvement": "Improvement",
   "changelog_label_dependency": "Dependency",
   "$data": {
+    "v1.9.11": {
+      "released_date": "2026/11/17",
+      "improvement": [
+        "Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release",
+        "Recognize Android Studio builds: 2026.3.1.1, 2026.2.3.4",
+        "Add mapping: Android Studio 2026.3 uses codename letter S",
+        "Add mapping: Android Studio codename S is Stingray"
+      ],
+      "dependency": [
+        "Upgrade AGP version 9.6.0-alpha03 -> 9.6.0-alpha04"
+      ]
+    },
     "v1.9.10": {
       "released_date": "2026/11/14",
       "improvement": [

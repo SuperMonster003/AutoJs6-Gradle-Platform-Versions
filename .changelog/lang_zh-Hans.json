@@ -5,6 +5,18 @@
   "changelog_label_improvement": "优化",
   "changelog_label_dependency": "依赖",
   "$data": {
+    "v1.9.11": {
+      "released_date": "2026/11/17",
+      "improvement": [
+        "将插件内置的版本兼容数据 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自动同步至官方最新信息, 发布前已通过自动化测试与示例项目构建验证",
+        "新增 Android Studio 构建号识别: 2026.3.1.1, 2026.2.3.4",
+        "新增映射: Android Studio 2026.3 的代号字母为 S",
+        "新增映射: Android Studio 代号 S 为 Stingray"
+      ],
+      "dependency": [
+        "升级 AGP 版本 9.6.0-alpha03 -> 9.6.0-alpha04"
+      ]
+    },
     "v1.9.10": {
       "released_date": "2026/11/14",
       "improvement": [

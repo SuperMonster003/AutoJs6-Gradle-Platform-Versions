@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.10"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.11"
     }
 }
 
@@ -189,6 +189,16 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.11
+
+###### 2026/11/17
+
+* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
+* `改善` Android Studio のビルド番号を認識: 2026.3.1.1, 2026.2.3.4
+* `改善` 対応表に追加: Android Studio 2026.3 のコードネーム頭文字は S
+* `改善` 対応表に追加: Android Studio のコードネーム S は Stingray
+* `依存関係` AGP バージョンを 9.6.0-alpha03 -> 9.6.0-alpha04 にアップグレード
+
 # v1.9.10
 
 ###### 2026/11/14
@@ -203,16 +213,6 @@ npm --prefix .utils run check-data
 
 * `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
 * `改善` 対応表に追加: Gradle 9.9.0 は Kotlin 2.4.21 を内蔵
-
-# v1.9.8
-
-###### 2026/11/06
-
-* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-* `改善` Android Studio のビルド番号を認識: 2026.2.3.3, 2026.2.2.9
-* `依存関係` AGP バージョンを 9.6.0-alpha02 -> 9.6.0-alpha03 にアップグレード
-* `依存関係` AGP バージョンを 9.5.0 -> 9.5.1 にアップグレード
-* `依存関係` Android Studio 最新安定版を 2026.2.2.8 -> 2026.2.2.9 にアップグレード (Rabbit 2 | 2026.2.2 Patch 1)
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

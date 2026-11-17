@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.10"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.11"
     }
 }
 
@@ -189,6 +189,16 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.11
+
+###### 2026/11/17
+
+* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
+* `개선` Android Studio 빌드 번호 인식 추가: 2026.3.1.1, 2026.2.3.4
+* `개선` 매핑 추가: Android Studio 2026.3의 코드명 머리글자는 S임
+* `개선` 매핑 추가: Android Studio 코드명 S은(는) Stingray임
+* `의존성` AGP 버전 업그레이드 9.6.0-alpha03 -> 9.6.0-alpha04
+
 # v1.9.10
 
 ###### 2026/11/14
@@ -203,16 +213,6 @@ npm --prefix .utils run check-data
 
 * `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
 * `개선` 매핑 추가: Gradle 9.9.0에는 Kotlin 2.4.21이(가) 내장됨
-
-# v1.9.8
-
-###### 2026/11/06
-
-* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
-* `개선` Android Studio 빌드 번호 인식 추가: 2026.2.3.3, 2026.2.2.9
-* `의존성` AGP 버전 업그레이드 9.6.0-alpha02 -> 9.6.0-alpha03
-* `의존성` AGP 버전 업그레이드 9.5.0 -> 9.5.1
-* `의존성` Android Studio 최신 안정 버전 업그레이드 2026.2.2.8 -> 2026.2.2.9 (Rabbit 2 | 2026.2.2 Patch 1)
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

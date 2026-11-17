@@ -5,6 +5,18 @@
   "changelog_label_improvement": "改善",
   "changelog_label_dependency": "依存関係",
   "$data": {
+    "v1.9.11": {
+      "released_date": "2026/11/17",
+      "improvement": [
+        "内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証",
+        "Android Studio のビルド番号を認識: 2026.3.1.1, 2026.2.3.4",
+        "対応表に追加: Android Studio 2026.3 のコードネーム頭文字は S",
+        "対応表に追加: Android Studio のコードネーム S は Stingray"
+      ],
+      "dependency": [
+        "AGP バージョンを 9.6.0-alpha03 -> 9.6.0-alpha04 にアップグレード"
+      ]
+    },
     "v1.9.10": {
       "released_date": "2026/11/14",
       "improvement": [
