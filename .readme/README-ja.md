@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.11"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.12"
     }
 }
 
@@ -189,6 +189,16 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.12
+
+###### 2026/11/21
+
+* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
+* `改善` Android Studio のビルド番号を認識: 2026.3.1.2, 2026.2.2.10
+* `依存関係` AGP バージョンを 9.6.0-alpha04 -> 9.6.0-alpha05 にアップグレード
+* `依存関係` AGP バージョンを 9.5.1 -> 9.5.2 にアップグレード
+* `依存関係` Android Studio 最新安定版を 2026.2.2.9 -> 2026.2.2.10 にアップグレード (Rabbit 2 | 2026.2.2 Patch 2)
+
 # v1.9.11
 
 ###### 2026/11/17
@@ -206,13 +216,6 @@ npm --prefix .utils run check-data
 * `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
 * `改善` 対応表に追加: KSP 2.3.14 には AGP 8.12.0 以上が必要
 * `依存関係` KSP バージョンを 2.3.13 -> 2.3.14 にアップグレード
-
-# v1.9.9
-
-###### 2026/11/07
-
-* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-* `改善` 対応表に追加: Gradle 9.9.0 は Kotlin 2.4.21 を内蔵
 
 ##### 詳しいリリース履歴はこちらを参照してください
 

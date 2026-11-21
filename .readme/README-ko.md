@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.11"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.12"
     }
 }
 
@@ -189,6 +189,16 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.12
+
+###### 2026/11/21
+
+* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
+* `개선` Android Studio 빌드 번호 인식 추가: 2026.3.1.2, 2026.2.2.10
+* `의존성` AGP 버전 업그레이드 9.6.0-alpha04 -> 9.6.0-alpha05
+* `의존성` AGP 버전 업그레이드 9.5.1 -> 9.5.2
+* `의존성` Android Studio 최신 안정 버전 업그레이드 2026.2.2.9 -> 2026.2.2.10 (Rabbit 2 | 2026.2.2 Patch 2)
+
 # v1.9.11
 
 ###### 2026/11/17
@@ -206,13 +216,6 @@ npm --prefix .utils run check-data
 * `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
 * `개선` 매핑 추가: KSP 2.3.14에는 AGP 8.12.0 이상이 필요함
 * `의존성` KSP 버전 업그레이드 2.3.13 -> 2.3.14
-
-# v1.9.9
-
-###### 2026/11/07
-
-* `개선` 내장 버전 호환성 데이터 (AGP, Gradle, Kotlin, KSP, Android Studio 등) 를 공식 최신 정보에 맞춰 자동 동기화하고, 배포 전 테스트와 샘플 프로젝트 빌드로 검증함
-* `개선` 매핑 추가: Gradle 9.9.0에는 Kotlin 2.4.21이(가) 내장됨
 
 ##### 더 많은 릴리스 기록은 다음에서 확인할 수 있습니다
 

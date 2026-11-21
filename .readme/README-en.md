@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.11"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.12"
     }
 }
 
@@ -189,6 +189,16 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.9.12
+
+###### 2026/11/21
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.3.1.2, 2026.2.2.10
+* `Dependency` Upgrade AGP version 9.6.0-alpha04 -> 9.6.0-alpha05
+* `Dependency` Upgrade AGP version 9.5.1 -> 9.5.2
+* `Dependency` Upgrade the latest stable Android Studio version 2026.2.2.9 -> 2026.2.2.10 (Rabbit 2 | 2026.2.2 Patch 2)
+
 # v1.9.11
 
 ###### 2026/11/17
@@ -206,13 +216,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 * `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
 * `Improvement` Add mapping: KSP 2.3.14 requires AGP 8.12.0
 * `Dependency` Upgrade KSP version 2.3.13 -> 2.3.14
-
-# v1.9.9
-
-###### 2026/11/07
-
-* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
-* `Improvement` Add mapping: Gradle 9.9.0 embeds Kotlin 2.4.21
 
 ##### For more release history, see
 

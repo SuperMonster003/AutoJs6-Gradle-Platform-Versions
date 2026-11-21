@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.11"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.12"
     }
 }
 
@@ -189,6 +189,16 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 
 ******
 
+# v1.9.12
+
+###### 2026/11/21
+
+* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
+* `Amélioration` Reconnaissance des builds Android Studio : 2026.3.1.2, 2026.2.2.10
+* `Dépendance` Mise à niveau de la version d'AGP 9.6.0-alpha04 -> 9.6.0-alpha05
+* `Dépendance` Mise à niveau de la version d'AGP 9.5.1 -> 9.5.2
+* `Dépendance` Mise à niveau de la dernière version stable d'Android Studio 2026.2.2.9 -> 2026.2.2.10 (Rabbit 2 | 2026.2.2 Patch 2)
+
 # v1.9.11
 
 ###### 2026/11/17
@@ -206,13 +216,6 @@ Pour la portée complète et les conventions d'exécution, consultez [.utils/REA
 * `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
 * `Amélioration` Correspondance ajoutée : KSP 2.3.14 requiert AGP 8.12.0
 * `Dépendance` Mise à niveau de la version de KSP 2.3.13 -> 2.3.14
-
-# v1.9.9
-
-###### 2026/11/07
-
-* `Amélioration` Synchronisation automatique des données intégrées de compatibilité des versions (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) avec les dernières informations officielles, vérifiée avant publication par des tests et la compilation du projet exemple
-* `Amélioration` Correspondance ajoutée : Gradle 9.9.0 embarque Kotlin 2.4.21
 
 ##### Pour un historique plus complet, voir
 

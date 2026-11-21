@@ -5,6 +5,18 @@
   "changelog_label_improvement": "優化",
   "changelog_label_dependency": "相依性",
   "$data": {
+    "v1.9.12": {
+      "released_date": "2026/11/21",
+      "improvement": [
+        "將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證",
+        "新增 Android Studio 建置編號識別: 2026.3.1.2, 2026.2.2.10"
+      ],
+      "dependency": [
+        "升級 AGP 版本 9.6.0-alpha04 -> 9.6.0-alpha05",
+        "升級 AGP 版本 9.5.1 -> 9.5.2",
+        "升級 Android Studio 最新穩定版本 2026.2.2.9 -> 2026.2.2.10 (Rabbit 2 | 2026.2.2 Patch 2)"
+      ]
+    },
     "v1.9.11": {
       "released_date": "2026/11/17",
       "improvement": [
