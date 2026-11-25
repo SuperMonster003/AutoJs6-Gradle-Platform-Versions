@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.12"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.13"
     }
 }
 
@@ -189,6 +189,14 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 
 ******
 
+# v1.9.13
+
+###### 2026/11/25
+
+* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
+* `Improvement` Recognize Android Studio builds: 2026.3.1.3
+* `Dependency` Upgrade AGP version 9.6.0-alpha05 -> 9.6.0-alpha06
+
 # v1.9.12
 
 ###### 2026/11/21
@@ -208,14 +216,6 @@ For the complete update scope and execution contract, see [.utils/README.md](htt
 * `Improvement` Add mapping: Android Studio 2026.3 uses codename letter S
 * `Improvement` Add mapping: Android Studio codename S is Stingray
 * `Dependency` Upgrade AGP version 9.6.0-alpha03 -> 9.6.0-alpha04
-
-# v1.9.10
-
-###### 2026/11/14
-
-* `Improvement` Automatically sync the built-in version compatibility data (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) with the latest official information, verified by tests and a sample project build before release
-* `Improvement` Add mapping: KSP 2.3.14 requires AGP 8.12.0
-* `Dependency` Upgrade KSP version 2.3.13 -> 2.3.14
 
 ##### For more release history, see
 
