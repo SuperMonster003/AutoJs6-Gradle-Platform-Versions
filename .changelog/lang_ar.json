@@ -5,6 +5,17 @@
   "changelog_label_improvement": "تحسين",
   "changelog_label_dependency": "تبعية",
   "$data": {
+    "v1.9.14": {
+      "released_date": "2026/11/26",
+      "improvement": [
+        "مزامنة تلقائية لبيانات توافق الإصدارات المضمنة (AGP, Gradle, Kotlin, KSP, Android Studio وغيرها) مع أحدث المعلومات الرسمية, مع التحقق قبل النشر عبر الاختبارات وبناء مشروع نموذجي",
+        "التعرف على إصدارات بناء Android Studio: 2026.2.3.5, 2026.2.2.11"
+      ],
+      "dependency": [
+        "ترقية إصدار AGP 9.5.2 -> 9.5.3",
+        "ترقية أحدث إصدار مستقر من Android Studio 2026.2.2.10 -> 2026.2.2.11 (Rabbit 2 | 2026.2.2 Patch 3)"
+      ]
+    },
     "v1.9.13": {
       "released_date": "2026/11/25",
       "improvement": [

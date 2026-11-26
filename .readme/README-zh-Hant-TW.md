@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.13"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.14"
     }
 }
 
@@ -189,6 +189,15 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.14
+
+###### 2026/11/26
+
+* `優化` 將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證
+* `優化` 新增 Android Studio 建置編號識別: 2026.2.3.5, 2026.2.2.11
+* `相依性` 升級 AGP 版本 9.5.2 -> 9.5.3
+* `相依性` 升級 Android Studio 最新穩定版本 2026.2.2.10 -> 2026.2.2.11 (Rabbit 2 | 2026.2.2 Patch 3)
+
 # v1.9.13
 
 ###### 2026/11/25
@@ -206,16 +215,6 @@ npm --prefix .utils run check-data
 * `相依性` 升級 AGP 版本 9.6.0-alpha04 -> 9.6.0-alpha05
 * `相依性` 升級 AGP 版本 9.5.1 -> 9.5.2
 * `相依性` 升級 Android Studio 最新穩定版本 2026.2.2.9 -> 2026.2.2.10 (Rabbit 2 | 2026.2.2 Patch 2)
-
-# v1.9.11
-
-###### 2026/11/17
-
-* `優化` 將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證
-* `優化` 新增 Android Studio 建置編號識別: 2026.3.1.1, 2026.2.3.4
-* `優化` 新增對應: Android Studio 2026.3 的代號字母為 S
-* `優化` 新增對應: Android Studio 代號 S 為 Stingray
-* `相依性` 升級 AGP 版本 9.6.0-alpha03 -> 9.6.0-alpha04
 
 ##### 更多發行歷史可參閱
 

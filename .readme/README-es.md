@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.13"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.14"
     }
 }
 
@@ -189,6 +189,15 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 
 ******
 
+# v1.9.14
+
+###### 2026/11/26
+
+* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
+* `Mejora` Se reconocen las compilaciones de Android Studio: 2026.2.3.5, 2026.2.2.11
+* `Dependencia` Se actualiza la versión de AGP 9.5.2 -> 9.5.3
+* `Dependencia` Se actualiza la última versión estable de Android Studio 2026.2.2.10 -> 2026.2.2.11 (Rabbit 2 | 2026.2.2 Patch 3)
+
 # v1.9.13
 
 ###### 2026/11/25
@@ -206,16 +215,6 @@ Para consultar el alcance completo y las convenciones de ejecución, consulte [.
 * `Dependencia` Se actualiza la versión de AGP 9.6.0-alpha04 -> 9.6.0-alpha05
 * `Dependencia` Se actualiza la versión de AGP 9.5.1 -> 9.5.2
 * `Dependencia` Se actualiza la última versión estable de Android Studio 2026.2.2.9 -> 2026.2.2.10 (Rabbit 2 | 2026.2.2 Patch 2)
-
-# v1.9.11
-
-###### 2026/11/17
-
-* `Mejora` Sincronización automática de los datos integrados de compatibilidad de versiones (AGP, Gradle, Kotlin, KSP, Android Studio, etc.) con la información oficial más reciente, verificada antes de publicar mediante pruebas y la compilación del proyecto de ejemplo
-* `Mejora` Se reconocen las compilaciones de Android Studio: 2026.3.1.1, 2026.2.3.4
-* `Mejora` Correspondencia añadida: Android Studio 2026.3 usa la letra de nombre en clave S
-* `Mejora` Correspondencia añadida: el nombre en clave S de Android Studio es Stingray
-* `Dependencia` Se actualiza la versión de AGP 9.6.0-alpha03 -> 9.6.0-alpha04
 
 ##### Para consultar un historial más completo, véase
 

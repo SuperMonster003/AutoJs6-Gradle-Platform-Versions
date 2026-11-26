@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.13"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.14"
     }
 }
 
@@ -189,6 +189,15 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.14
+
+###### 2026/11/26
+
+* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
+* `改善` Android Studio のビルド番号を認識: 2026.2.3.5, 2026.2.2.11
+* `依存関係` AGP バージョンを 9.5.2 -> 9.5.3 にアップグレード
+* `依存関係` Android Studio 最新安定版を 2026.2.2.10 -> 2026.2.2.11 にアップグレード (Rabbit 2 | 2026.2.2 Patch 3)
+
 # v1.9.13
 
 ###### 2026/11/25
@@ -206,16 +215,6 @@ npm --prefix .utils run check-data
 * `依存関係` AGP バージョンを 9.6.0-alpha04 -> 9.6.0-alpha05 にアップグレード
 * `依存関係` AGP バージョンを 9.5.1 -> 9.5.2 にアップグレード
 * `依存関係` Android Studio 最新安定版を 2026.2.2.9 -> 2026.2.2.10 にアップグレード (Rabbit 2 | 2026.2.2 Patch 2)
-
-# v1.9.11
-
-###### 2026/11/17
-
-* `改善` 内蔵のバージョン互換性データ (AGP, Gradle, Kotlin, KSP, Android Studio など) を公式の最新情報に自動同期し, 公開前にテストとサンプルプロジェクトのビルドで検証
-* `改善` Android Studio のビルド番号を認識: 2026.3.1.1, 2026.2.3.4
-* `改善` 対応表に追加: Android Studio 2026.3 のコードネーム頭文字は S
-* `改善` 対応表に追加: Android Studio のコードネーム S は Stingray
-* `依存関係` AGP バージョンを 9.6.0-alpha03 -> 9.6.0-alpha04 にアップグレード
 
 ##### 詳しいリリース履歴はこちらを参照してください
 
