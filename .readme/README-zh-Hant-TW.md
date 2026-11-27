@@ -85,7 +85,7 @@ pluginManagement {
         google()
     }
     plugins {
-        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.14"
+        id("io.github.supermonster003.autojs6-platform-versions") version "1.9.15"
     }
 }
 
@@ -189,6 +189,14 @@ npm --prefix .utils run check-data
 
 ******
 
+# v1.9.15
+
+###### 2026/11/27
+
+* `優化` 將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證
+* `優化` 新增 Android Studio 建置編號識別: 2026.3.1.4
+* `相依性` 升級 AGP 版本 9.6.0-alpha06 -> 9.6.0-alpha07
+
 # v1.9.14
 
 ###### 2026/11/26
@@ -205,16 +213,6 @@ npm --prefix .utils run check-data
 * `優化` 將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證
 * `優化` 新增 Android Studio 建置編號識別: 2026.3.1.3
 * `相依性` 升級 AGP 版本 9.6.0-alpha05 -> 9.6.0-alpha06
-
-# v1.9.12
-
-###### 2026/11/21
-
-* `優化` 將外掛程式內建的版本相容性資料 (AGP, Gradle, Kotlin, KSP, Android Studio 等) 自動同步至官方最新資訊, 發布前已通過自動化測試與範例專案建置驗證
-* `優化` 新增 Android Studio 建置編號識別: 2026.3.1.2, 2026.2.2.10
-* `相依性` 升級 AGP 版本 9.6.0-alpha04 -> 9.6.0-alpha05
-* `相依性` 升級 AGP 版本 9.5.1 -> 9.5.2
-* `相依性` 升級 Android Studio 最新穩定版本 2026.2.2.9 -> 2026.2.2.10 (Rabbit 2 | 2026.2.2 Patch 2)
 
 ##### 更多發行歷史可參閱
 
